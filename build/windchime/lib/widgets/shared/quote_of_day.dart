@@ -14,13 +14,13 @@ class QuoteOfDay extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
-            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isDarkMode
                   ? const Color(0xFF8E97FD).withOpacity(0.2)
                   : const Color(0xFF8E97FD).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: const Color(0xFF8E97FD),
                 width: 1,
@@ -35,13 +35,13 @@ class QuoteOfDay extends StatelessWidget {
         if (snapshot.hasError) {
           print('Quote error: ${snapshot.error}');
           return Container(
-            margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: isDarkMode
                   ? const Color(0xFF8E97FD).withOpacity(0.2)
                   : const Color(0xFF8E97FD).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: Colors.red,
                 width: 1,
@@ -51,7 +51,7 @@ class QuoteOfDay extends StatelessWidget {
               'Failed to load quote',
               style: TextStyle(
                 color: isDarkMode ? Colors.white : const Color(0xFF2D3142),
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
           );
@@ -59,13 +59,13 @@ class QuoteOfDay extends StatelessWidget {
 
         final quote = snapshot.data!;
         return Container(
-          margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          padding: const EdgeInsets.all(20),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: isDarkMode
                 ? const Color(0xFF8E97FD).withOpacity(0.2)
                 : const Color(0xFF8E97FD).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: const Color(0xFF8E97FD),
               width: 1,
@@ -78,22 +78,22 @@ class QuoteOfDay extends StatelessWidget {
                 'Quote of the Day',
                 style: TextStyle(
                   color: isDarkMode ? Colors.white : const Color(0xFF2D3142),
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               Text(
                 '"${quote.text}"',
                 style: TextStyle(
                   color: isDarkMode
                       ? Colors.white.withOpacity(0.9)
                       : const Color(0xFF2D3142).withOpacity(0.9),
-                  fontSize: 15,
+                  fontSize: 14,
                   fontStyle: FontStyle.italic,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(
@@ -102,7 +102,7 @@ class QuoteOfDay extends StatelessWidget {
                     color: isDarkMode
                         ? Colors.white.withOpacity(0.7)
                         : const Color(0xFF2D3142).withOpacity(0.7),
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
