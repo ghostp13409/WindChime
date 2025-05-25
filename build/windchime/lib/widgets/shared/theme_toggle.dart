@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:prog2435_final_project_app/providers/theme_provider.dart';
+import 'package:windchime/providers/theme_provider.dart';
 
 class ThemeToggle extends StatelessWidget {
   const ThemeToggle({super.key});

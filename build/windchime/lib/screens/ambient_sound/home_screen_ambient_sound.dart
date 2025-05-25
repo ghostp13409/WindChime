@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/ambient_sound/sound.dart';
-import 'package:prog2435_final_project_app/widgets/ambient_sound/sound_card.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:ui';
-import 'package:flutter/services.dart'; // Import for haptics
+import 'package:flutter/services.dart';
+import 'package:windchime/models/ambient_sound/sound.dart';
+import 'package:windchime/widgets/ambient_sound/sound_card.dart'; // Import for haptics
 
 class HomeScreenAmbientSound extends StatefulWidget {
   const HomeScreenAmbientSound({super.key});

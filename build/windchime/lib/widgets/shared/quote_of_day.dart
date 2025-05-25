@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/quote/quote.dart';
-import 'package:prog2435_final_project_app/services/quote_service.dart';
+import 'package:windchime/models/quote/quote.dart';
+import 'package:windchime/services/quote_service.dart';
 
 class QuoteOfDay extends StatelessWidget {
   const QuoteOfDay({super.key});

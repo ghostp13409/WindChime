@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation_category.dart';
+import 'package:windchime/models/meditation/meditation_category.dart';
 
 class CategoryCard extends StatelessWidget {
   final MeditationCategory category;

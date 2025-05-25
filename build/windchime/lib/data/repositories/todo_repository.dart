@@ -1,4 +1,4 @@
-import 'package:prog2435_final_project_app/models/todo/todo_models.dart';
+import 'package:windchime/models/todo/todo_models.dart';
 
 import '../db_helper.dart';
 

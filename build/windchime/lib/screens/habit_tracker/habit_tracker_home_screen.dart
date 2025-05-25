@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/habit/habit.dart';
-import 'package:prog2435_final_project_app/screens/habit_tracker/habit_tracker_form.dart';
-import 'package:prog2435_final_project_app/widgets/habit_tracker/habit_card.dart';
-import 'package:prog2435_final_project_app/services/notification_service.dart';
-import 'package:prog2435_final_project_app/data/repositories/habit_repository.dart';
+import 'package:windchime/models/habit/habit.dart';
+import 'package:windchime/screens/habit_tracker/habit_tracker_form.dart';
+import 'package:windchime/widgets/habit_tracker/habit_card.dart';
+import 'package:windchime/services/notification_service.dart';
+import 'package:windchime/data/repositories/habit_repository.dart';
 import 'package:flutter/services.dart'; // Import for haptics
 
 class HabitListScreen extends StatefulWidget {

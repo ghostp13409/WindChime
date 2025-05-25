@@ -1,6 +1,6 @@
-import 'package:prog2435_final_project_app/data/db_helper.dart';
-import 'package:prog2435_final_project_app/models/meditation/session_history.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:windchime/data/db_helper.dart';
+import 'package:windchime/models/meditation/session_history.dart';
 
 class MeditationRepository {
   final dbHelper = DbHelper.dbHero;

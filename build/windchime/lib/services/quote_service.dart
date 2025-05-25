@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:prog2435_final_project_app/models/quote/quote.dart';
+import 'package:windchime/models/quote/quote.dart';
 
 class QuoteService {
   // ZenQuotes API endpoint for quote of the day

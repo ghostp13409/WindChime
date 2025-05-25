@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:prog2435_final_project_app/models/habit/habit.dart';
+import 'package:windchime/models/habit/habit.dart';
 
 class HabitCard extends StatefulWidget {
   final Habit habit;

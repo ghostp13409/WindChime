@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/ambient_sound/sound.dart';
+import 'package:windchime/models/ambient_sound/sound.dart';
 import 'dart:async';
 
 class SoundCard extends StatefulWidget {
   final Sound sound;
   final VoidCallback onTap;
   final bool isPlaying;
-  
+
   const SoundCard({
     super.key,
     required this.sound,
@@ -18,7 +18,8 @@ class SoundCard extends StatefulWidget {
   _SoundCardState createState() => _SoundCardState();
 }
 
-class _SoundCardState extends State<SoundCard> with SingleTickerProviderStateMixin {
+class _SoundCardState extends State<SoundCard>
+    with SingleTickerProviderStateMixin {
   late AnimationController _scaleController;
   double progress = 0.0;
   Timer? _timer;
@@ -162,7 +163,9 @@ class _SoundCardState extends State<SoundCard> with SingleTickerProviderStateMix
                           children: [
                             Text(
                               _formatDuration(Duration(
-                                seconds: (progress * widget.sound.duration.inSeconds).toInt(),
+                                seconds:
+                                    (progress * widget.sound.duration.inSeconds)
+                                        .toInt(),
                               )),
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.8),

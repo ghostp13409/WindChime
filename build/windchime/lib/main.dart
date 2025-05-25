@@ -1,23 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/meditation/breathing_pattern.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation.dart';
-import 'package:prog2435_final_project_app/screens/ambient_sound/home_screen_ambient_sound.dart';
-import 'package:prog2435_final_project_app/services/notification_service.dart';
-import 'package:prog2435_final_project_app/screens/habit_tracker/habit_tracker_home_screen.dart';
-import 'package:prog2435_final_project_app/screens/home/home_screen.dart';
-import 'package:prog2435_final_project_app/screens/meditation/home_screen.dart';
-import 'package:prog2435_final_project_app/screens/meditation/meditation_session_screen.dart';
-import 'package:prog2435_final_project_app/screens/meditation/session_history_screen.dart';
-import 'package:prog2435_final_project_app/screens/todo/add_todo.dart';
-import 'package:prog2435_final_project_app/screens/todo/todo_list.dart';
-import 'package:prog2435_final_project_app/screens/journal/journal_home_screen.dart';
+import 'package:windchime/models/meditation/breathing_pattern.dart';
+import 'package:windchime/models/meditation/meditation.dart';
+import 'package:windchime/screens/ambient_sound/home_screen_ambient_sound.dart';
+import 'package:windchime/services/notification_service.dart';
+import 'package:windchime/screens/habit_tracker/habit_tracker_home_screen.dart';
+import 'package:windchime/screens/home/home_screen.dart';
+import 'package:windchime/screens/meditation/home_screen.dart';
+import 'package:windchime/screens/meditation/meditation_session_screen.dart';
+import 'package:windchime/screens/meditation/session_history_screen.dart';
+import 'package:windchime/screens/todo/add_todo.dart';
+import 'package:windchime/screens/todo/todo_list.dart';
+import 'package:windchime/screens/journal/journal_home_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:prog2435_final_project_app/providers/theme_provider.dart';
-import 'package:prog2435_final_project_app/themes/dark_theme_data.dart';
+import 'package:windchime/providers/theme_provider.dart';
+import 'package:windchime/themes/dark_theme_data.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
-import 'package:prog2435_final_project_app/screens/Map/map_screen.dart';
+import 'package:windchime/screens/Map/map_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,5 +1,5 @@
-import 'package:prog2435_final_project_app/data/db_helper.dart';
-import 'package:prog2435_final_project_app/models/journal/journal_entry.dart';
+import 'package:windchime/data/db_helper.dart';
+import 'package:windchime/models/journal/journal_entry.dart';
 
 class JournalRepository {
   final DbHelper _dbHelper;

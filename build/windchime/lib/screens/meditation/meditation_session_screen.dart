@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:prog2435_final_project_app/data/repositories/meditation_repository.dart';
-import 'package:prog2435_final_project_app/models/meditation/breathing_pattern.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation.dart';
-import 'package:prog2435_final_project_app/models/meditation/session_history.dart';
+import 'package:windchime/data/repositories/meditation_repository.dart';
+import 'package:windchime/models/meditation/breathing_pattern.dart';
+import 'package:windchime/models/meditation/meditation.dart';
+import 'package:windchime/models/meditation/session_history.dart';
 
 class MeditationSessionScreen extends StatefulWidget {
   final BreathingPattern breathingPattern;

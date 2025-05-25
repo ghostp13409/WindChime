@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prog2435_final_project_app/models/meditation/breathing_pattern.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation_category.dart';
-import 'package:prog2435_final_project_app/screens/meditation/session_history_screen.dart';
+import 'package:windchime/models/meditation/breathing_pattern.dart';
+import 'package:windchime/models/meditation/meditation.dart';
+import 'package:windchime/models/meditation/meditation_category.dart';
+import 'package:windchime/screens/meditation/session_history_screen.dart';
 
 class MeditationHomeScreen extends StatefulWidget {
   const MeditationHomeScreen({super.key});

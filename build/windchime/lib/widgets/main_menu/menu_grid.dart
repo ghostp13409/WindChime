@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prog2435_final_project_app/widgets/shared/quote_of_day.dart';
+import 'package:windchime/widgets/shared/quote_of_day.dart';
 
 class MenuItem {
   final String title;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:prog2435_final_project_app/screens/todo/add_todo.dart';
-import 'package:prog2435_final_project_app/services/utils/sound_utils.dart';
-import 'package:prog2435_final_project_app/widgets/todo/taskItem_widget.dart';
-import '../../models/todo/todo_models.dart';
-import 'package:prog2435_final_project_app/data/repositories/todo_repository.dart';
+import 'package:windchime/models/todo/todo_models.dart';
+import 'package:windchime/screens/todo/add_todo.dart';
+import 'package:windchime/services/utils/sound_utils.dart';
+import 'package:windchime/widgets/todo/taskItem_widget.dart';
+import 'package:windchime/data/repositories/todo_repository.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({super.key});
@@ -336,7 +336,7 @@ class _TodoListScreenState extends State<TodoListScreen>
                         task: task,
                         onTaskChanged: (task) {
                           HapticFeedback.lightImpact();
-                          handleTaskChange(task);
+                          // handleTaskChange(task);
                         },
                         onDeleteItem: (id) {
                           HapticFeedback.vibrate();

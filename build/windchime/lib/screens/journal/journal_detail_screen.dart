@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:prog2435_final_project_app/data/repositories/journal_repository.dart';
-import 'package:prog2435_final_project_app/models/journal/journal_entry.dart';
-import 'package:prog2435_final_project_app/models/journal/mood_data.dart';
-import 'package:prog2435_final_project_app/data/db_helper.dart';
-import 'package:prog2435_final_project_app/providers/theme_provider.dart';
-import 'package:prog2435_final_project_app/screens/journal/journal_form_screen.dart';
+import 'package:windchime/data/repositories/journal_repository.dart';
+import 'package:windchime/models/journal/journal_entry.dart';
+import 'package:windchime/models/journal/mood_data.dart';
+import 'package:windchime/data/db_helper.dart';
+import 'package:windchime/providers/theme_provider.dart';
+import 'package:windchime/screens/journal/journal_form_screen.dart';
 
 class JournalDetailScreen extends StatefulWidget {
   final JournalEntry entry;

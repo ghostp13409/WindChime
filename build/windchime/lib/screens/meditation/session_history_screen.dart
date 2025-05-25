@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:prog2435_final_project_app/data/repositories/meditation_repository.dart';
-import 'package:prog2435_final_project_app/models/meditation/session_history.dart';
+import 'package:windchime/data/repositories/meditation_repository.dart';
+import 'package:windchime/models/meditation/session_history.dart';
 
 class SessionHistoryScreen extends StatefulWidget {
   const SessionHistoryScreen({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/todo/todo_models.dart';
-import 'package:prog2435_final_project_app/services/utils/sound_utils.dart';
+import 'package:windchime/models/todo/todo_models.dart';
+import 'package:windchime/services/utils/sound_utils.dart';
 
 class TaskItem extends StatefulWidget {
   const TaskItem({

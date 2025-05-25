@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prog2435_final_project_app/models/meditation/meditation.dart';
+import 'package:windchime/models/meditation/meditation.dart';
 
 class MeditationListItem extends StatelessWidget {
   final Meditation meditation;
