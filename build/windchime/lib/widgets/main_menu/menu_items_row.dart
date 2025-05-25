@@ -16,7 +16,7 @@ class MenuItemsRow extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 12),
           Container(
             height: 90,
             padding: const EdgeInsets.symmetric(horizontal: 20),

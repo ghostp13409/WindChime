@@ -80,7 +80,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       meditations: [
         Meditation(
           title: 'Sleep Mode',
-          subtitle: 'Relax and drift off',
+          subtitle: 'Relax and unwind',
           duration: '15 min',
           image: _sleep,
         ),
@@ -172,7 +172,7 @@ class _MeditationItemsState extends State<MeditationItems> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Meditate',
+                    'Meditate for...',
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                   Row(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:windchime/models/home_screen/menu_item.dart';
 import 'package:windchime/widgets/main_menu/menu_items_row.dart';
 import 'package:windchime/widgets/meditation/meditaiton_items.dart';
@@ -16,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<MenuItem> menuItems = [
     MenuItem(
       title: 'Journal',
-      subtitle: 'Write Your Thoughts',
+      subtitle: 'Maternalize your thoughts',
       icon: Icons.book,
       route: '/journal',
       color: Color(0xFF00C896), // Vibrant teal/emerald green
@@ -75,7 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SliverToBoxAdapter(
-              child: QuoteOfDay(),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                child: QuoteOfDay(),
+              ),
             ),
             // Meditation Items
             MeditationItems(),
