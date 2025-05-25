@@ -1,0 +1,80 @@
+name: prog2435_final_project_app
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_local_notifications: ^19.0.0
+  provider: ^6.1.1
+  just_audio: ^0.9.36
+  flutter_colorpicker: ^1.1.0
+  audioplayers: ^6.4.0
+  reactive_forms: ^18.0.0
+  path: ^1.8.0
+  path_provider: ^2.1.4
+  sqflite: ^2.4.0
+  sqflite_common_ffi: any
+  sqflite_common_ffi_web: any
+  intl: 0.20.2
+  shared_preferences: ^2.5.3
+  http: ^1.3.0
+  sqlite3_flutter_libs: ^0.5.32
+  flutter_launcher_icons: ^0.14.3
+  geocoding: ^2.1.1
+  google_maps_flutter_web: ^0.3.3
+  js: ^0.6.7
+  flutter_dotenv: ^5.1.0
+  geolocator: ^10.1.0
+  google_maps_flutter: ^2.2.6
+  haptic_feedback: ^0.5.1+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    # Keep directory references for backward compatibility
+    - assets/
+    - assets/images/
+    - assets/sounds/
+    - assets/sounds/meditation/
+    - assets/todo/images/
+    - assets/todo/sounds/
+
+    # Add explicit file references
+    - assets/images/AppLogo.svg
+    - assets/images/logo.png
+    - assets/sounds/meditation/Anxiety.mp3
+    - assets/sounds/meditation/Focus.mp3
+    - assets/sounds/meditation/Sleep.mp3
+    - assets/sounds/meditation/happy.mp3
+    - assets/todo/images/EmotionPfp.jpg
+    - assets/todo/sounds/add.mp3
+    - assets/todo/sounds/click.mp3
+    - assets/todo/sounds/delete.mp3
+    - assets/todo/sounds/done.mp3
+    - assets/todo/sounds/wrong.mp3
+    - assets/sounds/ambient_sounds/deep-sleep.mp3
+    - assets/sounds/ambient_sounds/fan-white-noise-heater.mp3
+    - assets/sounds/ambient_sounds/happy-relaxing-loop.mp3
+    - assets/sounds/ambient_sounds/rain-and-thunder-for-better-sleep.mp3
+
+# Flutter Launcher Icons configuration
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  remove_alpha_ios: true
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  min_sdk_version: 21
