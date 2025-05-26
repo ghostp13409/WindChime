@@ -13,6 +13,8 @@ class MeditationItems extends StatefulWidget {
 }
 
 class _MeditationItemsState extends State<MeditationItems> {
+  bool _showDemo = false;
+
   // Temp Image URLs
   static const String _sleep = 'images/meditation/sleep.png';
   static const String _focus = 'images/meditation/focus.png';
@@ -20,6 +22,16 @@ class _MeditationItemsState extends State<MeditationItems> {
   static const String _happiness = 'images/meditation/happiness.png';
 
   static const Map<String, BreathingPattern> breathingPatterns = {
+    'demo': BreathingPattern(
+      name: 'Quick Demo',
+      breatheInDuration: 2,
+      holdInDuration: 1,
+      breatheOutDuration: 2,
+      holdOutDuration: 1,
+      description: 'Quick 10-second demo session',
+      primaryColor: Color(0xFF00C896),
+      audioPath: 'sounds/meditation/Focus.mp3',
+    ),
     'default': BreathingPattern(
       name: '4-7-8 Technique',
       breatheInDuration: 4,
@@ -72,60 +84,83 @@ class _MeditationItemsState extends State<MeditationItems> {
     ),
   };
 
-  final List<MeditationCategory> _categories = [
-    MeditationCategory(
-      name: 'Sleep',
-      icon: Icons.nightlight_round,
-      color: const Color(0xFF8E97FD),
-      meditations: [
-        Meditation(
-          title: 'Sleep Mode',
-          subtitle: 'Relax and unwind',
-          duration: '15 min',
-          image: _sleep,
+  List<MeditationCategory> get _categories {
+    final baseCategories = [
+      MeditationCategory(
+        name: 'Sleep',
+        icon: Icons.nightlight_round,
+        color: const Color(0xFF8E97FD),
+        meditations: [
+          Meditation(
+            title: 'Sleep Mode',
+            subtitle: 'Relax and unwind',
+            duration: '15 min',
+            image: _sleep,
+          ),
+        ],
+      ),
+      MeditationCategory(
+        name: 'Focus',
+        icon: Icons.psychology,
+        color: const Color(0xFFF6815B),
+        meditations: [
+          Meditation(
+            title: 'Focus Mode',
+            subtitle: 'Enhance concentration',
+            duration: '10 min',
+            image: _focus,
+          ),
+        ],
+      ),
+      MeditationCategory(
+        name: 'Anxiety',
+        icon: Icons.healing,
+        color: const Color(0xFFFA6E5A),
+        meditations: [
+          Meditation(
+            title: 'Anxiety Mode',
+            subtitle: 'Find calmness',
+            duration: '10 min',
+            image: _anxiety,
+          ),
+        ],
+      ),
+      MeditationCategory(
+        name: 'Happiness',
+        icon: Icons.self_improvement,
+        color: const Color(0xFFFFCF86),
+        meditations: [
+          Meditation(
+            title: 'Happiness Mode',
+            subtitle: 'Boost your mood',
+            duration: '10 min',
+            image: _happiness,
+          ),
+        ],
+      ),
+    ];
+
+    if (_showDemo) {
+      return [
+        MeditationCategory(
+          name: 'Demo',
+          icon: Icons.play_circle_outline,
+          color: const Color(0xFF00C896),
+          meditations: [
+            Meditation(
+              title: 'Quick Demo',
+              subtitle: 'Try a 10-second session',
+              duration: '10 sec',
+              image: _focus,
+            ),
+          ],
         ),
-      ],
-    ),
-    MeditationCategory(
-      name: 'Focus',
-      icon: Icons.psychology,
-      color: const Color(0xFFF6815B),
-      meditations: [
-        Meditation(
-          title: 'Focus Mode',
-          subtitle: 'Enhance concentration',
-          duration: '10 min',
-          image: _focus,
-        ),
-      ],
-    ),
-    MeditationCategory(
-      name: 'Anxiety',
-      icon: Icons.healing,
-      color: const Color(0xFFFA6E5A),
-      meditations: [
-        Meditation(
-          title: 'Anxiety Mode',
-          subtitle: 'Find calmness',
-          duration: '10 min',
-          image: _anxiety,
-        ),
-      ],
-    ),
-    MeditationCategory(
-      name: 'Happiness',
-      icon: Icons.self_improvement,
-      color: const Color(0xFFFFCF86),
-      meditations: [
-        Meditation(
-          title: 'Happiness Mode',
-          subtitle: 'Boost your mood',
-          duration: '10 min',
-          image: _happiness,
-        ),
-      ],
-    ),
-  ];
+        ...baseCategories,
+      ];
+    }
+
+    return baseCategories;
+  }
 
   void _startMeditation(Meditation meditation, String categoryName) {
     BreathingPattern pattern = breathingPatterns[categoryName.toLowerCase()] ??
@@ -133,7 +168,7 @@ class _MeditationItemsState extends State<MeditationItems> {
 
     Navigator.pushNamed(
       context,
-      '/meditation/session',
+      '/meditation/instructions',
       arguments: {
         'breathingPattern': pattern,
         'meditation': meditation,
@@ -177,9 +212,8 @@ class _MeditationItemsState extends State<MeditationItems> {
                   ),
                   Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.history),
-                        onPressed: () {
+                      GestureDetector(
+                        onTap: () {
                           HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
@@ -189,6 +223,32 @@ class _MeditationItemsState extends State<MeditationItems> {
                             ),
                           );
                         },
+                        onLongPress: () {
+                          HapticFeedback.mediumImpact();
+                          setState(() {
+                            _showDemo = !_showDemo;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                _showDemo
+                                    ? 'Demo mode enabled'
+                                    : 'Demo mode disabled',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: const Color(0xFF00C896),
+                              duration: const Duration(seconds: 2),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          child: const Icon(Icons.history),
+                        ),
                       ),
                     ],
                   ),

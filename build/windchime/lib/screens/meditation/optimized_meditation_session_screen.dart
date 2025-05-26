@@ -232,8 +232,17 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _updateSessionProgress() {
-    int totalDurationInSeconds =
-        int.parse(widget.meditation.duration.split(' ')[0]) * 60;
+    int totalDurationInSeconds;
+    final durationParts = widget.meditation.duration.split(' ');
+    final durationValue = int.parse(durationParts[0]);
+    final durationUnit = durationParts[1].toLowerCase();
+
+    if (durationUnit.startsWith('sec')) {
+      totalDurationInSeconds = durationValue;
+    } else {
+      totalDurationInSeconds = durationValue * 60; // minutes to seconds
+    }
+
     _sessionProgress = (_seconds / 10) / totalDurationInSeconds;
     _progressNotifier.value = _sessionProgress;
     if (_sessionProgress <= 1.0) {
@@ -322,8 +331,17 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _checkMeditationCompletion() {
-    int durationInSeconds =
-        int.parse(widget.meditation.duration.split(' ')[0]) * 60;
+    int durationInSeconds;
+    final durationParts = widget.meditation.duration.split(' ');
+    final durationValue = int.parse(durationParts[0]);
+    final durationUnit = durationParts[1].toLowerCase();
+
+    if (durationUnit.startsWith('sec')) {
+      durationInSeconds = durationValue;
+    } else {
+      durationInSeconds = durationValue * 60; // minutes to seconds
+    }
+
     if (_seconds >= durationInSeconds * 10) {
       _completeMeditation();
     }
