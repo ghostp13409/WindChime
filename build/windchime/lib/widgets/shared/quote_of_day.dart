@@ -33,7 +33,6 @@ class QuoteOfDay extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
-          print('Quote error: ${snapshot.error}');
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             padding: const EdgeInsets.all(16),

@@ -6,6 +6,7 @@ import 'package:windchime/screens/ambient_sound/home_screen_ambient_sound.dart';
 import 'package:windchime/screens/home/home_screen.dart';
 import 'package:windchime/screens/meditation/home_screen.dart';
 import 'package:windchime/screens/meditation/meditation_session_screen.dart';
+import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/session_history_screen.dart';
 import 'package:windchime/screens/journal/journal_home_screen.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,7 @@ class MainApp extends StatelessWidget {
     '/meditation/session': (context) {
       final args =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      return MeditationSessionScreen(
+      return OptimizedMeditationSessionScreen(
         breathingPattern: args['breathingPattern'] as BreathingPattern,
         meditation: args['meditation'] as Meditation,
         onClose: () => Navigator.of(context).pop(),

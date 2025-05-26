@@ -3,6 +3,7 @@ import 'package:windchime/models/home_screen/menu_item.dart';
 import 'package:windchime/widgets/main_menu/menu_items_row.dart';
 import 'package:windchime/widgets/meditation/meditaiton_items.dart';
 import 'package:windchime/widgets/shared/quote_of_day.dart';
+import 'package:windchime/services/utils/sound_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,6 +36,15 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Color(0xFFFF6B8A), // Vibrant pink
     ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Play welcome chime sound when the home screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      playSound('sounds/startup/completetask.mp3');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -47,6 +47,7 @@ flutter:
     - assets/images/
     - assets/sounds/
     - assets/sounds/meditation/
+    - assets/sounds/meditation/statechange/
     - assets/todo/images/
     - assets/todo/sounds/
 
@@ -67,6 +68,13 @@ flutter:
     - assets/sounds/ambient_sounds/fan-white-noise-heater.mp3
     - assets/sounds/ambient_sounds/happy-relaxing-loop.mp3
     - assets/sounds/ambient_sounds/rain-and-thunder-for-better-sleep.mp3
+    - assets/sounds/startup/bell.wav
+    - assets/sounds/startup/completetask.mp3
+    - assets/sounds/startup/smallbell.mp3
+    - assets/sounds/meditation/statechange/breath_in.wav
+    - assets/sounds/meditation/statechange/breath_out.wav
+    - assets/sounds/meditation/statechange/hold.wav
+    - assets/sounds/meditation/statechange/rest.wav
 
 # Flutter Launcher Icons configuration
 
