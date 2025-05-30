@@ -33,6 +33,7 @@ dependencies:
   google_maps_flutter: ^2.2.6
   haptic_feedback: ^0.5.1+1
   url_launcher: ^6.1.12
+  font_awesome_flutter: ^10.6.0
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,7 @@ flutter:
     - assets/sounds/
     - assets/sounds/meditation/
     - assets/sounds/meditation/statechange/
+    - assets/sounds/meditation/guided/
     - assets/todo/images/
     - assets/todo/sounds/
 
@@ -59,6 +61,49 @@ flutter:
     - assets/sounds/meditation/Focus.mp3
     - assets/sounds/meditation/Sleep.mp3
     - assets/sounds/meditation/happy.mp3
+
+    # Guided Meditation - Body Scan
+    - assets/sounds/meditation/guided/body_scan/Body Scan.mp3
+    - assets/sounds/meditation/guided/body_scan/Fifteen Minute Body Scan.mp3
+    - assets/sounds/meditation/guided/body_scan/Forty-Five Minute Body Scan.mp3
+    - assets/sounds/meditation/guided/body_scan/Four Minute Body Scan.mp3
+    - assets/sounds/meditation/guided/body_scan/Twenty Minute Body Scan.mp3
+
+    # Guided Meditation - Breathing Practices
+    - assets/sounds/meditation/guided/breathing_practices/Five Minute Breathing.mp3
+    - assets/sounds/meditation/guided/breathing_practices/Six Minute Breath Awareness.mp3
+    - assets/sounds/meditation/guided/breathing_practices/Ten Minute Breathing.mp3
+    - assets/sounds/meditation/guided/breathing_practices/Ten Minute Mindfulness of Breathing.mp3
+    - assets/sounds/meditation/guided/breathing_practices/Three Minute Breathing.mp3
+
+    # Guided Meditation - Brief Mindfulness Practices
+    - assets/sounds/meditation/guided/brief_mindfulness_practices/Brief Mindfulness Practice.mp3
+    - assets/sounds/meditation/guided/brief_mindfulness_practices/The Breathing Space.mp3
+    - assets/sounds/meditation/guided/brief_mindfulness_practices/The Tension Release Meditation.mp3
+    - assets/sounds/meditation/guided/brief_mindfulness_practices/Three Minute Mindfulness of Sounds.mp3
+    - assets/sounds/meditation/guided/brief_mindfulness_practices/Three Step Breathing Space.mp3
+
+    # Guided Meditation - Guided Imagery
+    - assets/sounds/meditation/guided/guided_imagery/Mountain Meditation.mp3
+    - assets/sounds/meditation/guided/guided_imagery/PadraigTheMountain.mp3
+
+    # Guided Meditation - Self Guided Mindfulness Exercises
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3
+    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3
+
+    # Guided Meditation - Sitting Meditations
+    - assets/sounds/meditation/guided/sitting_meditations/Breath, Sound and Body.mp3
+    - assets/sounds/meditation/guided/sitting_meditations/Breath, Sounds, Body, Thoughts, Emotions.mp3
+    - assets/sounds/meditation/guided/sitting_meditations/Compassionate Breath.mp3
+    - assets/sounds/meditation/guided/sitting_meditations/Seated Meditation.mp3
+    - assets/sounds/meditation/guided/sitting_meditations/Sitting Meditation.mp3
+    - assets/sounds/meditation/guided/sitting_meditations/Ten Minute Wisdom Meditation.mp3
     - assets/todo/images/EmotionPfp.jpg
     - assets/todo/sounds/add.mp3
     - assets/todo/sounds/click.mp3
@@ -76,6 +121,9 @@ flutter:
     - assets/sounds/meditation/statechange/breath_out.wav
     - assets/sounds/meditation/statechange/hold.wav
     - assets/sounds/meditation/statechange/rest.wav
+    - assets/images/about/donatepaypal.png
+    - assets/images/about/donatebtc.png
+    - assets/images/about/profile.png
 
 # Flutter Launcher Icons configuration
 

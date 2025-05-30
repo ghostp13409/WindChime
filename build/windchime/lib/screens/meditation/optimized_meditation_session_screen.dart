@@ -167,13 +167,20 @@ class _OptimizedMeditationSessionScreenState
   Future<void> _setupAudio() async {
     _audioPlayer = AudioPlayer();
     try {
+      //TODO: BACKGROUND_MUSIC_VOLUME - Adjust background music volume (0.0 to 1.0)
+      // Lower values allow breathing cues to be heard more clearly
+      await _audioPlayer.setVolume(0.1);
       await _audioPlayer
           .setAsset('assets/${widget.breathingPattern.audioPath}');
       await _audioPlayer.setLoopMode(LoopMode.one);
-      await _audioPlayer.setVolume(0.6);
+
+      // Start playing background music
       await _audioPlayer.play();
+
+      debugPrint(
+          'Background music started: ${widget.breathingPattern.audioPath}');
     } catch (e) {
-      debugPrint('Error playing audio: $e');
+      debugPrint('Error playing background audio: $e');
     }
   }
 
@@ -199,20 +206,25 @@ class _OptimizedMeditationSessionScreenState
           break;
       }
 
-      // Create a new AudioPlayer instance for each sound to ensure no interference
-      final soundPlayer = AudioPlayer();
+      // Stop any current cue sound to prevent overlapping
+      if (_stateChangeAudioPlayer.playing) {
+        await _stateChangeAudioPlayer.stop();
+      }
 
-      // Set low volume and play the sound
-      await soundPlayer.setVolume(0.2);
-      await soundPlayer.setAsset(soundPath);
-      await soundPlayer.play();
+      //TODO: BREATHING_CUE_VOLUME - Adjust breathing state change cue volume (0.0 to 1.0)
+      // Higher values make the cues more prominent
+      await _stateChangeAudioPlayer.setVolume(1.0);
 
-      // Auto-dispose the player after the sound completes
-      soundPlayer.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          soundPlayer.dispose();
-        }
+      // Set the audio source and play immediately
+      await _stateChangeAudioPlayer.setAsset(soundPath);
+      await _stateChangeAudioPlayer.seek(Duration.zero);
+
+      // Use fire-and-forget approach for better reliability
+      _stateChangeAudioPlayer.play().catchError((error) {
+        debugPrint('Error during audio playback: $error');
       });
+
+      debugPrint('Playing state change sound: $soundPath for state: $state');
     } catch (e) {
       debugPrint('Error playing state change sound: $e');
     }
@@ -349,12 +361,20 @@ class _OptimizedMeditationSessionScreenState
   Future<void> _completeMeditation() async {
     _timer.cancel();
     _particleTicker.stop();
-    _audioPlayer.stop();
-    _stateChangeAudioPlayer.stop();
+
+    // Stop both audio players properly
+    try {
+      await _audioPlayer.stop();
+      await _stateChangeAudioPlayer.stop();
+    } catch (e) {
+      debugPrint('Error stopping audio: $e');
+    }
 
     final session = SessionHistory(
       date: DateTime.now(),
       duration: _seconds ~/ 10,
+      meditationType:
+          widget.meditation.title.toLowerCase().replaceAll(' mode', ''),
     );
     await _meditationRepository.addSession(session);
 
@@ -932,12 +952,21 @@ class _OptimizedMeditationSessionScreenState
                   Navigator.of(context).pop();
                   _timer.cancel();
                   _particleTicker.stop();
-                  _audioPlayer.stop();
-                  _stateChangeAudioPlayer.stop();
+
+                  // Stop both audio players properly
+                  try {
+                    await _audioPlayer.stop();
+                    await _stateChangeAudioPlayer.stop();
+                  } catch (e) {
+                    debugPrint('Error stopping audio on exit: $e');
+                  }
 
                   final session = SessionHistory(
                     date: DateTime.now(),
                     duration: _seconds ~/ 10,
+                    meditationType: widget.meditation.title
+                        .toLowerCase()
+                        .replaceAll(' mode', ''),
                   );
                   await _meditationRepository.addSession(session);
                   widget.onClose();

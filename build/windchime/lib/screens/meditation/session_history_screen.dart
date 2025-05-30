@@ -39,6 +39,9 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
     final totalMinutes =
         await _meditationRepository.getTotalMeditationMinutes();
 
+    // Sort sessions by date (latest first)
+    sessions.sort((a, b) => b.date.compareTo(a.date));
+
     setState(() {
       _sessions = sessions;
       _totalSessions = totalSessions;
@@ -87,6 +90,91 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
       await _meditationRepository.deleteSession(session.id!);
       _loadData();
     }
+  }
+
+  // Get meditation type info (icon and color)
+  Map<String, dynamic> _getMeditationTypeInfo(String? meditationType) {
+    switch (meditationType?.toLowerCase()) {
+      case 'demo':
+        return {
+          'icon': Icons.play_circle_outline,
+          'color': const Color(0xFF00C896),
+          'name': 'Demo'
+        };
+      case 'sleep':
+        return {
+          'icon': Icons.nightlight_round,
+          'color': const Color(0xFF8E97FD),
+          'name': 'Sleep'
+        };
+      case 'focus':
+        return {
+          'icon': Icons.psychology,
+          'color': const Color(0xFFF6815B),
+          'name': 'Focus'
+        };
+      case 'anxiety':
+        return {
+          'icon': Icons.healing,
+          'color': const Color(0xFFFA6E5A),
+          'name': 'Anxiety'
+        };
+      case 'happiness':
+        return {
+          'icon': Icons.self_improvement,
+          'color': const Color(0xFFFFCF86),
+          'name': 'Happiness'
+        };
+      default:
+        return {
+          'icon': Icons.self_improvement,
+          'color': primaryAccent,
+          'name': 'Meditation'
+        };
+    }
+  }
+
+  // Group sessions by time periods
+  Map<String, List<SessionHistory>> _groupSessionsByTime() {
+    final Map<String, List<SessionHistory>> grouped = {
+      'Today': [],
+      'Yesterday': [],
+      'Last Week': [],
+      'Last Month': [],
+      'Earlier This Year': [],
+      'Older': [],
+    };
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final oneWeekAgo = today.subtract(const Duration(days: 7));
+    final oneMonthAgo = DateTime(now.year, now.month - 1, now.day);
+    final startOfYear = DateTime(now.year, 1, 1);
+
+    for (final session in _sessions) {
+      final sessionDate =
+          DateTime(session.date.year, session.date.month, session.date.day);
+
+      if (sessionDate == today) {
+        grouped['Today']!.add(session);
+      } else if (sessionDate == yesterday) {
+        grouped['Yesterday']!.add(session);
+      } else if (sessionDate.isAfter(oneWeekAgo)) {
+        grouped['Last Week']!.add(session);
+      } else if (sessionDate.isAfter(oneMonthAgo)) {
+        grouped['Last Month']!.add(session);
+      } else if (sessionDate.isAfter(startOfYear) ||
+          sessionDate.isAtSameMomentAs(startOfYear)) {
+        grouped['Earlier This Year']!.add(session);
+      } else {
+        grouped['Older']!.add(session);
+      }
+    }
+
+    // Remove empty groups
+    grouped.removeWhere((key, value) => value.isEmpty);
+    return grouped;
   }
 
   String _formatDuration(int seconds) {
@@ -209,30 +297,39 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
   }
 
   Widget _buildSessionCard(SessionHistory session, int index) {
-    // Use different accent colors for variety
-    final colors = [primaryAccent, secondaryAccent, tertiaryAccent];
-    final color = colors[index % colors.length];
+    // Get meditation type info (icon, color, name)
+    final typeInfo = _getMeditationTypeInfo(session.meditationType);
+    final IconData icon = typeInfo['icon'];
+    final Color color = typeInfo['color'];
+    final String typeName = typeInfo['name'];
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.grey.shade800.withOpacity(0.5)
-            : Colors.white,
+        gradient: LinearGradient(
+          colors: Theme.of(context).brightness == Brightness.dark
+              ? [
+                  color.withOpacity(0.15),
+                  color.withOpacity(0.05),
+                ]
+              : [
+                  color.withOpacity(0.08),
+                  color.withOpacity(0.03),
+                ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.grey.shade700
-              : Colors.grey.shade200,
+          color: color.withOpacity(0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.black.withOpacity(0.2)
-                : Colors.grey.withOpacity(0.08),
+            color: color.withOpacity(0.15),
             blurRadius: 8,
             offset: const Offset(0, 2),
+            spreadRadius: 1,
           ),
         ],
       ),
@@ -244,21 +341,18 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: color.withOpacity(0.3),
+                  color: color.withOpacity(0.4),
                   width: 1.5,
                 ),
               ),
               child: Center(
-                child: Text(
-                  '${session.duration ~/ 60}',
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 24,
                 ),
               ),
             ),
@@ -267,15 +361,39 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _formatDate(session.date),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
+                  Row(
+                    children: [
+                      Text(
+                        typeName,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: color,
+                            ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
                         ),
+                        decoration: BoxDecoration(
+                          color: color.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          _formatDuration(session.duration),
+                          style: TextStyle(
+                            color: color,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatDuration(session.duration),
+                    _formatDate(session.date),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context)
                               .textTheme
@@ -290,7 +408,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
             IconButton(
               icon: Icon(
                 Icons.delete_outline,
-                color: tertiaryAccent.withOpacity(0.7),
+                color: color.withOpacity(0.7),
               ),
               onPressed: () => _deleteSession(session),
               tooltip: 'Delete session',
@@ -299,6 +417,69 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildGroupedSessions() {
+    final groupedSessions = _groupSessionsByTime();
+    final List<Widget> slivers = [];
+
+    groupedSessions.forEach((groupName, sessions) {
+      // Add section header
+      slivers.add(
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            child: Row(
+              children: [
+                Text(
+                  groupName,
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: primaryAccent.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    '${sessions.length}',
+                    style: TextStyle(
+                      color: primaryAccent,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      // Add sessions in this group
+      slivers.add(
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final session = sessions[index];
+              return _buildSessionCard(session, index);
+            },
+            childCount: sessions.length,
+          ),
+        ),
+      );
+    });
+
+    // Add bottom padding
+    slivers.add(
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 20),
+      ),
+    );
+
+    return slivers;
   }
 
   Widget _buildEmptyState() {
@@ -380,29 +561,8 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                   SliverFillRemaining(
                     child: _buildEmptyState(),
                   )
-                else ...[
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
-                      child: Text(
-                        'Recent Sessions',
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final session = _sessions[index];
-                        return _buildSessionCard(session, index);
-                      },
-                      childCount: _sessions.length,
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 20),
-                  ),
-                ],
+                else
+                  ..._buildGroupedSessions(),
               ],
             ),
     );

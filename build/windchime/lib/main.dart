@@ -9,6 +9,7 @@ import 'package:windchime/screens/meditation/meditation_instruction_screen.dart'
 import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/session_history_screen.dart';
 import 'package:windchime/screens/journal/journal_home_screen.dart';
+import 'package:windchime/screens/about/about_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
 import 'package:windchime/themes/dark_theme_data.dart';
@@ -64,7 +65,8 @@ class MainApp extends StatelessWidget {
     '/meditation/history': (context) => const SessionHistoryScreen(),
     '/journal': (context) => JournalHomeScreen(),
     '/ambient_sound/home': (context) => const HomeScreenAmbientSound(),
-    '/map': (context) => const MapScreen()
+    '/map': (context) => const MapScreen(),
+    '/about': (context) => const AboutScreen(),
   };
 
   @override

@@ -16,7 +16,12 @@ class DbHelper {
   Future<Database> _initDatabase() async {
     final path = join(await getDatabasesPath(),
         'sunrise.db'); //Name of the database, change if you want another one
-    return await openDatabase(path, version: 1, onCreate: _createDatabase);
+    return await openDatabase(
+      path,
+      version: 2,
+      onCreate: _createDatabase,
+      onUpgrade: _onUpgrade,
+    );
   }
 
   void _createDatabase(Database db, int version) {
@@ -34,7 +39,8 @@ class DbHelper {
     CREATE TABLE meditation_sessions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
-      duration INTEGER NOT NULL
+      duration INTEGER NOT NULL,
+      meditation_type TEXT
     )
   ''');
 
@@ -65,6 +71,16 @@ class DbHelper {
       isTimerRunning INTEGER DEFAULT 0
     )
   ''');
+  }
+
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+    if (oldVersion < 2) {
+      // Add meditation_type column to existing meditation_sessions table
+      db.execute('''
+        ALTER TABLE meditation_sessions
+        ADD COLUMN meditation_type TEXT
+      ''');
+    }
   }
 
   Future<int> insertDb(Map<String, dynamic> row, String table) async {

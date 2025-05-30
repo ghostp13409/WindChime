@@ -56,8 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    // Logo and App Name
                     SizedBox(
                       width: 40,
                       height: 40,
@@ -68,16 +68,45 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
+                    const SizedBox(width: 15),
                     Text(
                       'WindChime',
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
-                    const SizedBox(
-                      width: 40,
-                      height: 40,
+
+                    // Spacer to push about button to the right
+                    const Spacer(),
+
+                    // About Button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.1),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/about');
+                        },
+                        icon: Icon(
+                          Icons.info_outline_rounded,
+                          color: Colors.white.withOpacity(0.8),
+                        ),
+                        tooltip: 'About',
+                        iconSize: 20,
+                        padding: const EdgeInsets.all(10),
+                      ),
                     ),
                   ],
                 ),

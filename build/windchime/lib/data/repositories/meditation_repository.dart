@@ -12,6 +12,7 @@ class MeditationRepository {
       id: id,
       date: session.date,
       duration: session.duration,
+      meditationType: session.meditationType,
     );
   }
 
