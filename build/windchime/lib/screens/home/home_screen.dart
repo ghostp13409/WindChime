@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/screens/meditation/session_history_screen.dart';
+import 'package:windchime/screens/meditation/guided_meditation_category_screen.dart';
 import 'package:windchime/widgets/shared/quote_of_day.dart';
 import 'package:windchime/services/utils/sound_utils.dart';
 
@@ -348,6 +349,58 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildGuidedMeditationPage() {
+    // Define the 6 main meditation categories
+    final meditationCategories = [
+      {
+        'id': 'breathing_practices',
+        'title': 'Breathing Practices',
+        'icon': Icons.air,
+        'color': const Color(0xFF7B65E4),
+        'description':
+            'Cultivate present moment awareness through mindful breathing exercises that help center your mind and body',
+      },
+      {
+        'id': 'brief_mindfulness',
+        'title': 'Brief Mindfulness',
+        'icon': Icons.self_improvement,
+        'color': const Color(0xFFF6815B),
+        'description':
+            'Short powerful sessions for quick resets during your day, providing instant grounding and mental clarity',
+      },
+      {
+        'id': 'body_scan',
+        'title': 'Body Scan',
+        'icon': Icons.accessibility_new,
+        'color': const Color(0xFFFA6E5A),
+        'description':
+            'Systematic journey through your body to develop embodied awareness and release physical tension',
+      },
+      {
+        'id': 'sitting_meditations',
+        'title': 'Sitting Meditations',
+        'icon': Icons.event_seat,
+        'color': const Color(0xFFFFCF86),
+        'description':
+            'Traditional seated practices combining breath, sound, and thought awareness for deep inner stillness',
+      },
+      {
+        'id': 'guided_imagery',
+        'title': 'Guided Imagery',
+        'icon': Icons.landscape,
+        'color': const Color(0xFF4CAF50),
+        'description':
+            'Visualization techniques using imagination to foster calm, resilience, and emotional balance',
+      },
+      {
+        'id': 'self_guided',
+        'title': 'Self Guided',
+        'icon': Icons.notifications_none,
+        'color': const Color(0xFF9C27B0),
+        'description':
+            'Silent meditation with mindfulness bells to structure your personal practice and deepen concentration',
+      },
+    ];
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       child: Column(
@@ -369,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Immersive meditation experiences with expert guidance and soothing narration.',
+                  'Expert-guided meditation experiences with soothing narration and mindful awareness practices.',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.grey.withOpacity(0.7),
                         fontWeight: FontWeight.w400,
@@ -383,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
           const SizedBox(height: 24),
 
-          // Coming Soon grid layout matching breathwork style
+          // Meditation categories grid
           Expanded(
             child: GridView.builder(
               physics: const BouncingScrollPhysics(),
@@ -393,151 +446,128 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 crossAxisSpacing: 16,
                 childAspectRatio: 0.85,
               ),
-              itemCount: 4, // Show 4 placeholder cards
+              itemCount: meditationCategories.length,
               itemBuilder: (context, index) {
-                // Different colors for variety
-                final colors = [
-                  const Color(0xFF7B65E4),
-                  const Color(0xFFF6815B),
-                  const Color(0xFFFA6E5A),
-                  const Color(0xFFFFCF86),
-                ];
-                final icons = [
-                  Icons.forest,
-                  Icons.waves,
-                  Icons.psychology,
-                  Icons.self_improvement,
-                ];
-                final titles = [
-                  'Nature Sounds',
-                  'Ocean Waves',
-                  'Mindfulness',
-                  'Body Scan',
-                ];
+                final category = meditationCategories[index];
+                final color = category['color'] as Color;
 
-                final color = colors[index % colors.length];
-                final icon = icons[index % icons.length];
-                final title = titles[index % titles.length];
-
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(28),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                        spreadRadius: 0,
-                      ),
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.02),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
-                    child: Stack(
-                      children: [
-                        // Subtle gradient overlay
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                color.withOpacity(0.08),
-                                color.withOpacity(0.04),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                          ),
+                return GestureDetector(
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    _navigateToGuidedMeditationCategory(
+                      category['id'] as String,
+                      category['title'] as String,
+                      category['description'] as String,
+                      color,
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(28),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                          spreadRadius: 0,
                         ),
-
-                        // Content
-                        Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Icon with elegant styling
-                              Container(
-                                width: 56,
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      color.withOpacity(0.2),
-                                      color.withOpacity(0.1),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
-                                child: Icon(
-                                  icon,
-                                  size: 28,
-                                  color: color,
-                                ),
-                              ),
-
-                              const Spacer(),
-
-                              // Text content
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: -0.3,
-                                          height: 1.2,
-                                        ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: color.withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Text(
-                                      'Coming Soon',
-                                      style: TextStyle(
-                                        color: color,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    'Experience guided meditation with expert narration',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Colors.grey.withOpacity(0.8),
-                                          height: 1.4,
-                                          letterSpacing: 0.1,
-                                        ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.02),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                          spreadRadius: 0,
                         ),
                       ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(28),
+                      child: Stack(
+                        children: [
+                          // Subtle gradient overlay
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  color.withOpacity(0.08),
+                                  color.withOpacity(0.04),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                            ),
+                          ),
+
+                          // Content
+                          Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Icon with elegant styling
+                                Container(
+                                  width: 56,
+                                  height: 56,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        color.withOpacity(0.2),
+                                        color.withOpacity(0.1),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                  child: Icon(
+                                    category['icon'] as IconData,
+                                    size: 28,
+                                    color: color,
+                                  ),
+                                ),
+
+                                const Spacer(),
+
+                                // Text content
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      category['title'] as String,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            letterSpacing: -0.3,
+                                            height: 1.2,
+                                            fontSize: 18,
+                                          ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      category['description'] as String,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Colors.grey.withOpacity(0.8),
+                                            height: 1.4,
+                                            letterSpacing: 0.1,
+                                            fontSize: 12,
+                                          ),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -545,6 +575,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _navigateToGuidedMeditationCategory(
+      String categoryId, String title, String description, Color color) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GuidedMeditationCategoryScreen(
+          categoryId: categoryId,
+          categoryTitle: title,
+          categoryDescription: description,
+          categoryColor: color,
+        ),
       ),
     );
   }
