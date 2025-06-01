@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:windchime/screens/meditation/breathwork_info_screen.dart';
 
 class MeditationInstructionScreen extends StatefulWidget {
   final BreathingPattern breathingPattern;
@@ -70,6 +70,23 @@ class _MeditationInstructionScreenState
     );
   }
 
+  void _navigateToInfoScreen() {
+    HapticFeedback.lightImpact();
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            BreathworkInfoScreen(
+          breathingPattern: widget.breathingPattern,
+          meditation: widget.meditation,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        transitionDuration: const Duration(milliseconds: 600),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +111,7 @@ class _MeditationInstructionScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header with back button
+                  // Header with back button and info icon
                   Row(
                     children: [
                       GestureDetector(
@@ -111,6 +128,28 @@ class _MeditationInstructionScreenState
                           child: const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: _navigateToInfoScreen,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: widget.breathingPattern.primaryColor
+                                .withOpacity(0.2),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: widget.breathingPattern.primaryColor
+                                  .withOpacity(0.4),
+                              width: 1,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: widget.breathingPattern.primaryColor,
                             size: 24,
                           ),
                         ),
@@ -223,10 +262,23 @@ class _MeditationInstructionScreenState
                           const SizedBox(height: 16),
 
                           _buildInstructionCard(
-                            icon: Icons.volume_up_rounded,
-                            title: 'Using the App',
-                            description: _getAppUsageInstructions(),
-                            details: 'Let the gentle tones guide your rhythm',
+                            icon: Icons.visibility_rounded,
+                            title: 'Visual Guidance',
+                            description:
+                                'Start by watching the breathing circle expand and contract while listening to the gentle audio cues. This helps you learn the rhythm naturally',
+                            details:
+                                'The visual and audio work together to guide your perfect timing',
+                          ),
+
+                          const SizedBox(height: 16),
+
+                          _buildInstructionCard(
+                            icon: Icons.self_improvement_rounded,
+                            title: 'Mindful Transition',
+                            description:
+                                'Once you feel comfortable with the rhythm, set your phone aside and close your eyes. Let the audio cues become your meditation guide',
+                            details:
+                                'Trust the sounds to carry you deeper into peaceful breathing',
                           ),
 
                           const SizedBox(height: 16),
@@ -237,11 +289,6 @@ class _MeditationInstructionScreenState
                             description: _getMindfulnessInstructions(),
                             details: _getMindfulnessDetails(),
                           ),
-
-                          const SizedBox(height: 24),
-
-                          // Research & Sources section
-                          _buildResearchSection(),
 
                           const SizedBox(height: 24),
 
@@ -489,255 +536,6 @@ class _MeditationInstructionScreenState
     );
   }
 
-  Widget _buildResearchSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.science,
-                color: widget.breathingPattern.primaryColor,
-                size: 20,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Research & Sources',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          ..._buildResearchLinks(),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> _buildResearchLinks() {
-    final links = _getResearchLinks();
-    return links
-        .map((link) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: GestureDetector(
-                onTap: () => _launchURL(link['url']!),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color:
-                          widget.breathingPattern.primaryColor.withOpacity(0.3),
-                      width: 1,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.link,
-                        color: widget.breathingPattern.primaryColor,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              link['title']!,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: widget.breathingPattern.primaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            if (link['authors'] != null)
-                              Text(
-                                link['authors']!,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white.withOpacity(0.7),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      Icon(
-                        Icons.open_in_new,
-                        color: Colors.white.withOpacity(0.5),
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ))
-        .toList();
-  }
-
-  Future<void> _launchURL(String url) async {
-    try {
-      final Uri uri = Uri.parse(url);
-      await launchUrl(uri);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.open_in_new, color: Colors.white, size: 16),
-                const SizedBox(width: 8),
-                const Text('Opening research article...'),
-              ],
-            ),
-            backgroundColor: widget.breathingPattern.primaryColor,
-            duration: const Duration(seconds: 2),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        );
-      }
-    } catch (e) {
-      // Fallback to copying to clipboard on error
-      try {
-        await Clipboard.setData(ClipboardData(text: url));
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: [
-                  Icon(Icons.content_copy, color: Colors.white, size: 16),
-                  const SizedBox(width: 8),
-                  const Text(
-                      'Could not open browser. Link copied to clipboard.'),
-                ],
-              ),
-              backgroundColor: Colors.orange,
-              duration: const Duration(seconds: 3),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          );
-        }
-      } catch (clipboardError) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: $e'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    }
-  }
-
-  List<Map<String, String>> _getResearchLinks() {
-    switch (widget.meditation.title.toLowerCase()) {
-      case 'sleep mode':
-      case 'deep sleep':
-        return [
-          {
-            'title':
-                'Self-regulation of breathing as a primary treatment for anxiety',
-            'authors': 'Jerath, R., et al. (2015)',
-            'url':
-                'https://link.springer.com/article/10.1007/s10484-015-9279-8',
-          },
-          {
-            'title': 'How breath-control can change your life',
-            'authors': 'Zaccaro, A., et al. (2018)',
-            'url':
-                'https://www.frontiersin.org/articles/10.3389/fnhum.2018.00353/full',
-          },
-        ];
-      case 'focus mode':
-      case 'sharp focus':
-        return [
-          {
-            'title': 'Breath of life: the respiratory vagal stimulation model',
-            'authors': 'Gerritsen, R. J., & Band, G. P. (2018)',
-            'url':
-                'https://www.frontiersin.org/articles/10.3389/fnhum.2018.00397/full',
-          },
-          {
-            'title':
-                'Brief mindfulness meditation improves attention in novices',
-            'authors': 'Norris, C. J., et al. (2020)',
-            'url':
-                'https://www.frontiersin.org/articles/10.3389/fnhum.2020.00067/full',
-          },
-        ];
-      case 'anxiety mode':
-      case 'calm mind':
-        return [
-          {
-            'title':
-                'Brief structured respiration practices enhance mood and reduce physiological arousal',
-            'authors': 'Balban, M. Y., et al. (2023)',
-            'url': 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9860365/',
-          },
-          {
-            'title': 'Dr. Andrew Huberman\'s Breathing Protocols',
-            'authors': 'Stanford Neuroscience Research',
-            'url': 'https://hubermanlab.com/the-science-of-breathing/',
-          },
-        ];
-      case 'happiness mode':
-      case 'joy & energy':
-        return [
-          {
-            'title':
-                'The physiological effects of slow breathing in the healthy human',
-            'authors': 'Russo, M. A., et al. (2017)',
-            'url': 'https://breathe.ersjournals.com/content/13/4/298',
-          },
-          {
-            'title': 'How breath-control can change your life',
-            'authors': 'Zaccaro, A., et al. (2018)',
-            'url':
-                'https://www.frontiersin.org/articles/10.3389/fnhum.2018.00353/full',
-          },
-        ];
-      default:
-        return [
-          {
-            'title': 'Dr. Andrew Weil\'s 4-7-8 Breathing Exercise',
-            'authors': 'Dr. Andrew Weil, MD',
-            'url':
-                'https://www.drweil.com/health-wellness/body-mind-spirit/stress-anxiety/breathing-three-exercises/',
-          },
-          {
-            'title': 'Spontaneous Healing Research',
-            'authors': 'Weil, A. (2011)',
-            'url':
-                'https://www.drweil.com/health-wellness/body-mind-spirit/stress-anxiety/breathing-three-exercises/',
-          },
-        ];
-    }
-  }
-
   String _getTechniqueTitle() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
@@ -831,10 +629,6 @@ class _MeditationInstructionScreenState
       default:
         return 'Close your eyes or soften your gaze downward';
     }
-  }
-
-  String _getAppUsageInstructions() {
-    return 'The app will provide visual breathing cues and ambient sounds to guide your practice. Follow the expanding and contracting circle on screen';
   }
 
   String _getMindfulnessInstructions() {

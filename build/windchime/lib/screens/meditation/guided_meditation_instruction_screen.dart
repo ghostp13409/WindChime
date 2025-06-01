@@ -96,7 +96,7 @@ class _GuidedMeditationInstructionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -104,8 +104,8 @@ class _GuidedMeditationInstructionScreenState
             end: Alignment.bottomRight,
             colors: [
               widget.categoryColor.withOpacity(0.15),
-              Theme.of(context).colorScheme.background,
-              Theme.of(context).colorScheme.background,
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surface,
             ],
             stops: const [0.0, 0.3, 1.0],
           ),
@@ -822,7 +822,7 @@ class _GuidedMeditationInstructionScreenState
                 ),
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

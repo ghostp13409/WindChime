@@ -277,7 +277,7 @@ class _AboutScreenState extends State<AboutScreen>
         const SizedBox(height: 10),
 
         // QR Code Carousel
-        Container(
+        SizedBox(
           height: 240,
           child: PageView.builder(
             controller: _pageController,

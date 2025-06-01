@@ -15,7 +15,7 @@ class WelcomePopup extends StatelessWidget {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      color: Theme.of(context).colorScheme.background.withOpacity(0.95),
+      color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
       child: Center(
         child: Container(
           margin: const EdgeInsets.all(40),

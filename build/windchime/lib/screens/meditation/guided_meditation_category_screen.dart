@@ -905,7 +905,7 @@ class _GuidedMeditationCategoryScreenState
     final meditations = categoryMeditations[widget.categoryId] ?? [];
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,

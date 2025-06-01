@@ -128,9 +128,7 @@ class GuidedMeditationService extends ChangeNotifier {
 
     try {
       // Record session start time if this is a new session
-      if (_sessionStartTime == null) {
-        _sessionStartTime = DateTime.now();
-      }
+      _sessionStartTime ??= DateTime.now();
 
       await _audioPlayer.play();
     } catch (e) {

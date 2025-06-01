@@ -12,7 +12,7 @@ class GuidedMeditationProvider extends ChangeNotifier {
   List<GuidedMeditationCategory> _categories = [];
   List<GuidedMeditation> _allMeditations = [];
   List<GuidedMeditation> _filteredMeditations = [];
-  Map<String, List<GuidedMeditation>> _meditationsByCategory = {};
+  final Map<String, List<GuidedMeditation>> _meditationsByCategory = {};
 
   // UI state
   bool _isLoading = false;
