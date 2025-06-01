@@ -414,12 +414,16 @@ class _MeditationInstructionScreenState
   IconData _getMeditationIcon() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return Icons.nightlight_round;
       case 'focus mode':
+      case 'sharp focus':
         return Icons.psychology;
       case 'anxiety mode':
+      case 'calm mind':
         return Icons.healing;
       case 'happiness mode':
+      case 'joy & energy':
         return Icons.self_improvement;
       default:
         return Icons.self_improvement;
@@ -652,6 +656,7 @@ class _MeditationInstructionScreenState
   List<Map<String, String>> _getResearchLinks() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return [
           {
             'title':
@@ -668,6 +673,7 @@ class _MeditationInstructionScreenState
           },
         ];
       case 'focus mode':
+      case 'sharp focus':
         return [
           {
             'title': 'Breath of life: the respiratory vagal stimulation model',
@@ -684,6 +690,7 @@ class _MeditationInstructionScreenState
           },
         ];
       case 'anxiety mode':
+      case 'calm mind':
         return [
           {
             'title':
@@ -698,6 +705,7 @@ class _MeditationInstructionScreenState
           },
         ];
       case 'happiness mode':
+      case 'joy & energy':
         return [
           {
             'title':
@@ -733,12 +741,16 @@ class _MeditationInstructionScreenState
   String _getTechniqueTitle() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'Sleep Induction Breathing (4-6 Pattern)';
       case 'focus mode':
+      case 'sharp focus':
         return 'Box Breathing (Navy SEAL Technique)';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Physiological Sigh (Stanford Research)';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Energizing Breath (Balanced Rhythm)';
       default:
         return '4-7-8 Breathing Technique';
@@ -748,12 +760,16 @@ class _MeditationInstructionScreenState
   String _getTechniqueDescription() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'This gentle breathing pattern with a longer exhale naturally activates your parasympathetic nervous system, signaling your body to enter a state of rest and relaxation. The 4-6 rhythm is specifically designed to be sustainable and calming.';
       case 'focus mode':
+      case 'sharp focus':
         return 'Used by Navy SEALs and elite performers, box breathing creates rhythmic neural entrainment that enhances cognitive performance. The equal intervals help regulate your nervous system and improve decision-making under pressure.';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Based on Stanford neuroscience research, this technique uses a 2:1 exhale-to-inhale ratio to maximally activate the parasympathetic nervous system. It\'s the most effective breathing pattern for rapid anxiety reduction.';
       case 'happiness mode':
+      case 'joy & energy':
         return 'This balanced 1:1 breathing pattern promotes optimal autonomic nervous system balance, maintaining alertness while preventing stress activation. It\'s designed to boost energy and positive mood states naturally.';
       default:
         return 'Dr. Andrew Weil\'s renowned technique combines ancient pranayama wisdom with modern science. The extended exhale activates your body\'s natural relaxation response.';
@@ -763,12 +779,16 @@ class _MeditationInstructionScreenState
   String _getScientificBasis() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'Research shows that exhale-focused breathing patterns increase heart rate variability and activate the vagus nerve, promoting deeper, more restorative sleep.';
       case 'focus mode':
+      case 'sharp focus':
         return 'Studies demonstrate that rhythmic breathing improves cognitive control, working memory, and sustained attention by optimizing brainwave patterns.';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Neuroscience research confirms that double-length exhales trigger the fastest parasympathetic response, reducing cortisol and activating calming neurotransmitters.';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Balanced breathing ratios optimize oxygen-carbon dioxide exchange and promote balanced autonomic function associated with positive emotional states.';
       default:
         return 'Clinical studies show this pattern effectively reduces anxiety, lowers blood pressure, and improves overall stress resilience.';
@@ -778,12 +798,16 @@ class _MeditationInstructionScreenState
   String _getPositionInstructions() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'Lie down comfortably in bed or recline in a chair';
       case 'focus mode':
+      case 'sharp focus':
         return 'Sit upright with spine straight, feet flat on floor';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Find any comfortable position where you feel safe and supported';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Sit comfortably with an open, upright posture';
       default:
         return 'Sit comfortably with your back straight or lie down';
@@ -793,12 +817,16 @@ class _MeditationInstructionScreenState
   String _getPositionDetails() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'Allow your body to fully relax into the surface beneath you';
       case 'focus mode':
+      case 'sharp focus':
         return 'Maintain alertness while staying relaxed and centered';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Close your eyes or soften your gaze to feel more secure';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Keep your chest open and shoulders relaxed';
       default:
         return 'Close your eyes or soften your gaze downward';
@@ -812,12 +840,16 @@ class _MeditationInstructionScreenState
   String _getMindfulnessInstructions() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'Let go of the day\'s thoughts and focus only on your breath';
       case 'focus mode':
+      case 'sharp focus':
         return 'Maintain sharp attention on the breathing rhythm and counting';
       case 'anxiety mode':
+      case 'calm mind':
         return 'If anxious thoughts arise, gently return to the exhale phase';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Notice the energizing effects of each balanced breath cycle';
       default:
         return 'If your mind wanders, gently return to your breath';
@@ -827,12 +859,16 @@ class _MeditationInstructionScreenState
   String _getMindfulnessDetails() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'There\'s no need to be perfect - just let yourself drift';
       case 'focus mode':
+      case 'sharp focus':
         return 'Precision in timing helps train concentration skills';
       case 'anxiety mode':
+      case 'calm mind':
         return 'Each breath is bringing you back to safety and calm';
       case 'happiness mode':
+      case 'joy & energy':
         return 'Feel the natural uplift that comes with mindful breathing';
       default:
         return 'There\'s no perfect way - just be present';
@@ -851,12 +887,16 @@ class _MeditationInstructionScreenState
   String _getBenefitsText() {
     switch (widget.meditation.title.toLowerCase()) {
       case 'sleep mode':
+      case 'deep sleep':
         return 'This session will help slow your heart rate, relax your muscles, and prepare your mind for restful sleep. You may feel a gentle drowsiness settling in as your nervous system shifts into rest mode.';
       case 'focus mode':
+      case 'sharp focus':
         return 'This practice will enhance your concentration, improve mental clarity, and help you feel more centered and alert for tasks ahead. You may notice improved ability to maintain attention.';
       case 'anxiety mode':
+      case 'calm mind':
         return 'This breathing technique activates your parasympathetic nervous system, reducing stress hormones and creating a sense of calm and safety. Relief often comes within just a few breath cycles.';
       case 'happiness mode':
+      case 'joy & energy':
         return 'This energizing breath work will boost oxygen flow, release endorphins, and help elevate your mood and overall sense of well-being. You may feel naturally more positive and energized.';
       default:
         return 'This meditation will help you feel more relaxed, centered, and present in the moment. Regular practice builds long-term stress resilience.';

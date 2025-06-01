@@ -373,8 +373,7 @@ class _OptimizedMeditationSessionScreenState
     final session = SessionHistory(
       date: DateTime.now(),
       duration: _seconds ~/ 10,
-      meditationType:
-          widget.meditation.title.toLowerCase().replaceAll(' mode', ''),
+      meditationType: _getMeditationTypeForHistory(),
     );
     await _meditationRepository.addSession(session);
 
@@ -922,6 +921,22 @@ class _OptimizedMeditationSessionScreenState
     }
   }
 
+  String _getMeditationTypeForHistory() {
+    // Map the display titles to the expected meditation type keys for session history
+    switch (widget.meditation.title.toLowerCase()) {
+      case 'deep sleep':
+        return 'sleep';
+      case 'sharp focus':
+        return 'focus';
+      case 'calm mind':
+        return 'anxiety';
+      case 'joy & energy':
+        return 'happiness';
+      default:
+        return 'meditation'; // fallback for any unmapped titles
+    }
+  }
+
   void _showExitDialog() {
     showDialog(
       context: context,
@@ -964,9 +979,7 @@ class _OptimizedMeditationSessionScreenState
                   final session = SessionHistory(
                     date: DateTime.now(),
                     duration: _seconds ~/ 10,
-                    meditationType: widget.meditation.title
-                        .toLowerCase()
-                        .replaceAll(' mode', ''),
+                    meditationType: _getMeditationTypeForHistory(),
                   );
                   await _meditationRepository.addSession(session);
                   widget.onClose();

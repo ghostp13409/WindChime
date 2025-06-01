@@ -1,3 +1,35 @@
+class ResearchLink {
+  final String title;
+  final String url;
+  final String? authors;
+  final String? description;
+
+  const ResearchLink({
+    required this.title,
+    required this.url,
+    this.authors,
+    this.description,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'url': url,
+      'authors': authors,
+      'description': description,
+    };
+  }
+
+  factory ResearchLink.fromMap(Map<String, dynamic> map) {
+    return ResearchLink(
+      title: map['title'] ?? '',
+      url: map['url'] ?? '',
+      authors: map['authors'],
+      description: map['description'],
+    );
+  }
+}
+
 class GuidedMeditation {
   final String id;
   final String title;
@@ -11,6 +43,11 @@ class GuidedMeditation {
   final bool isPopular;
   final double rating;
   final int playCount;
+  final String? detailedDescription;
+  final String? whatToExpect;
+  final List<ResearchLink> researchLinks;
+  final String? instructorBio;
+  final String? attribution;
 
   const GuidedMeditation({
     required this.id,
@@ -25,6 +62,11 @@ class GuidedMeditation {
     this.isPopular = false,
     this.rating = 0.0,
     this.playCount = 0,
+    this.detailedDescription,
+    this.whatToExpect,
+    this.researchLinks = const [],
+    this.instructorBio,
+    this.attribution,
   });
 
   // Helper methods
@@ -58,6 +100,11 @@ class GuidedMeditation {
       'isPopular': isPopular ? 1 : 0,
       'rating': rating,
       'playCount': playCount,
+      'detailedDescription': detailedDescription,
+      'whatToExpect': whatToExpect,
+      'researchLinks': researchLinks.map((link) => link.toMap()).toList(),
+      'instructorBio': instructorBio,
+      'attribution': attribution,
     };
   }
 
@@ -75,6 +122,15 @@ class GuidedMeditation {
       isPopular: map['isPopular'] == 1,
       rating: map['rating']?.toDouble() ?? 0.0,
       playCount: map['playCount'] ?? 0,
+      detailedDescription: map['detailedDescription'],
+      whatToExpect: map['whatToExpect'],
+      researchLinks: map['researchLinks'] != null
+          ? (map['researchLinks'] as List)
+              .map((link) => ResearchLink.fromMap(link))
+              .toList()
+          : [],
+      instructorBio: map['instructorBio'],
+      attribution: map['attribution'],
     );
   }
 
@@ -92,6 +148,11 @@ class GuidedMeditation {
     bool? isPopular,
     double? rating,
     int? playCount,
+    String? detailedDescription,
+    String? whatToExpect,
+    List<ResearchLink>? researchLinks,
+    String? instructorBio,
+    String? attribution,
   }) {
     return GuidedMeditation(
       id: id ?? this.id,
@@ -106,6 +167,11 @@ class GuidedMeditation {
       isPopular: isPopular ?? this.isPopular,
       rating: rating ?? this.rating,
       playCount: playCount ?? this.playCount,
+      detailedDescription: detailedDescription ?? this.detailedDescription,
+      whatToExpect: whatToExpect ?? this.whatToExpect,
+      researchLinks: researchLinks ?? this.researchLinks,
+      instructorBio: instructorBio ?? this.instructorBio,
+      attribution: attribution ?? this.attribution,
     );
   }
 

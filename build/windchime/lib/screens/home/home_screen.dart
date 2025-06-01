@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
-import 'package:windchime/screens/meditation/session_history_screen.dart';
+import 'package:windchime/screens/meditation/breathwork_history_screen.dart';
+import 'package:windchime/screens/meditation/guided_meditation_history_screen.dart';
 import 'package:windchime/screens/meditation/guided_meditation_category_screen.dart';
-import 'package:windchime/widgets/shared/quote_of_day.dart';
 import 'package:windchime/services/utils/sound_utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,9 +19,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _currentPage = 0;
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
-  late AnimationController _quoteController;
-  late Animation<double> _quoteOpacity;
-  bool _showQuote = true;
+  bool _showWelcome = false;
 
   // Meditation data
   static const Map<String, BreathingPattern> breathingPatterns = {
@@ -78,28 +76,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       CurvedAnimation(parent: _fadeController, curve: Curves.easeInOut),
     );
 
-    // Quote animation controller
-    _quoteController = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-    _quoteOpacity = Tween<double>(begin: 1.0, end: 0.0).animate(
-      CurvedAnimation(parent: _quoteController, curve: Curves.easeInOut),
-    );
-
     // Play welcome chime sound when the home screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       playSound('sounds/startup/completetask.mp3');
       _fadeController.forward();
-
-      // Show quote for 4 seconds, then fade it away
-      Future.delayed(const Duration(seconds: 4), () {
-        _quoteController.forward().then((_) {
-          setState(() {
-            _showQuote = false;
-          });
-        });
-      });
     });
   }
 
@@ -107,7 +87,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void dispose() {
     _pageController.dispose();
     _fadeController.dispose();
-    _quoteController.dispose();
     super.dispose();
   }
 
@@ -225,19 +204,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildSectionTabs() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).dividerColor.withOpacity(0.2),
+          color: Theme.of(context).dividerColor.withOpacity(0.1),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
           ),
         ],
       ),
@@ -246,6 +227,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 _pageController.animateToPage(
                   0,
                   duration: const Duration(milliseconds: 300),
@@ -253,39 +235,62 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 );
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                duration: const Duration(milliseconds: 300),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 decoration: BoxDecoration(
                   color: _currentPage == 0
-                      ? Theme.of(context).primaryColor
+                      ? Theme.of(context).colorScheme.surface
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: _currentPage == 0
+                      ? Border.all(
+                          color:
+                              Theme.of(context).dividerColor.withOpacity(0.2),
+                          width: 1,
+                        )
+                      : null,
+                  boxShadow: _currentPage == 0
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ]
+                      : null,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.air,
-                      size: 20,
+                      size: 18,
                       color: _currentPage == 0
-                          ? Colors.white
-                          : Theme.of(context).iconTheme.color?.withOpacity(0.6),
+                          ? Theme.of(context).textTheme.bodyLarge?.color
+                          : Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.color
+                              ?.withOpacity(0.6),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Breathwork',
                       style: TextStyle(
                         color: _currentPage == 0
-                            ? Colors.white
+                            ? Theme.of(context).textTheme.bodyLarge?.color
                             : Theme.of(context)
                                 .textTheme
-                                .bodyMedium
+                                .bodyLarge
                                 ?.color
                                 ?.withOpacity(0.6),
                         fontWeight: _currentPage == 0
                             ? FontWeight.w600
                             : FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: 15,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ],
@@ -296,6 +301,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Expanded(
             child: GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 _pageController.animateToPage(
                   1,
                   duration: const Duration(milliseconds: 300),
@@ -303,39 +309,62 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 );
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                duration: const Duration(milliseconds: 300),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 decoration: BoxDecoration(
                   color: _currentPage == 1
-                      ? Theme.of(context).primaryColor
+                      ? Theme.of(context).colorScheme.surface
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
+                  border: _currentPage == 1
+                      ? Border.all(
+                          color:
+                              Theme.of(context).dividerColor.withOpacity(0.2),
+                          width: 1,
+                        )
+                      : null,
+                  boxShadow: _currentPage == 1
+                      ? [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ]
+                      : null,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.headset,
-                      size: 20,
+                      size: 18,
                       color: _currentPage == 1
-                          ? Colors.white
-                          : Theme.of(context).iconTheme.color?.withOpacity(0.6),
+                          ? Theme.of(context).textTheme.bodyLarge?.color
+                          : Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.color
+                              ?.withOpacity(0.6),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       'Guided',
                       style: TextStyle(
                         color: _currentPage == 1
-                            ? Colors.white
+                            ? Theme.of(context).textTheme.bodyLarge?.color
                             : Theme.of(context)
                                 .textTheme
-                                .bodyMedium
+                                .bodyLarge
                                 ?.color
                                 ?.withOpacity(0.6),
                         fontWeight: _currentPage == 1
                             ? FontWeight.w600
                             : FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: 15,
+                        letterSpacing: 0.3,
                       ),
                     ),
                   ],
@@ -406,19 +435,67 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Elegant header matching breathwork style
+          // Elegant header with history button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Guided Meditations',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: -0.5,
-                        fontSize: 32,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Guided Meditations',
+                        style:
+                            Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                  fontWeight: FontWeight.w300,
+                                  letterSpacing: -0.5,
+                                  fontSize: 32,
+                                ),
                       ),
+                    ),
+                    // History button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color:
+                              Theme.of(context).dividerColor.withOpacity(0.2),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const GuidedMeditationHistoryScreen(),
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.history,
+                          color: Theme.of(context)
+                              .iconTheme
+                              .color
+                              ?.withOpacity(0.8),
+                        ),
+                        iconSize: 22,
+                        padding: const EdgeInsets.all(12),
+                        tooltip: 'Guided Meditation History',
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -536,17 +613,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       category['title'] as String,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleLarge
+                                          .titleMedium
                                           ?.copyWith(
                                             fontWeight: FontWeight.w600,
-                                            letterSpacing: -0.3,
-                                            height: 1.2,
-                                            fontSize: 18,
+                                            letterSpacing: -0.2,
+                                            height: 1.1,
+                                            fontSize: 16,
                                           ),
-                                      maxLines: 2,
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 10),
+                                    const SizedBox(height: 8),
                                     Text(
                                       category['description'] as String,
                                       style: Theme.of(context)
@@ -554,9 +631,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           .bodySmall
                                           ?.copyWith(
                                             color: Colors.grey.withOpacity(0.8),
-                                            height: 1.4,
-                                            letterSpacing: 0.1,
-                                            fontSize: 12,
+                                            height: 1.3,
+                                            letterSpacing: 0.0,
+                                            fontSize: 11,
                                           ),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
@@ -644,7 +721,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const SessionHistoryScreen(),
+                                  const BreathworkHistoryScreen(),
                             ),
                           );
                         },
@@ -774,26 +851,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       _getDisplayTitle(key),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleLarge
+                                          .titleMedium
                                           ?.copyWith(
                                             fontWeight: FontWeight.w600,
-                                            letterSpacing: -0.3,
-                                            height: 1.2,
+                                            letterSpacing: -0.2,
+                                            height: 1.1,
+                                            fontSize: 16,
                                           ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     Text(
                                       pattern.name,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium
+                                          .bodySmall
                                           ?.copyWith(
                                             color: pattern.primaryColor,
                                             fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.1,
+                                            letterSpacing: 0.0,
+                                            fontSize: 12,
                                           ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 6),
+                                    const SizedBox(height: 4),
                                     Text(
                                       _getShortDescription(key),
                                       style: Theme.of(context)
@@ -801,8 +884,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           .bodySmall
                                           ?.copyWith(
                                             color: Colors.grey.withOpacity(0.8),
-                                            height: 1.4,
-                                            letterSpacing: 0.1,
+                                            height: 1.3,
+                                            letterSpacing: 0.0,
+                                            fontSize: 11,
                                           ),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -843,13 +927,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String _getShortDescription(String key) {
     switch (key) {
       case 'sleep':
-        return 'Gentle breathing to prepare for restful sleep';
+        return '4:6 exhale-focused pattern activates sleep response';
       case 'focus':
-        return 'Structured technique for enhanced concentration';
+        return 'Box breathing (4-4-4-4) used by Navy SEALs';
       case 'anxiety':
-        return 'Research-backed method for instant calm';
+        return 'Stanford 2:1 exhale ratio for rapid anxiety relief';
       case 'happiness':
-        return 'Energizing breath for positive mood';
+        return 'Balanced 3:3 pattern for positive energy & mood';
       default:
         return 'Guided breathing exercise';
     }
@@ -908,42 +992,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
               ),
             ),
-
-            // Quote overlay (appears at start, then fades away)
-            if (_showQuote)
-              FadeTransition(
-                opacity: _quoteOpacity,
-                child: Container(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .background
-                      .withOpacity(0.95),
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.all(40),
-                      padding: const EdgeInsets.all(32),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(
-                          color:
-                              Theme.of(context).dividerColor.withOpacity(0.2),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 20,
-                            offset: const Offset(0, 10),
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: const QuoteOfDay(),
-                    ),
-                  ),
-                ),
-              ),
           ],
         ),
       ),

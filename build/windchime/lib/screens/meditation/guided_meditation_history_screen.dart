@@ -4,14 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:windchime/data/repositories/meditation_repository.dart';
 import 'package:windchime/models/meditation/session_history.dart';
 
-class SessionHistoryScreen extends StatefulWidget {
-  const SessionHistoryScreen({super.key});
+class GuidedMeditationHistoryScreen extends StatefulWidget {
+  const GuidedMeditationHistoryScreen({super.key});
 
   @override
-  _SessionHistoryScreenState createState() => _SessionHistoryScreenState();
+  _GuidedMeditationHistoryScreenState createState() =>
+      _GuidedMeditationHistoryScreenState();
 }
 
-class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
+class _GuidedMeditationHistoryScreenState
+    extends State<GuidedMeditationHistoryScreen> {
   final _meditationRepository = MeditationRepository();
   List<SessionHistory> _sessions = [];
   int _totalSessions = 0;
@@ -29,13 +31,11 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
       _isLoading = true;
     });
 
-    final sessions = await _meditationRepository.getAllSessions();
-    final totalSessions = await _meditationRepository.getTotalSessionsCount();
+    final sessions = await _meditationRepository.getGuidedMeditationSessions();
+    final totalSessions =
+        await _meditationRepository.getGuidedMeditationSessionsCount();
     final totalMinutes =
-        await _meditationRepository.getTotalMeditationMinutes();
-
-    // Sort sessions by date (latest first)
-    sessions.sort((a, b) => b.date.compareTo(a.date));
+        await _meditationRepository.getGuidedMeditationTotalMinutes();
 
     setState(() {
       _sessions = sessions;
@@ -64,7 +64,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                 ),
           ),
           content: Text(
-            'Are you sure you want to delete this meditation session?',
+            'Are you sure you want to delete this guided meditation session?',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey.withOpacity(0.8),
                 ),
@@ -100,7 +100,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
     }
   }
 
-  // Get meditation type info (icon and color)
+  // Get meditation type info (icon and color) for guided meditations only
   Map<String, dynamic> _getMeditationTypeInfo(String? meditationType) {
     final typeKey = meditationType?.toLowerCase() ?? '';
 
@@ -112,36 +112,65 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
       // Map guided meditation categories
       switch (guidedType) {
         case 'breathing_practices':
+        case 'three_minute_breathing':
+        case 'five_minute_breathing':
+        case 'six_minute_breath_awareness':
+        case 'ten_minute_breathing':
+        case 'ten_minute_mindfulness_of_breathing':
           return {
             'icon': Icons.air,
             'color': const Color(0xFF7B65E4),
             'name': 'Guided Breathing'
           };
         case 'brief_mindfulness':
+        case 'brief_mindfulness_practice':
+        case 'the_breathing_space':
+        case 'the_tension_release_meditation':
+        case 'three_step_breathing_space':
+        case 'three_minute_mindfulness_of_sounds':
           return {
             'icon': Icons.self_improvement,
             'color': const Color(0xFFF6815B),
             'name': 'Brief Mindfulness'
           };
         case 'body_scan':
+        case 'four_minute_body_scan':
+        case 'fifteen_minute_body_scan':
+        case 'twenty_minute_body_scan':
+        case 'forty-five_minute_body_scan':
           return {
             'icon': Icons.accessibility_new,
             'color': const Color(0xFFFA6E5A),
             'name': 'Body Scan'
           };
         case 'sitting_meditations':
+        case 'seated_meditation':
+        case 'sitting_meditation':
+        case 'breath,_sound_and_body':
+        case 'breath,_sounds,_body,_thoughts,_emotions':
+        case 'ten_minute_wisdom_meditation':
+        case 'compassionate_breath':
           return {
             'icon': Icons.event_seat,
             'color': const Color(0xFFFFCF86),
             'name': 'Sitting Meditation'
           };
         case 'guided_imagery':
+        case 'mountain_meditation':
           return {
             'icon': Icons.landscape,
             'color': const Color(0xFF4CAF50),
             'name': 'Guided Imagery'
           };
         case 'self_guided':
+        case 'five_minutes_just_bells':
+        case 'ten_minutes_just_bells':
+        case 'twenty_minutes_just_bells':
+        case 'twenty_minute_bells_(5_min_intervals)':
+        case 'twenty-five_minute_bells_(5_min_intervals)':
+        case 'thirty_minute_bells_(5_min_intervals)':
+        case 'forty-five_minute_bells_(15_min_intervals)':
+        case 'forty-five_minute_bells_(5_min_intervals)':
           return {
             'icon': Icons.notifications_none,
             'color': const Color(0xFF9C27B0),
@@ -156,45 +185,11 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
       }
     }
 
-    // Handle breathwork meditation types
-    switch (typeKey) {
-      case 'demo':
-        return {
-          'icon': Icons.play_circle_outline,
-          'color': const Color(0xFF00C896),
-          'name': 'Demo'
-        };
-      case 'sleep':
-        return {
-          'icon': Icons.nightlight_round,
-          'color': const Color(0xFF7B65E4),
-          'name': 'Deep Sleep'
-        };
-      case 'focus':
-        return {
-          'icon': Icons.psychology,
-          'color': const Color(0xFFF6815B),
-          'name': 'Sharp Focus'
-        };
-      case 'anxiety':
-        return {
-          'icon': Icons.healing,
-          'color': const Color(0xFFFA6E5A),
-          'name': 'Calm Mind'
-        };
-      case 'happiness':
-        return {
-          'icon': Icons.wb_sunny,
-          'color': const Color(0xFFFFCF86),
-          'name': 'Joy & Energy'
-        };
-      default:
-        return {
-          'icon': Icons.air,
-          'color': Theme.of(context).primaryColor,
-          'name': 'Meditation'
-        };
-    }
+    return {
+      'icon': Icons.headset,
+      'color': const Color(0xFF8E97FD),
+      'name': 'Guided Meditation'
+    };
   }
 
   String _formatDuration(int seconds) {
@@ -264,14 +259,14 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Session History',
+                  'Guided Meditation History',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.5,
                       ),
                 ),
                 Text(
-                  'Track your meditation journey',
+                  'Your guided meditation journey',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.grey.withOpacity(0.8),
                         letterSpacing: 0.2,
@@ -329,7 +324,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Icon(
-                      Icons.self_improvement,
+                      Icons.headset,
                       size: 24,
                       color: Theme.of(context).primaryColor,
                     ),
@@ -344,7 +339,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Total Sessions',
+                    'Guided Sessions',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Colors.grey.withOpacity(0.8),
                           fontWeight: FontWeight.w500,
@@ -596,14 +591,14 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
-                Icons.self_improvement,
+                Icons.headset,
                 size: 40,
                 color: Theme.of(context).primaryColor.withOpacity(0.7),
               ),
             ),
             const SizedBox(height: 24),
             Text(
-              'No Sessions Yet',
+              'No Guided Sessions Yet',
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).primaryColor,
@@ -611,7 +606,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Start your first meditation session to\nsee your progress here',
+              'Start your first guided meditation\nto see your progress here',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.grey.withOpacity(0.7),

@@ -45,8 +45,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
   // Session state - using ValueNotifiers for reactive UI updates
   final ValueNotifier<int> _secondsNotifier = ValueNotifier(0);
   final ValueNotifier<int> _cycleNotifier = ValueNotifier(0);
-  final ValueNotifier<BreathingState> _breathStateNotifier = ValueNotifier(BreathingState.breatheIn);
-  final ValueNotifier<String> _instructionNotifier = ValueNotifier('Breathe In');
+  final ValueNotifier<BreathingState> _breathStateNotifier =
+      ValueNotifier(BreathingState.breatheIn);
+  final ValueNotifier<String> _instructionNotifier =
+      ValueNotifier('Breathe In');
   final ValueNotifier<double> _progressNotifier = ValueNotifier(0.0);
 
   // Session variables
@@ -81,11 +83,11 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
     _breathingController = AnimationController(
       vsync: this,
       duration: Duration(
-        milliseconds: (widget.breathingPattern.breatheInDuration +
-                     widget.breathingPattern.holdInDuration +
-                     widget.breathingPattern.breatheOutDuration +
-                     widget.breathingPattern.holdOutDuration) * 1000
-      ),
+          milliseconds: (widget.breathingPattern.breatheInDuration +
+                  widget.breathingPattern.holdInDuration +
+                  widget.breathingPattern.breatheOutDuration +
+                  widget.breathingPattern.holdOutDuration) *
+              1000),
     );
 
     _breathingAnimation = CurvedAnimation(
@@ -149,7 +151,9 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
       }
 
       // Add gentle floating movement based on animation value
-      particle.x += (math.sin(_particleController.value * 2 * math.pi + particle.y * 4) * 0.0001);
+      particle.x +=
+          (math.sin(_particleController.value * 2 * math.pi + particle.y * 4) *
+              0.0001);
     }
 
     // Notify only once per frame, allowing Flutter to optimize the rendering
@@ -172,7 +176,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
   Future<void> _setupAudio() async {
     _audioPlayer = AudioPlayer();
     try {
-      await _audioPlayer.setAsset('assets/${widget.breathingPattern.audioPath}');
+      await _audioPlayer
+          .setAsset('assets/${widget.breathingPattern.audioPath}');
       await _audioPlayer.setLoopMode(LoopMode.one);
       await _audioPlayer.setVolume(0.6);
       await _audioPlayer.play();
@@ -195,7 +200,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
   }
 
   void _updateSessionProgress() {
-    int totalDurationInSeconds = int.parse(widget.meditation.duration.split(' ')[0]) * 60;
+    int totalDurationInSeconds =
+        int.parse(widget.meditation.duration.split(' ')[0]) * 60;
     _sessionProgress = (_seconds / 10) / totalDurationInSeconds;
     _progressNotifier.value = _sessionProgress;
     if (_sessionProgress <= 1.0) {
@@ -205,9 +211,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
 
   void _updateBreathingState() {
     final totalCycleDuration = (widget.breathingPattern.breatheInDuration +
-        widget.breathingPattern.holdInDuration +
-        widget.breathingPattern.breatheOutDuration +
-        widget.breathingPattern.holdOutDuration) * 10; // Convert to 100ms ticks
+            widget.breathingPattern.holdInDuration +
+            widget.breathingPattern.breatheOutDuration +
+            widget.breathingPattern.holdOutDuration) *
+        10; // Convert to 100ms ticks
 
     final cyclePosition = _seconds % totalCycleDuration;
     final newCycle = _seconds ~/ totalCycleDuration;
@@ -223,13 +230,17 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
     if (cyclePosition < widget.breathingPattern.breatheInDuration * 10) {
       newState = BreathingState.breatheIn;
       newInstruction = 'Breathe In';
-    } else if (cyclePosition < (widget.breathingPattern.breatheInDuration +
-                              widget.breathingPattern.holdInDuration) * 10) {
+    } else if (cyclePosition <
+        (widget.breathingPattern.breatheInDuration +
+                widget.breathingPattern.holdInDuration) *
+            10) {
       newState = BreathingState.holdIn;
       newInstruction = 'Hold';
-    } else if (cyclePosition < (widget.breathingPattern.breatheInDuration +
-                              widget.breathingPattern.holdInDuration +
-                              widget.breathingPattern.breatheOutDuration) * 10) {
+    } else if (cyclePosition <
+        (widget.breathingPattern.breatheInDuration +
+                widget.breathingPattern.holdInDuration +
+                widget.breathingPattern.breatheOutDuration) *
+            10) {
       newState = BreathingState.breatheOut;
       newInstruction = 'Breathe Out';
     } else {
@@ -248,8 +259,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
   }
 
   void _checkMeditationCompletion() {
-    int durationInSeconds = int.parse(widget.meditation.duration.split(' ')[0]) * 60;
-    if (_seconds >= durationInSeconds * 10) { // Convert to 100ms ticks
+    int durationInSeconds =
+        int.parse(widget.meditation.duration.split(' ')[0]) * 60;
+    if (_seconds >= durationInSeconds * 10) {
+      // Convert to 100ms ticks
       _completeMeditation();
     }
   }
@@ -261,6 +274,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
     final session = SessionHistory(
       date: DateTime.now(),
       duration: _seconds ~/ 10, // Convert back to seconds
+      meditationType: _getMeditationTypeForHistory(),
     );
     await _meditationRepository.addSession(session);
 
@@ -316,7 +330,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
     );
   }
 
-  Widget _buildEmotionButton(String emoji, String label, VoidCallback onPressed) {
+  Widget _buildEmotionButton(
+      String emoji, String label, VoidCallback onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -330,7 +345,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
           children: [
             Text(emoji, style: const TextStyle(fontSize: 24)),
             const SizedBox(height: 4),
-            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+            Text(label,
+                style: const TextStyle(color: Colors.white70, fontSize: 12)),
           ],
         ),
       ),
@@ -350,23 +366,27 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
 
   double _getBreathingProgress() {
     final totalCycleDuration = (widget.breathingPattern.breatheInDuration +
-        widget.breathingPattern.holdInDuration +
-        widget.breathingPattern.breatheOutDuration +
-        widget.breathingPattern.holdOutDuration) * 10;
+            widget.breathingPattern.holdInDuration +
+            widget.breathingPattern.breatheOutDuration +
+            widget.breathingPattern.holdOutDuration) *
+        10;
 
     final cyclePosition = _seconds % totalCycleDuration;
 
     switch (_currentBreathState) {
       case BreathingState.breatheIn:
-        final progress = cyclePosition / (widget.breathingPattern.breatheInDuration * 10);
+        final progress =
+            cyclePosition / (widget.breathingPattern.breatheInDuration * 10);
         return progress.clamp(0.0, 1.0);
       case BreathingState.holdIn:
         return 1.0;
       case BreathingState.breatheOut:
-        final breathInHoldDuration = (widget.breathingPattern.breatheInDuration +
-                                     widget.breathingPattern.holdInDuration) * 10;
+        final breathInHoldDuration =
+            (widget.breathingPattern.breatheInDuration +
+                    widget.breathingPattern.holdInDuration) *
+                10;
         final progressInBreathOut = (cyclePosition - breathInHoldDuration) /
-                                   (widget.breathingPattern.breatheOutDuration * 10);
+            (widget.breathingPattern.breatheOutDuration * 10);
         return (1.0 - progressInBreathOut).clamp(0.0, 1.0);
       case BreathingState.holdOut:
         return 0.0;
@@ -432,7 +452,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
               builder: (context, _, child) {
                 return CustomPaint(
                   size: Size.infinite,
-                  painter: ParticlePainter(_particles, _getBreathingStateColor()),
+                  painter:
+                      ParticlePainter(_particles, _getBreathingStateColor()),
                 );
               },
             ),
@@ -443,7 +464,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
               builder: (context, child) {
                 return CustomPaint(
                   size: Size.infinite,
-                  painter: WavePainter(_waveAnimation.value, _getBreathingStateColor()),
+                  painter: WavePainter(
+                      _waveAnimation.value, _getBreathingStateColor()),
                 );
               },
             ),
@@ -465,7 +487,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
                               color: Colors.black26,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.close, color: Colors.white, size: 24),
+                            child: const Icon(Icons.close,
+                                color: Colors.white, size: 24),
                           ),
                         ),
                         // Session progress indicator
@@ -565,7 +588,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
 
                         // Main breathing visualization
                         AnimatedBuilder(
-                          animation: Listenable.merge([_breathingAnimation, _waveAnimation]),
+                          animation: Listenable.merge(
+                              [_breathingAnimation, _waveAnimation]),
                           builder: (context, child) {
                             double progress = _getBreathingProgress();
                             double size = 180 + (progress * 80);
@@ -582,7 +606,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       border: Border.all(
-                                        color: _getBreathingStateColor().withOpacity(0.1 / i),
+                                        color: _getBreathingStateColor()
+                                            .withOpacity(0.1 / i),
                                         width: 2,
                                       ),
                                     ),
@@ -598,15 +623,19 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
                                     shape: BoxShape.circle,
                                     gradient: RadialGradient(
                                       colors: [
-                                        _getBreathingStateColor().withOpacity(0.8),
-                                        _getBreathingStateColor().withOpacity(0.4),
-                                        _getBreathingStateColor().withOpacity(0.1),
+                                        _getBreathingStateColor()
+                                            .withOpacity(0.8),
+                                        _getBreathingStateColor()
+                                            .withOpacity(0.4),
+                                        _getBreathingStateColor()
+                                            .withOpacity(0.1),
                                       ],
                                       stops: const [0.0, 0.7, 1.0],
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: _getBreathingStateColor().withOpacity(0.4),
+                                        color: _getBreathingStateColor()
+                                            .withOpacity(0.4),
                                         blurRadius: 30,
                                         spreadRadius: 10,
                                       ),
@@ -639,7 +668,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
                                           'Cycle $cycle',
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color: Colors.white.withOpacity(0.8),
+                                            color:
+                                                Colors.white.withOpacity(0.8),
                                             letterSpacing: 1.0,
                                           ),
                                         );
@@ -702,6 +732,22 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
     }
   }
 
+  String _getMeditationTypeForHistory() {
+    // Map the display titles to the expected meditation type keys for session history
+    switch (widget.meditation.title.toLowerCase()) {
+      case 'deep sleep':
+        return 'sleep';
+      case 'sharp focus':
+        return 'focus';
+      case 'calm mind':
+        return 'anxiety';
+      case 'joy & energy':
+        return 'happiness';
+      default:
+        return 'meditation'; // fallback for any unmapped titles
+    }
+  }
+
   void _showExitDialog() {
     showDialog(
       context: context,
@@ -724,7 +770,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
             children: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Continue', style: TextStyle(color: Colors.white70)),
+                child: const Text('Continue',
+                    style: TextStyle(color: Colors.white70)),
               ),
               TextButton(
                 onPressed: () async {
@@ -735,11 +782,13 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
                   final session = SessionHistory(
                     date: DateTime.now(),
                     duration: _seconds ~/ 10,
+                    meditationType: _getMeditationTypeForHistory(),
                   );
                   await _meditationRepository.addSession(session);
                   widget.onClose();
                 },
-                child: const Text('End Session', style: TextStyle(color: Colors.redAccent)),
+                child: const Text('End Session',
+                    style: TextStyle(color: Colors.redAccent)),
               ),
             ],
           ),
@@ -812,7 +861,11 @@ class WavePainter extends CustomPainter {
       final y = size.height * 0.5 + (i * 60);
 
       for (double x = 0; x <= waveWidth; x += 5) {
-        final waveY = y + math.sin((x / waveWidth * 2 * math.pi) + (animationValue * 2 * math.pi) + (i * 0.5)) * waveHeight;
+        final waveY = y +
+            math.sin((x / waveWidth * 2 * math.pi) +
+                    (animationValue * 2 * math.pi) +
+                    (i * 0.5)) *
+                waveHeight;
         if (x == 0) {
           path.moveTo(x, waveY);
         } else {
@@ -820,7 +873,8 @@ class WavePainter extends CustomPainter {
         }
       }
 
-      canvas.drawPath(path, paint..color = color.withOpacity(0.05 + (i * 0.02)));
+      canvas.drawPath(
+          path, paint..color = color.withOpacity(0.05 + (i * 0.02)));
     }
   }
 
