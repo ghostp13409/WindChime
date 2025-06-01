@@ -751,48 +751,201 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen>
   void _showExitDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1C2031).withOpacity(0.95),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'End Session?',
-          style: TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-        content: const Text(
-          'Your progress will be saved',
-          style: TextStyle(color: Colors.white70),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Continue',
-                    style: TextStyle(color: Colors.white70)),
+      barrierColor: Colors.black.withOpacity(0.7),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.all(32),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(32),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 40,
+                offset: const Offset(0, 20),
+                spreadRadius: 0,
               ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  _timer.cancel();
-                  _audioPlayer.stop();
-
-                  final session = SessionHistory(
-                    date: DateTime.now(),
-                    duration: _seconds ~/ 10,
-                    meditationType: _getMeditationTypeForHistory(),
-                  );
-                  await _meditationRepository.addSession(session);
-                  widget.onClose();
-                },
-                child: const Text('End Session',
-                    style: TextStyle(color: Colors.redAccent)),
+              BoxShadow(
+                color: widget.breathingPattern.primaryColor.withOpacity(0.1),
+                blurRadius: 60,
+                offset: const Offset(0, 10),
+                spreadRadius: 0,
               ),
             ],
           ),
-        ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Modern pause icon with gradient background
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.orange.withOpacity(0.15),
+                      Colors.orange.withOpacity(0.08),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: Colors.orange.withOpacity(0.2),
+                    width: 1,
+                  ),
+                ),
+                child: Icon(
+                  Icons.pause_circle_filled,
+                  size: 40,
+                  color: Colors.orange.shade600,
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              // Title with improved typography
+              Text(
+                'Pause Your Session?',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.5,
+                      fontSize: 24,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 12),
+
+              // Enhanced description
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  'Your breathwork progress will be automatically saved.\nYou can resume anytime.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Colors.grey.withOpacity(0.7),
+                        fontWeight: FontWeight.w400,
+                        height: 1.5,
+                        fontSize: 16,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+
+              const SizedBox(height: 36),
+
+              // Modern button layout
+              Column(
+                children: [
+                  // Continue button (primary)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: widget.breathingPattern.primaryColor,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shadowColor: widget.breathingPattern.primaryColor
+                            .withOpacity(0.3),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.play_arrow_rounded,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Continue Session',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // End session button (secondary)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        _timer.cancel();
+                        _audioPlayer.stop();
+
+                        final session = SessionHistory(
+                          date: DateTime.now(),
+                          duration: _seconds ~/ 10,
+                          meditationType: _getMeditationTypeForHistory(),
+                        );
+                        await _meditationRepository.addSession(session);
+                        widget.onClose();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.grey.shade600,
+                        backgroundColor: Colors.grey.withOpacity(0.05),
+                        side: BorderSide(
+                          color: Colors.grey.withOpacity(0.3),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.stop_rounded,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'End Session',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 8),
+
+              // Subtle help text
+              Text(
+                'Your session will be saved to history',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey.withOpacity(0.5),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
