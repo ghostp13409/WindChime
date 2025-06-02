@@ -15,7 +15,7 @@ class DbHelper {
 
   Future<Database> _initDatabase() async {
     final path = join(await getDatabasesPath(),
-        'sunrise.db'); //Name of the database, change if you want another one
+        'windchime.db'); //Name of the database, change if you want another one
     return await openDatabase(
       path,
       version: 2,
@@ -26,49 +26,11 @@ class DbHelper {
 
   void _createDatabase(Database db, int version) {
     db.execute('''
-    CREATE TABLE journal_entries (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
-      dateCreated TEXT NOT NULL,
-      mood TEXT
-    )
-  ''');
-
-    db.execute('''
     CREATE TABLE meditation_sessions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       date TEXT NOT NULL,
       duration INTEGER NOT NULL,
       meditation_type TEXT
-    )
-  ''');
-
-    db.execute('''
-    CREATE TABLE todo_tasks (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      taskText TEXT NOT NULL,
-      isComplete INTEGER DEFAULT 0,
-      category TEXT
-    )
-  ''');
-
-    db.execute('''
-    CREATE TABLE habits (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      hasTimer INTEGER DEFAULT 0,
-      durationInMinutes INTEGER,
-      streak INTEGER DEFAULT 0,
-      frequency INTEGER NOT NULL,
-      isCompleted INTEGER DEFAULT 0,
-      createdAt TEXT NOT NULL,
-      lastCompletedAt TEXT,
-      reminderAheadMinutes INTEGER,
-      reminderTime TEXT,
-      color INTEGER NOT NULL,
-      timerStartTime TEXT,
-      isTimerRunning INTEGER DEFAULT 0
     )
   ''');
   }
