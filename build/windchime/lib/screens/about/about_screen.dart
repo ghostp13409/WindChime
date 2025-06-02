@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -38,19 +37,19 @@ class _AboutScreenState extends State<AboutScreen>
 
   final List<SocialLink> _socialLinks = [
     SocialLink(
-      icon: FontAwesomeIcons.github,
+      icon: Icons.code,
       label: 'GitHub',
       url: 'https://www.github.com/ghostp13409',
       color: const Color.fromARGB(255, 109, 111, 114),
     ),
     SocialLink(
-      icon: FontAwesomeIcons.linkedin,
+      icon: Icons.work,
       label: 'LinkedIn',
       url: 'https://www.linkedin.com/in/parth-gajjar09',
       color: const Color(0xFF0077B5),
     ),
     SocialLink(
-      icon: FontAwesomeIcons.instagram,
+      icon: Icons.photo_camera,
       label: 'Instagram',
       url:
           'https://www.instagram.com/p_13_4/profilecard/?igsh=MTBrbThrNHc1aWR3NA==',
@@ -734,7 +733,7 @@ class _AboutScreenState extends State<AboutScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FaIcon(
+            Icon(
               link.icon,
               size: 28,
               color: link.color,

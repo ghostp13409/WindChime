@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:windchime/models/quote/quote.dart';
-import 'package:windchime/services/quote_service.dart';
 
 class WelcomePopup extends StatelessWidget {
   final VoidCallback onEnterApp;
@@ -85,143 +83,61 @@ class WelcomePopup extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              // Quote Section
-              FutureBuilder<Quote>(
-                future: QuoteService.getQuoteOfTheDay(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Loading your daily inspiration...',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Colors.grey.withOpacity(0.7),
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  if (snapshot.hasError) {
-                    return Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: isDarkMode
-                            ? Colors.red.withOpacity(0.1)
-                            : Colors.red.withOpacity(0.05),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.red.withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                            size: 32,
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            'Unable to load today\'s quote',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'But your mindfulness journey can still begin!',
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey.withOpacity(0.7),
-                                    ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  final quote = snapshot.data!;
-                  return Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: isDarkMode
-                          ? const Color(0xFF8E97FD).withOpacity(0.1)
-                          : const Color(0xFF8E97FD).withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF8E97FD).withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
+              // Inspirational Quote Section (static)
+              Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: isDarkMode
+                      ? const Color(0xFF8E97FD).withOpacity(0.1)
+                      : const Color(0xFF8E97FD).withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: const Color(0xFF8E97FD).withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.format_quote,
-                              color: const Color(0xFF8E97FD),
-                              size: 24,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'Today\'s Inspiration',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
+                        Icon(
+                          Icons.format_quote,
+                          color: const Color(0xFF8E97FD),
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Today\'s Inspiration',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
                                     color: const Color(0xFF8E97FD),
                                     fontWeight: FontWeight.w600,
                                   ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          '"${quote.text}"',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontStyle: FontStyle.italic,
-                                    height: 1.5,
-                                    letterSpacing: 0.3,
-                                  ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          '— ${quote.author}',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.grey.withOpacity(0.8),
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 0.5,
-                                  ),
-                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
-                  );
-                },
+                    const SizedBox(height: 16),
+                    Text(
+                      '"Peace comes from within. Do not seek it without."',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            height: 1.5,
+                            letterSpacing: 0.3,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '— Buddha',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey.withOpacity(0.8),
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.5,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
 
               const SizedBox(height: 32),
