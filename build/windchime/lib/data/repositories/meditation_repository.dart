@@ -57,4 +57,68 @@ class MeditationRepository {
         await db.rawQuery('SELECT SUM(duration) as total FROM $tableName');
     return result.first['total'] as int? ?? 0;
   }
+
+  // Get sessions filtered by type (breathwork vs guided)
+  Future<List<SessionHistory>> getBreathworkSessions() async {
+    final Database db = await dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      tableName,
+      where: 'meditation_type NOT LIKE ? AND meditation_type NOT LIKE ?',
+      whereArgs: ['guided_%', '%_partial'],
+      orderBy: 'date DESC',
+    );
+    return List.generate(maps.length, (i) {
+      return SessionHistory.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<SessionHistory>> getGuidedMeditationSessions() async {
+    final Database db = await dbHelper.database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      tableName,
+      where: 'meditation_type LIKE ?',
+      whereArgs: ['guided_%'],
+      orderBy: 'date DESC',
+    );
+    return List.generate(maps.length, (i) {
+      return SessionHistory.fromMap(maps[i]);
+    });
+  }
+
+  // Get counts and totals for specific types
+  Future<int> getBreathworkSessionsCount() async {
+    final Database db = await dbHelper.database;
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $tableName WHERE meditation_type NOT LIKE ? AND meditation_type NOT LIKE ?',
+      ['guided_%', '%_partial'],
+    );
+    return result.first['count'] as int? ?? 0;
+  }
+
+  Future<int> getGuidedMeditationSessionsCount() async {
+    final Database db = await dbHelper.database;
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $tableName WHERE meditation_type LIKE ?',
+      ['guided_%'],
+    );
+    return result.first['count'] as int? ?? 0;
+  }
+
+  Future<int> getBreathworkTotalMinutes() async {
+    final Database db = await dbHelper.database;
+    final result = await db.rawQuery(
+      'SELECT SUM(duration) as total FROM $tableName WHERE meditation_type NOT LIKE ? AND meditation_type NOT LIKE ?',
+      ['guided_%', '%_partial'],
+    );
+    return result.first['total'] as int? ?? 0;
+  }
+
+  Future<int> getGuidedMeditationTotalMinutes() async {
+    final Database db = await dbHelper.database;
+    final result = await db.rawQuery(
+      'SELECT SUM(duration) as total FROM $tableName WHERE meditation_type LIKE ?',
+      ['guided_%'],
+    );
+    return result.first['total'] as int? ?? 0;
+  }
 }

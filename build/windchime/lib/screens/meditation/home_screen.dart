@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/models/meditation/meditation_category.dart';
-import 'package:windchime/screens/meditation/session_history_screen.dart';
+import 'package:windchime/screens/meditation/breathwork_history_screen.dart';
 
 class MeditationHomeScreen extends StatefulWidget {
   const MeditationHomeScreen({super.key});
@@ -69,7 +69,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Stanford-researched 2:1 exhale-to-inhale ratio',
-      primaryColor: Color(0xFFFA6E5A),
+      primaryColor: Color(0xFF4CAF50),
       audioPath: 'sounds/meditation/Anxiety.mp3',
     ),
     'happiness': BreathingPattern(
@@ -93,7 +93,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
         meditations: [
           Meditation(
             title: 'Sleep Mode',
-            subtitle: 'Relax and drift off',
+            subtitle: '4:6 breathing for deep rest',
             duration: '15 min',
             image: _sleep,
           ),
@@ -106,7 +106,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
         meditations: [
           Meditation(
             title: 'Focus Mode',
-            subtitle: 'Enhance concentration',
+            subtitle: 'Box breathing (4-4-4-4)',
             duration: '10 min',
             image: _focus,
           ),
@@ -115,11 +115,11 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Anxiety',
         icon: Icons.healing,
-        color: const Color(0xFFFA6E5A),
+        color: const Color(0xFF4CAF50),
         meditations: [
           Meditation(
             title: 'Anxiety Mode',
-            subtitle: 'Find calmness',
+            subtitle: 'Stanford 2:1 exhale technique',
             duration: '10 min',
             image: _anxiety,
           ),
@@ -132,7 +132,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
         meditations: [
           Meditation(
             title: 'Happiness Mode',
-            subtitle: 'Boost your mood',
+            subtitle: 'Balanced 3:3 energizing breath',
             duration: '10 min',
             image: _happiness,
           ),
@@ -212,7 +212,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const SessionHistoryScreen(),
+                                    const BreathworkHistoryScreen(),
                               ),
                             );
                           },
@@ -259,13 +259,14 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
               ),
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               sliver: SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 0.8,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio:
+                      0.85, // Slightly taller for better fit on small screens
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -297,36 +298,42 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                                     ]
                                   : null,
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              category.icon,
-                              size: 48,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? category.color
-                                  : Colors.white,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              category.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                category.icon,
+                                size: 40, // Reduced icon size
+                                color: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? category.color
+                                    : Colors.white,
                               ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              category.meditations.first.subtitle,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
-                                fontSize: 14,
+                              const SizedBox(height: 12), // Reduced spacing
+                              Text(
+                                category.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16, // Reduced font size
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 6), // Reduced spacing
+                              Text(
+                                category.meditations.first.subtitle,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 12, // Reduced font size
+                                ),
+                                maxLines: 2, // Prevent overflow
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
