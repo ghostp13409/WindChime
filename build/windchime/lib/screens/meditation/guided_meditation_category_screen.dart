@@ -777,8 +777,10 @@ class _GuidedMeditationCategoryScreenState
 
               // Content - Responsive padding for smaller screens
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
                 child: Row(
                   children: [
                     // Smaller play button for mobile
@@ -843,7 +845,9 @@ class _GuidedMeditationCategoryScreenState
                               const SizedBox(width: 6),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 4, vertical: 1),
+                                  horizontal: 4,
+                                  vertical: 1,
+                                ),
                                 decoration: BoxDecoration(
                                   color: difficultyColor.withOpacity(0.15),
                                   borderRadius: BorderRadius.circular(4),
@@ -925,10 +929,10 @@ class _GuidedMeditationCategoryScreenState
                     ? Center(
                         child: Text(
                           'No meditations available',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Colors.grey.withOpacity(0.6),
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(color: Colors.grey.withOpacity(0.6)),
                         ),
                       )
                     : ListView.builder(

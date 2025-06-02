@@ -69,7 +69,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Stanford-researched 2:1 exhale-to-inhale ratio',
-      primaryColor: Color(0xFFFA6E5A),
+      primaryColor: Color(0xFF4CAF50),
       audioPath: 'sounds/meditation/Anxiety.mp3',
     ),
     'happiness': BreathingPattern(
@@ -115,7 +115,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Anxiety',
         icon: Icons.healing,
-        color: const Color(0xFFFA6E5A),
+        color: const Color(0xFF4CAF50),
         meditations: [
           Meditation(
             title: 'Anxiety Mode',

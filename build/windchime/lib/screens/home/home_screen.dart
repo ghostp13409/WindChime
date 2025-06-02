@@ -15,11 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
-  bool _showWelcome = false;
+  final bool _showWelcome = false;
 
   // Meditation data
   static const Map<String, BreathingPattern> breathingPatterns = {
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Stanford-researched 2:1 exhale-to-inhale ratio',
-      primaryColor: Color(0xFFFA6E5A),
+      primaryColor: Color(0xFF4CAF50),
       audioPath: 'sounds/meditation/Anxiety.mp3',
     ),
     'happiness': BreathingPattern(
@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Navigator.pushNamed(context, '/about');
               },
               icon: Icon(
-                Icons.settings_outlined,
+                Icons.info_outline,
                 color: Theme.of(context).iconTheme.color?.withOpacity(0.8),
               ),
               iconSize: 22,
@@ -957,7 +957,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Stack(
           children: [

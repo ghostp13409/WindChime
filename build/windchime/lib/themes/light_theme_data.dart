@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData lightThemeData = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.light,
-  primaryColor: Color(0xFF534AFF),
+  primaryColor: Color(0xFF26A69A),
   scaffoldBackgroundColor: Color(0xFFFDFDFD),
   cardColor: Color(0xFFFFFFFF),
   iconTheme: IconThemeData(

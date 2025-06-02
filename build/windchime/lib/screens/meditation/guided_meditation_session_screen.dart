@@ -1217,7 +1217,7 @@ class _GuidedMeditationSessionScreenState
         return false; // Prevent immediate pop, let dialog handle it
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -1226,7 +1226,7 @@ class _GuidedMeditationSessionScreenState
               colors: [
                 widget.categoryColor.withOpacity(0.08),
                 widget.categoryColor.withOpacity(0.04),
-                Theme.of(context).colorScheme.background,
+                Theme.of(context).colorScheme.surface,
               ],
               stops: const [0.0, 0.2, 1.0],
             ),
@@ -1419,7 +1419,7 @@ class _GuidedMeditationSessionScreenState
 
   Widget _buildVisualization() {
     if (_hasError) {
-      return Container(
+      return SizedBox(
         height: 280,
         child: Center(
           child: Column(
@@ -1459,7 +1459,7 @@ class _GuidedMeditationSessionScreenState
       );
     }
 
-    return Container(
+    return SizedBox(
       height: 280,
       child: Center(
         child: Stack(

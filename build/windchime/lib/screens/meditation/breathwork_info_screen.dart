@@ -403,7 +403,7 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
             ],
           ),
           const SizedBox(height: 16),
-          ...links.map((link) => _buildResearchLinkCard(link)).toList(),
+          ...links.map((link) => _buildResearchLinkCard(link)),
         ],
       ),
     );

@@ -126,7 +126,7 @@ class _BreathworkHistoryScreenState extends State<BreathworkHistoryScreen> {
       case 'anxiety':
         return {
           'icon': Icons.healing,
-          'color': const Color(0xFFFA6E5A),
+          'color': const Color(0xFF4CAF50),
           'name': 'Calm Mind'
         };
       case 'happiness':
@@ -574,7 +574,7 @@ class _BreathworkHistoryScreenState extends State<BreathworkHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
