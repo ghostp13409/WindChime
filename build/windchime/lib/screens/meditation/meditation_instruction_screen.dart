@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
-import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
+import 'package:windchime/screens/meditation/meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/breathwork_info_screen.dart';
 
 class MeditationInstructionScreen extends StatefulWidget {

@@ -5,7 +5,7 @@ import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/screens/home/home_screen.dart';
 import 'package:windchime/screens/meditation/home_screen.dart';
 import 'package:windchime/screens/meditation/meditation_instruction_screen.dart';
-import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
+import 'package:windchime/screens/meditation/meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/session_history_screen.dart';
 import 'package:windchime/screens/about/about_screen.dart';
 import 'package:provider/provider.dart';

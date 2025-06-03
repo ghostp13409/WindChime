@@ -95,40 +95,35 @@ class _AboutScreenState extends State<AboutScreen>
   Future<void> _launchUrl(String url) async {
     try {
       final Uri uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
+
+      // Always try to launch the URL with external application mode first
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {
+      // If external application fails, try platform default mode
+      try {
+        final Uri uri = Uri.parse(url);
         await launchUrl(
           uri,
-          mode: LaunchMode.externalApplication,
+          mode: LaunchMode.platformDefault,
         );
-      } else {
-        // If the app-specific URL fails, try opening in browser
-        if (url.contains('github.com')) {
-          await launchUrl(
-            Uri.parse(url),
-            mode: LaunchMode.externalApplication,
+      } catch (e2) {
+        // If all attempts fail, show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Could not open $url'),
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              margin: const EdgeInsets.all(16),
+            ),
           );
-        } else if (url.contains('linkedin.com')) {
-          await launchUrl(
-            Uri.parse(url),
-            mode: LaunchMode.externalApplication,
-          );
-        } else if (url.contains('instagram.com')) {
-          await launchUrl(
-            Uri.parse(url),
-            mode: LaunchMode.externalApplication,
-          );
-        } else {
-          throw Exception('Cannot launch URL');
         }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Could not open $url'),
-            backgroundColor: Colors.red,
-          ),
-        );
       }
     }
   }
@@ -593,7 +588,7 @@ class _AboutScreenState extends State<AboutScreen>
               crossAxisCount: 2,
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              childAspectRatio: 1.2,
+              childAspectRatio: 1.4,
             ),
             itemCount: _donationMethods.length,
             itemBuilder: (context, index) {
@@ -760,7 +755,7 @@ class _AboutScreenState extends State<AboutScreen>
         _showDonationDialog(method);
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -785,10 +780,11 @@ class _AboutScreenState extends State<AboutScreen>
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -803,28 +799,31 @@ class _AboutScreenState extends State<AboutScreen>
               child: Icon(
                 method.icon,
                 color: method.color,
-                size: 20,
+                size: 18,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               method.name,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: method.color,
                     letterSpacing: -0.1,
+                    fontSize: 14,
                   ),
             ),
-            const SizedBox(height: 4),
-            Text(
-              method.description,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey.withOpacity(0.8),
-                    fontSize: 11,
-                  ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            const SizedBox(height: 2),
+            Flexible(
+              child: Text(
+                method.description,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey.withOpacity(0.8),
+                      fontSize: 10,
+                    ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
@@ -981,7 +980,10 @@ class _AboutScreenState extends State<AboutScreen>
           backgroundColor: Colors.transparent,
           child: Container(
             padding: const EdgeInsets.all(24),
-            constraints: const BoxConstraints(maxWidth: 400),
+            constraints: BoxConstraints(
+              maxWidth: 400,
+              maxHeight: MediaQuery.of(context).size.height * 0.8,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(28),
@@ -1040,45 +1042,59 @@ class _AboutScreenState extends State<AboutScreen>
                 ),
                 const SizedBox(height: 24),
 
-                // Roadmap content
-                Text(
-                  'Your support helps reach these milestones',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey.withOpacity(0.8),
-                      ),
-                ),
-                const SizedBox(height: 20),
-
-                // Milestones
-                ..._buildRoadmapMilestones(),
-
-                const SizedBox(height: 24),
-
-                // Call to action
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xFFFFCF86).withOpacity(0.1),
-                        const Color(0xFFFFCF86).withOpacity(0.05),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xFFFFCF86).withOpacity(0.2),
-                    ),
-                  ),
-                  child: Text(
-                    'All contributions, big or small, goes 100% to development! well except for the ones that goes into coffee.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: const Color(0xFFFFCF86),
-                          fontWeight: FontWeight.w500,
-                          height: 1.5,
+                // Scrollable content
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        // Roadmap content
+                        Text(
+                          'Your support helps reach these milestones',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Colors.grey.withOpacity(0.8),
+                                  ),
                         ),
+                        const SizedBox(height: 20),
+
+                        // Milestones
+                        ..._buildRoadmapMilestones(),
+
+                        const SizedBox(height: 24),
+
+                        // Call to action
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xFFFFCF86).withOpacity(0.1),
+                                const Color(0xFFFFCF86).withOpacity(0.05),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: const Color(0xFFFFCF86).withOpacity(0.2),
+                            ),
+                          ),
+                          child: Text(
+                            'All contributions, big or small, goes 100% to development! well except for the ones that goes into coffee.',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: const Color(0xFFFFCF86),
+                                  fontWeight: FontWeight.w500,
+                                  height: 1.5,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
