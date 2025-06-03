@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
-import 'package:windchime/screens/meditation/optimized_meditation_session_screen.dart';
+import 'package:windchime/screens/meditation/meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/breathwork_info_screen.dart';
 
 class MeditationInstructionScreen extends StatefulWidget {
@@ -26,10 +26,31 @@ class _MeditationInstructionScreenState
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
+  // Duration selection
+  int _selectedDuration =
+      0; // Will be set in initState based on current duration
+  final List<int> _availableDurations = [3, 5, 10, 15, 20]; // in minutes
+
   @override
   void initState() {
     super.initState();
     _setupAnimations();
+    _setDefaultDuration();
+  }
+
+  void _setDefaultDuration() {
+    // Parse current duration and set as default
+    final durationParts = widget.meditation.duration.split(' ');
+    final durationValue = int.parse(durationParts[0]);
+
+    // Set the current duration as selected, or closest available
+    if (_availableDurations.contains(durationValue)) {
+      _selectedDuration = durationValue;
+    } else {
+      // Find closest available duration
+      _selectedDuration = _availableDurations.reduce((a, b) =>
+          (a - durationValue).abs() < (b - durationValue).abs() ? a : b);
+    }
   }
 
   void _setupAnimations() {
@@ -54,12 +75,21 @@ class _MeditationInstructionScreenState
 
   void _startMeditation() {
     HapticFeedback.lightImpact();
+
+    // Create new meditation object with selected duration
+    final updatedMeditation = Meditation(
+      title: widget.meditation.title,
+      subtitle: widget.meditation.subtitle,
+      duration: '$_selectedDuration min',
+      image: widget.meditation.image,
+    );
+
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             OptimizedMeditationSessionScreen(
           breathingPattern: widget.breathingPattern,
-          meditation: widget.meditation,
+          meditation: updatedMeditation,
           onClose: () => Navigator.of(context).pop(),
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -83,6 +113,158 @@ class _MeditationInstructionScreenState
           return FadeTransition(opacity: animation, child: child);
         },
         transitionDuration: const Duration(milliseconds: 600),
+      ),
+    );
+  }
+
+  void _showDurationSettings() {
+    HapticFeedback.lightImpact();
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: const Color(0xFF1C2031).withOpacity(0.95),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Row(
+            children: [
+              Icon(
+                Icons.timer_outlined,
+                color: widget.breathingPattern.primaryColor,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Session Duration',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Choose your meditation duration',
+                style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                children: _availableDurations.map((duration) {
+                  final isSelected = duration == _selectedDuration;
+                  final isRecommended = duration.toString() ==
+                      widget.meditation.duration.split(' ')[0];
+
+                  return GestureDetector(
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      setDialogState(() {
+                        _selectedDuration = duration;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? widget.breathingPattern.primaryColor
+                            : Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isSelected
+                              ? widget.breathingPattern.primaryColor
+                              : isRecommended
+                                  ? widget.breathingPattern.primaryColor
+                                      .withOpacity(0.6)
+                                  : Colors.white.withOpacity(0.3),
+                          width: isRecommended ? 2 : 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '$duration min',
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : Colors.white.withOpacity(0.9),
+                              fontSize: 14,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
+                            ),
+                          ),
+                          if (isRecommended) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? Colors.white.withOpacity(0.2)
+                                    : widget.breathingPattern.primaryColor
+                                        .withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                'Recommended',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    setState(() {}); // Update the main widget's state
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: widget.breathingPattern.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -133,26 +315,52 @@ class _MeditationInstructionScreenState
                         ),
                       ),
                       const Spacer(),
-                      GestureDetector(
-                        onTap: _navigateToInfoScreen,
-                        child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: widget.breathingPattern.primaryColor
-                                .withOpacity(0.2),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: widget.breathingPattern.primaryColor
-                                  .withOpacity(0.4),
-                              width: 1,
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: _showDurationSettings,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: widget.breathingPattern.primaryColor
+                                    .withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: widget.breathingPattern.primaryColor
+                                      .withOpacity(0.4),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.timer_outlined,
+                                color: widget.breathingPattern.primaryColor,
+                                size: 24,
+                              ),
                             ),
                           ),
-                          child: Icon(
-                            Icons.info_outline_rounded,
-                            color: widget.breathingPattern.primaryColor,
-                            size: 24,
+                          const SizedBox(width: 12),
+                          GestureDetector(
+                            onTap: _navigateToInfoScreen,
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: widget.breathingPattern.primaryColor
+                                    .withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: widget.breathingPattern.primaryColor
+                                      .withOpacity(0.4),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.info_outline_rounded,
+                                color: widget.breathingPattern.primaryColor,
+                                size: 24,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -195,7 +403,7 @@ class _MeditationInstructionScreenState
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          '${widget.meditation.title} • ${widget.meditation.duration}',
+                          '${widget.meditation.title} • $_selectedDuration min',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.9),
                             fontSize: 16,

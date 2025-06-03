@@ -425,187 +425,118 @@ class _GuidedMeditationSessionScreenState
   void _showExitDialog() {
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.7),
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(32),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                blurRadius: 40,
-                offset: const Offset(0, 20),
-                spreadRadius: 0,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        contentPadding: const EdgeInsets.all(32),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Pause icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.orange.withOpacity(0.2),
+                    Colors.orange.withOpacity(0.1),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              BoxShadow(
+              child: Icon(
+                Icons.pause_circle_outline,
+                size: 40,
+                color: Colors.orange.shade600,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            Text(
+              'Pause Your Session?',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.5,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              'Your meditation progress will be automatically saved.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.grey.withOpacity(0.8),
+                    fontWeight: FontWeight.w400,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 16),
+
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
                 color: widget.categoryColor.withOpacity(0.1),
-                blurRadius: 60,
-                offset: const Offset(0, 10),
-                spreadRadius: 0,
+                borderRadius: BorderRadius.circular(12),
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Modern pause icon with gradient background
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.orange.withOpacity(0.15),
-                      Colors.orange.withOpacity(0.08),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.orange.withOpacity(0.2),
-                    width: 1,
-                  ),
-                ),
-                child: Icon(
-                  Icons.pause_circle_filled,
-                  size: 40,
-                  color: Colors.orange.shade600,
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              // Title with improved typography
-              Text(
-                'Pause Your Session?',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.5,
-                      fontSize: 24,
+              child: Text(
+                'You can resume anytime',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: widget.categoryColor,
+                      fontWeight: FontWeight.w600,
                     ),
                 textAlign: TextAlign.center,
               ),
+            ),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 32),
 
-              // Enhanced description
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  'Your meditation progress will be automatically saved.\nYou can resume anytime.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey.withOpacity(0.7),
-                        fontWeight: FontWeight.w400,
-                        height: 1.5,
-                        fontSize: 16,
-                      ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildExitDialogButton(
+                    'Continue', true, () => Navigator.of(context).pop()),
+                _buildExitDialogButton(
+                    'End Session', false, () => _endSessionSafely()),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-              const SizedBox(height: 36),
-
-              // Modern button layout
-              Column(
-                children: [
-                  // Continue button (primary)
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: widget.categoryColor,
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shadowColor: widget.categoryColor.withOpacity(0.3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.play_arrow_rounded,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Continue Session',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // End session button (secondary)
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: OutlinedButton(
-                      onPressed: () => _endSessionSafely(),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.grey.shade600,
-                        backgroundColor: Colors.grey.withOpacity(0.05),
-                        side: BorderSide(
-                          color: Colors.grey.withOpacity(0.3),
-                          width: 1,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.stop_rounded,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'End Session',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              // Subtle help text
-              Text(
-                'Your session will be saved to history',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.5),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+  Widget _buildExitDialogButton(
+      String label, bool isPrimary, VoidCallback onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 100,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isPrimary
+                ? widget.categoryColor.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.3),
+            width: 1,
           ),
+          color: isPrimary
+              ? widget.categoryColor.withOpacity(0.1)
+              : Colors.grey.withOpacity(0.05),
+        ),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: isPrimary ? widget.categoryColor : Colors.grey.shade600,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+          textAlign: TextAlign.center,
         ),
       ),
     );
