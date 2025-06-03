@@ -775,18 +775,109 @@ class _GuidedMeditationCategoryScreenState
                 ),
               ),
 
-              // Content - Responsive padding for smaller screens
+              // Content - Improved padding for better readability
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
+                  horizontal: 20,
+                  vertical: 20,
                 ),
                 child: Row(
                   children: [
-                    // Smaller play button for mobile
+                    // Content with flexible layout (moved to left)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Title with improved readability
+                          Text(
+                            meditation['title'],
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.1,
+                                  height: 1.1,
+                                  fontSize: 17,
+                                ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                          const SizedBox(height: 6),
+
+                          // Duration and difficulty with improved readability
+                          Row(
+                            children: [
+                              Text(
+                                meditation['duration'],
+                                style: TextStyle(
+                                  color: widget.categoryColor,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: difficultyColor.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  meditation['difficulty'],
+                                  style: TextStyle(
+                                    color: difficultyColor,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 6),
+
+                          // Description with improved readability
+                          Text(
+                            meditation['description'],
+                            style: TextStyle(
+                              color: Colors.grey.withOpacity(0.8),
+                              height: 1.3,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                          const SizedBox(height: 4),
+
+                          // Source/Author with improved readability
+                          Text(
+                            'by ${meditation['source']}',
+                            style: TextStyle(
+                              color: Colors.grey.withOpacity(0.7),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(width: 20),
+
+                    // Play button with better proportions (moved to right)
                     Container(
-                      width: 48,
-                      height: 48,
+                      width: 56,
+                      height: 56,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -796,102 +887,12 @@ class _GuidedMeditationCategoryScreenState
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(18),
                       ),
                       child: Icon(
                         Icons.play_arrow,
-                        size: 24,
+                        size: 28,
                         color: widget.categoryColor,
-                      ),
-                    ),
-
-                    const SizedBox(width: 16),
-
-                    // Content with flexible layout
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Title with constrained font for mobile
-                          Text(
-                            meditation['title'],
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.1,
-                                  height: 1.1,
-                                  fontSize: 14,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                          const SizedBox(height: 4),
-
-                          // Duration and difficulty with constrained layout
-                          Row(
-                            children: [
-                              Text(
-                                meditation['duration'],
-                                style: TextStyle(
-                                  color: widget.categoryColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 11,
-                                ),
-                              ),
-                              const SizedBox(width: 6),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 4,
-                                  vertical: 1,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: difficultyColor.withOpacity(0.15),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Text(
-                                  meditation['difficulty'],
-                                  style: TextStyle(
-                                    color: difficultyColor,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 3),
-
-                          // Description with smaller font
-                          Text(
-                            meditation['description'],
-                            style: TextStyle(
-                              color: Colors.grey.withOpacity(0.8),
-                              height: 1.2,
-                              fontSize: 11,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                          const SizedBox(height: 2),
-
-                          // Source/Author with smaller font
-                          Text(
-                            'by ${meditation['source']}',
-                            style: TextStyle(
-                              color: Colors.grey.withOpacity(0.6),
-                              fontSize: 9,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
                       ),
                     ),
                   ],
@@ -936,7 +937,7 @@ class _GuidedMeditationCategoryScreenState
                         ),
                       )
                     : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
                         physics: const BouncingScrollPhysics(),
                         itemCount: meditations.length,
                         itemBuilder: (context, index) {
