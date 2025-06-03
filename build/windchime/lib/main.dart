@@ -8,6 +8,8 @@ import 'package:windchime/screens/meditation/meditation_instruction_screen.dart'
 import 'package:windchime/screens/meditation/meditation_session_screen.dart';
 import 'package:windchime/screens/meditation/session_history_screen.dart';
 import 'package:windchime/screens/about/about_screen.dart';
+import 'package:windchime/screens/onboarding/welcome_tour.dart';
+import 'package:windchime/services/onboarding_service.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
 import 'package:windchime/themes/dark_theme_data.dart';
@@ -35,12 +37,44 @@ Future<void> main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  bool _isFirstTime = true;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstTimeUser();
+  }
+
+  Future<void> _checkFirstTimeUser() async {
+    final isFirstTime = await OnboardingService.isFirstTimeUser();
+    setState(() {
+      _isFirstTime = isFirstTime;
+      _isLoading = false;
+    });
+  }
+
+  void _onWelcomeComplete() async {
+    await OnboardingService.markWelcomeCompleted();
+    setState(() {
+      _isFirstTime = false;
+    });
+  }
 
   // Routes for Screens
   static final routes = <String, WidgetBuilder>{
-    '/': (context) => const HomeScreen(),
+    '/welcome': (context) => WelcomeTour(
+          onComplete: () => Navigator.of(context).pop(),
+          isFromHome: true,
+        ),
     '/meditation/home': (context) => const MeditationHomeScreen(),
     '/meditation/instructions': (context) {
       final args =
@@ -65,6 +99,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: darkThemeData,
+        home: const Scaffold(
+          backgroundColor: Color(0xFF121212),
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
     return ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
@@ -72,8 +119,10 @@ class MainApp extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: darkThemeData,
+            home: _isFirstTime
+                ? WelcomeTour(onComplete: _onWelcomeComplete)
+                : const HomeScreen(),
             routes: routes,
-            initialRoute: '/',
           );
         },
       ),
