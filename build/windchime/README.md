@@ -4,7 +4,7 @@ A comprehensive mindfulness app for meditation, sleep, and focus built with Flut
 
 ## 📱 About
 
-WindChime is a cross-platform mindfulness application designed to help users achieve better mental well-being through guided meditation, breathwork exercises, and mindfulness practices. The app provides a serene and intuitive interface for users to explore various meditation techniques and track their progress.
+WindChime is a cross-platform mindfulness application designed to help users achieve better mental well-being through guided meditation, breathwork exercises, and mindfulness practices. The app provides a clean and intuitive interface for users to explore various meditation techniques and track their progress.
 
 ## ✨ Features
 
@@ -13,8 +13,6 @@ WindChime is a cross-platform mindfulness application designed to help users ach
 - **Guided Meditations**: Extensive library of professionally recorded meditation sessions
 - **Breathwork Exercises**: Customizable breathing patterns for anxiety, focus, sleep, and happiness
 - **Session History**: Track your meditation journey and progress over time
-- **Multi-Category Support**: Organized meditation content by type and purpose
-- **Dark/Light Theme**: Toggle between themes for comfortable viewing
 
 ### 🎵 Meditation Categories
 
@@ -27,12 +25,10 @@ WindChime is a cross-platform mindfulness application designed to help users ach
 
 ### 🔧 Technical Features
 
-- **Cross-Platform**: Available on Android, iOS, Web, Windows, macOS, and Linux
-- **Offline Support**: Download and use meditations without internet connection
+- **Offline Support**: Use meditations without internet connection
 - **Local Data Storage**: SQLite database for session history and preferences
 - **Audio Management**: High-quality audio playback with background support
 - **Haptic Feedback**: Enhanced user experience with tactile responses
-- **Push Notifications**: Meditation reminders and session alerts
 
 ## 🚀 Getting Started
 
@@ -40,8 +36,6 @@ WindChime is a cross-platform mindfulness application designed to help users ach
 
 - Flutter SDK (^3.6.1)
 - Dart SDK
-- Android Studio / Xcode (for mobile development)
-- VS Code or Android Studio IDE
 
 ### Installation
 
@@ -76,29 +70,13 @@ flutter build appbundle --release
 ```
 
 **iOS:**
-
-```bash
-flutter build ios --release
-```
+iOS build not implemented yet
 
 **Web:**
-
-```bash
-flutter build web --release
-```
+Web build not implemented yet
 
 **Desktop:**
-
-```bash
-# Windows
-flutter build windows --release
-
-# macOS
-flutter build macos --release
-
-# Linux
-flutter build linux --release
-```
+Desktop builds not implemented yet
 
 ## 🏗️ Architecture
 
@@ -135,7 +113,59 @@ lib/
 
 ## 📸 Screenshots
 
-_Add screenshots of your app here showing the main features_
+### Main Features
+
+<div align="center">
+
+#### Research-Based Meditations
+
+<img src="assets/images/screenshots/research_based_meditaions.jpg" alt="Research-Based Meditations" width="300"/>
+
+#### Guided Meditation Categories
+
+<img src="assets/images/screenshots/guided_meditation_categories.jpg" alt="Guided Meditation Categories" width="300"/>
+
+#### Guided Meditation Sessions
+
+<img src="assets/images/screenshots/guided_meditation_sessions.jpg" alt="Guided Meditation Sessions" width="300"/>
+
+</div>
+
+### Meditation Sessions
+
+<div align="center">
+
+#### Guided Meditation Session
+
+<img src="assets/images/screenshots/guided_meditation_session.jpg" alt="Guided Meditation Session" width="300"/>
+
+#### Breathwork Meditations
+
+<img src="assets/images/screenshots/breathwork_meditations.jpg" alt="Breathwork Meditations" width="300"/>
+
+#### Breathwork Meditation Session
+
+<img src="assets/images/screenshots/breathwork_meditation_session.jpg" alt="Breathwork Meditation Session" width="300"/>
+
+</div>
+
+### User Experience
+
+<div align="center">
+
+#### Breathwork Tutorial
+
+<img src="assets/images/screenshots/breathwork_meditation_tutorial.jpg" alt="Breathwork Meditation Tutorial" width="300"/>
+
+#### Session History
+
+<img src="assets/images/screenshots/session_history.jpg" alt="Session History" width="300"/>
+
+#### About Screen
+
+<img src="assets/images/screenshots/guided_meditation_about_sceen.jpg" alt="Guided Meditation About Screen" width="300"/>
+
+</div>
 
 ## 🎵 Audio Content
 
@@ -206,6 +236,7 @@ For support, feedback, or questions:
 
 - [ ] User Accounts for Data Migrations and Backups
 - [ ] Better Insights into session histories
+- [ ] Push Notifications
 
 ---
 

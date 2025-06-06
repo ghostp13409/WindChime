@@ -377,7 +377,7 @@ class GuidedMeditationRepository {
           'Visualization meditation using the image of a mountain for stability and grounding.',
       categoryId: 'guided_imagery',
       audioPath:
-          'assets/sounds/meditation/guided/guided_imagery/Mountain Meditation.mp3',
+          'assets/sounds/meditation/guided/guided_imagery/MindfulnessMountainMeditationPeterMorgan.mp3',
       durationSeconds: 492, // 8:12
       instructor: 'Peter Morgan',
       tags: ['visualization', 'mountain', 'stability', 'grounding'],
