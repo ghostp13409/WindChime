@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:windchime/services/utils/sound_utils.dart';
 import 'package:windchime/screens/onboarding/welcome_screen.dart';
 import 'package:windchime/screens/onboarding/breathwork_tutorial_screen.dart';
 import 'package:windchime/screens/onboarding/guided_tutorial_screen.dart';

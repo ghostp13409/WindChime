@@ -100,7 +100,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
             const SizedBox(height: 48),
 
             // Meditation animation
-            Container(
+            SizedBox(
               height: 200,
               child: Center(
                 child: AnimatedBuilder(
