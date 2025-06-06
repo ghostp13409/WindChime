@@ -167,50 +167,6 @@ lib/
 
 </div>
 
-## 🎵 Audio Content
-
-The app includes a comprehensive library of meditation audio files:
-
-- **Breathwork Sessions**: Anxiety, Focus, Sleep, and Happiness meditations
-- **Guided Meditations**: Professional recordings across multiple categories
-- **Sound Effects**: Bell sounds and state change audio cues
-- **Ambient Sounds**: Background audio for enhanced meditation experience
-
-## 🔧 Configuration
-
-### App Settings
-
-- Theme preferences (Light/Dark mode)
-- Notification settings
-- Audio preferences
-- Session reminders
-
-### Database
-
-The app uses SQLite for local data storage, including:
-
-- Meditation session history
-- User preferences
-- Progress tracking
-- Offline content management
-
-## 🤝 Contributing
-
-We welcome contributions to WindChime! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow Flutter/Dart style guidelines
-- Write tests for new features
-- Update documentation as needed
-- Ensure cross-platform compatibility
-
 ## 📄 License
 
 This project is licensed under the GNU General Public License v3.0 - see the [COPYING](COPYING) file for details.
@@ -221,7 +177,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 ## 🙏 Acknowledgments
 
-- [FreeMindfullness.org for Guided Meditaions](https://www.freemindfulness.org/)
+- [FreeMindfullness.org](https://www.freemindfulness.org/) for Guided Meditaions
 - [Open Game Art](https://opengameart.org/) and [Pixabay](https://pixabay.com/sound-effects/) Creators for Sound Effects
 
 ## 📞 Support
@@ -229,8 +185,6 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 For support, feedback, or questions:
 
 - Open an issue on GitHub
-- Contact the development team
-- Check the [Wiki](link-to-wiki) for additional documentation
 
 ## 🔮 Roadmap
 
