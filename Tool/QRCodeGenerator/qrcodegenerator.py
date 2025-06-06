@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 dominant_color = (15, 18, 41)  # dark navy blue
 
 # Generate QR code with custom color
-qr_data = "bc1qn3rgkrkv287k5hauymtnpd6uzu67gsmv0kcma5"  # Replace with your target URL
+qr_data = "https://ghostp13409.github.io/"  # Replace with your target URL
 qr = qrcode.QRCode(
     version=1,
     error_correction=qrcode.constants.ERROR_CORRECT_H,
@@ -29,6 +29,6 @@ draw.rounded_rectangle([(0, 0), (1080, 1080)], radius=40, fill=255)
 
 
 # Save final output
-output_path = "custom_windchime_qr.png"
+output_path = "website.png"
 qr_img.save(output_path)
 output_path

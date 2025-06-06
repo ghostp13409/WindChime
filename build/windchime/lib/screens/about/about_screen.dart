@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'feedback_screen.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -274,6 +275,43 @@ class _AboutScreenState extends State<AboutScreen>
                       ),
                 ),
               ],
+            ),
+          ),
+
+          // Feedback Button
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Theme.of(context).dividerColor.withOpacity(0.2),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FeedbackScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.feedback_outlined,
+                color: Theme.of(context).primaryColor,
+              ),
+              iconSize: 20,
+              padding: const EdgeInsets.all(12),
+              tooltip: 'Send Feedback',
             ),
           ),
         ],
@@ -569,9 +607,9 @@ class _AboutScreenState extends State<AboutScreen>
           const SizedBox(height: 16),
           Text(
             'If WindChime brings you peace, please consider helping me reach more people! '
-            'I\'m a solo broke unemployed developer with limited resources to publish widely or add bigger features. '
+            'I\'m a solo developer with limited resources to publish widely or add bigger features. '
             'So, your donations helps a lot! Rest assured, WindChime is and will always be free and open source. '
-            'If you are as broke as me, just sharing it helps a too!',
+            'If you are as broke as me, just sharing it helps too!',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Colors.grey.withOpacity(0.8),
                   height: 1.6,

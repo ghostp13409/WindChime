@@ -101,7 +101,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
             const SizedBox(height: 48),
 
             // Breathing animation circle
-            Container(
+            SizedBox(
               height: 200,
               child: Center(
                 child: AnimatedBuilder(
