@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2025 Parth Gajjar
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/screens/meditation/guided_meditation_instruction_screen.dart';
@@ -619,64 +636,7 @@ class _GuidedMeditationCategoryScreenState
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
       child: Row(
-        children: [
-          //TODO: Commented out back button matching home screen style
-
-          // // Back button matching home screen style
-          // Container(
-          //   decoration: BoxDecoration(
-          //     color: Theme.of(context).colorScheme.surface,
-          //     borderRadius: BorderRadius.circular(16),
-          //     border: Border.all(
-          //       color: Theme.of(context).dividerColor.withOpacity(0.2),
-          //       width: 1,
-          //     ),
-          //     boxShadow: [
-          //       BoxShadow(
-          //         color: Colors.black.withOpacity(0.05),
-          //         blurRadius: 8,
-          //         offset: const Offset(0, 2),
-          //       ),
-          //     ],
-          //   ),
-          //   child: IconButton(
-          //     onPressed: () {
-          //       HapticFeedback.lightImpact();
-          //       Navigator.pop(context);
-          //     },
-          //     icon: Icon(
-          //       Icons.arrow_back_ios_new,
-          //       color: Theme.of(context).iconTheme.color?.withOpacity(0.8),
-          //     ),
-          //     iconSize: 22,
-          //     padding: const EdgeInsets.all(12),
-          //   ),
-          // ),
-          // const SizedBox(width: 16),
-
-          // // Title and subtitle exactly like home screen
-          // Expanded(
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text(
-          //         widget.categoryTitle,
-          //         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-          //               fontWeight: FontWeight.bold,
-          //               letterSpacing: -0.5,
-          //             ),
-          //       ),
-          //       Text(
-          //         'Guided meditation practices',
-          //         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          //               color: Colors.grey.withOpacity(0.8),
-          //               letterSpacing: 0.2,
-          //             ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        ],
+        children: [],
       ),
     );
   }

@@ -45,6 +45,8 @@ WindChime is a cross-platform mindfulness application designed to help users ach
 
 ### Installation
 
+<!-- //FIXME: Change the github links!!!! -->
+
 1. **Clone the repository**
 
    ```bash
@@ -181,14 +183,16 @@ We welcome contributions to WindChime! Please follow these steps:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [COPYING](COPYING) file for details.
+
+WindChime is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 ## 🙏 Acknowledgments
 
-- Meditation audio content creators
-- Flutter community for excellent packages
-- Beta testers and feedback contributors
-- Mindfulness and meditation research community
+- [FreeMindfullness.org for Guided Meditaions](https://www.freemindfulness.org/)
+- [Open Game Art](https://opengameart.org/) and [Pixabay](https://pixabay.com/sound-effects/) Creators for Sound Effects
 
 ## 📞 Support
 
@@ -200,13 +204,8 @@ For support, feedback, or questions:
 
 ## 🔮 Roadmap
 
-- [ ] Social features (sharing progress, community challenges)
-- [ ] Personalized meditation recommendations
-- [ ] Advanced analytics and insights
-- [ ] Integration with health tracking apps
-- [ ] Expanded audio content library
-- [ ] Meditation streak tracking
-- [ ] Custom meditation timer with intervals
+- [ ] User Accounts for Data Migrations and Backups
+- [ ] Better Insights into session histories
 
 ---
 
