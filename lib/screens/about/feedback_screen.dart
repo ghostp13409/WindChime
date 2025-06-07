@@ -48,7 +48,8 @@ class _FeedbackScreenState extends State<FeedbackScreen>
   bool _includeDeviceInfo = true;
 
   // Replace with your Formspree form ID
-  static const String _formspreeEndpoint = 'mblylbow';
+  static const String _formspreeEndpoint =
+      String.fromEnvironment('FORMSPREE_ENDPOINT');
 
   @override
   void initState() {
