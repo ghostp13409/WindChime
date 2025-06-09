@@ -251,7 +251,7 @@ class _GuidedMeditationCategoryScreenState
             'description': 'Visualize yourself as a mountain for stability',
             'source': 'Peter Morgan',
             'audioPath':
-                'sounds/meditation/guided/guided_imagery/Mountain Meditation.mp3',
+                'sounds/meditation/guided/guided_imagery/MindfulnessMountainMeditationPeterMorgan.mp3',
             'difficulty': 'Beginner',
           },
           {
