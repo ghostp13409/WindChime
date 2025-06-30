@@ -1,0 +1,79 @@
+Categories:
+  - Multimedia
+  - Wellness
+  - Health & Fitness
+
+License: GPL-3.0-only
+
+AuthorName: Parth Gajjar
+AuthorEmail: gajjarparth09@gmail.com
+AuthorWebSite: https://ghostp13409.github.io/
+
+SourceCode: https://github.com/ghostp13409/WindChime
+IssueTracker: https://github.com/ghostp13409/WindChime/issues
+
+Summary: Mindfulness app with guided meditations and breathwork exercises
+
+Description: |-
+  WindChime is a comprehensive mindfulness and meditation application designed to help users achieve better mental well-being through guided meditation, breathwork exercises, and mindfulness practices.
+
+  <b>Key Features:</b>
+  * 50+ professional guided meditations (3-45 minutes)
+  * Science-based breathwork for anxiety, focus, sleep, and happiness
+  * Complete offline functionality - no internet required after download
+  * Session progress tracking and history
+  * Zero subscription fees - lifetime access
+
+  <b>Meditation Library Categories:</b>
+  * Body Scan Meditations (4-45 minutes)
+  * Breathing Practices (3-10 minutes)  
+  * Brief Mindfulness (3-minute sessions)
+  * Guided Imagery and visualizations
+  * Self-Guided Sessions with bells (5-45 minutes)
+  * Sitting Meditations for wisdom cultivation
+
+  <b>Breathwork Programs:</b>
+  * Anxiety Relief - calming breathing patterns
+  * Enhanced Focus - energizing concentration techniques
+  * Better Sleep - relaxing preparation practices
+  * Increased Happiness - mood-boosting exercises
+
+  <b>Privacy & Accessibility:</b>
+  * All data stored locally on device
+  * No accounts or personal information required
+  * Works completely offline after initial download
+  * Cross-platform Flutter implementation
+  * Dark and light theme support
+
+  Perfect for beginners starting meditation, busy professionals needing stress relief, students seeking focus, and experienced practitioners wanting variety.
+
+RepoType: git
+Repo: https://github.com/ghostp13409/WindChime
+
+Builds:
+  - versionName: "1.0"
+    versionCode: 1
+    commit: v1.0
+    subdir: android
+    sudo:
+      - apt-get update
+      - apt-get install -y openjdk-17-jdk-headless
+      - update-java-alternatives --set java-1.17.0-openjdk-amd64
+    output: app-release.apk
+    build:
+      - cd ..
+      - export PUB_CACHE=$(pwd)/.pub-cache
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+      - $$flutter$$/bin/flutter build apk --release
+    ndk: 25.1.8937393
+
+MaintainerNotes: |-
+  This app requires Flutter SDK for building. The app includes embedded meditation
+  audio files which significantly increase the APK size. All audio content is
+  royalty-free and properly licensed for distribution.
+
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: "0.1.0"
+CurrentVersionCode: 1
