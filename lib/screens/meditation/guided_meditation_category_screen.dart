@@ -264,80 +264,80 @@ class _GuidedMeditationCategoryScreenState
             'difficulty': 'Beginner',
           },
         ],
-        'self_guided': [
-          {
-            'title': 'Five Minutes Just Bells',
-            'duration': '5:32',
-            'description': 'Silent meditation with beginning and ending bells',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3',
-            'difficulty': 'Beginner',
-          },
-          {
-            'title': 'Ten Minutes Just Bells',
-            'duration': '10:32',
-            'description': 'Extended silent practice with bell markers',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3',
-            'difficulty': 'Beginner',
-          },
-          {
-            'title': 'Twenty Minutes Just Bells',
-            'duration': '20:30',
-            'description': 'Longer silent meditation with bells',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3',
-            'difficulty': 'Intermediate',
-          },
-          {
-            'title': 'Twenty Minute Bells (5 min intervals)',
-            'duration': '20:29',
-            'description': 'Structured meditation with 5-minute interval bells',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3',
-            'difficulty': 'Intermediate',
-          },
-          {
-            'title': 'Twenty-Five Minute Bells (5 min intervals)',
-            'duration': '25:31',
-            'description': 'Extended practice with regular bell intervals',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3',
-            'difficulty': 'Intermediate',
-          },
-          {
-            'title': 'Thirty Minute Bells (5 min intervals)',
-            'duration': '30:28',
-            'description': 'Half-hour meditation with interval structure',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3',
-            'difficulty': 'Advanced',
-          },
-          {
-            'title': 'Forty-Five Minute Bells (15 min intervals)',
-            'duration': '45:33',
-            'description': 'Long meditation with 15-minute bell intervals',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3',
-            'difficulty': 'Advanced',
-          },
-          {
-            'title': 'Forty-Five Minute Bells (5 min intervals)',
-            'duration': '45:35',
-            'description': 'Extended meditation with frequent bell intervals',
-            'source': 'Mindfulness Bells',
-            'audioPath':
-                'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3',
-            'difficulty': 'Advanced',
-          },
-        ],
+        // 'self_guided': [
+        //   {
+        //     'title': 'Five Minutes Just Bells',
+        //     'duration': '5:32',
+        //     'description': 'Silent meditation with beginning and ending bells',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3',
+        //     'difficulty': 'Beginner',
+        //   },
+        //   {
+        //     'title': 'Ten Minutes Just Bells',
+        //     'duration': '10:32',
+        //     'description': 'Extended silent practice with bell markers',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3',
+        //     'difficulty': 'Beginner',
+        //   },
+        //   {
+        //     'title': 'Twenty Minutes Just Bells',
+        //     'duration': '20:30',
+        //     'description': 'Longer silent meditation with bells',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3',
+        //     'difficulty': 'Intermediate',
+        //   },
+        //   {
+        //     'title': 'Twenty Minute Bells (5 min intervals)',
+        //     'duration': '20:29',
+        //     'description': 'Structured meditation with 5-minute interval bells',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3',
+        //     'difficulty': 'Intermediate',
+        //   },
+        //   {
+        //     'title': 'Twenty-Five Minute Bells (5 min intervals)',
+        //     'duration': '25:31',
+        //     'description': 'Extended practice with regular bell intervals',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3',
+        //     'difficulty': 'Intermediate',
+        //   },
+        //   {
+        //     'title': 'Thirty Minute Bells (5 min intervals)',
+        //     'duration': '30:28',
+        //     'description': 'Half-hour meditation with interval structure',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3',
+        //     'difficulty': 'Advanced',
+        //   },
+        //   {
+        //     'title': 'Forty-Five Minute Bells (15 min intervals)',
+        //     'duration': '45:33',
+        //     'description': 'Long meditation with 15-minute bell intervals',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3',
+        //     'difficulty': 'Advanced',
+        //   },
+        //   {
+        //     'title': 'Forty-Five Minute Bells (5 min intervals)',
+        //     'duration': '45:35',
+        //     'description': 'Extended meditation with frequent bell intervals',
+        //     'source': 'Mindfulness Bells',
+        //     'audioPath':
+        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3',
+        //     'difficulty': 'Advanced',
+        //   },
+        // ],
       };
 
   @override

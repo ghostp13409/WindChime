@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'feedback_screen.dart';
+import 'package:windchime/widgets/shared/donation_widget.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
@@ -34,24 +35,7 @@ class _AboutScreenState extends State<AboutScreen>
   late Animation<double> _fadeAnimation;
   int _currentPage = 0;
 
-  final List<DonationMethod> _donationMethods = [
-    DonationMethod(
-      name: 'PayPal',
-      icon: Icons.payment,
-      qrImagePath: 'assets/images/about/donatepaypal.png',
-      color: const Color(0xFF003087),
-      url: 'https://www.paypal.com/qrcodes/p2pqrc/UUTYHV3A526VY',
-      description: 'Support via PayPal',
-    ),
-    DonationMethod(
-      name: 'Bitcoin',
-      icon: Icons.currency_bitcoin,
-      qrImagePath: 'assets/images/about/donatebtc.png',
-      color: const Color(0xFFF7931A),
-      url: 'bc1qn3rgkrkv287k5hauymtnpd6uzu67gsmv0kcma5',
-      description: 'Support via Bitcoin',
-    ),
-  ];
+
 
   final List<SocialLink> _socialLinks = [
     SocialLink(
@@ -146,56 +130,7 @@ class _AboutScreenState extends State<AboutScreen>
     }
   }
 
-  Future<void> _copyBitcoinAddress(String address) async {
-    try {
-      await Clipboard.setData(ClipboardData(text: address));
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Row(
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    'Bitcoin address copied to clipboard',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            backgroundColor: const Color(0xFF4CAF50),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.all(16),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to copy address'),
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: const EdgeInsets.all(16),
-          ),
-        );
-      }
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -635,22 +570,8 @@ class _AboutScreenState extends State<AboutScreen>
           ),
           const SizedBox(height: 20),
 
-          // Donation methods grid
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.4,
-            ),
-            itemCount: _donationMethods.length,
-            itemBuilder: (context, index) {
-              final method = _donationMethods[index];
-              return _buildDonationCard(method);
-            },
-          ),
+          // In-App Purchase Donation Widget
+          const DonationWidget(),
         ],
       ),
     );
@@ -803,229 +724,9 @@ class _AboutScreenState extends State<AboutScreen>
     );
   }
 
-  Widget _buildDonationCard(DonationMethod method) {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        _showDonationDialog(method);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              method.color.withOpacity(0.08),
-              method.color.withOpacity(0.04),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: method.color.withOpacity(0.2),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: method.color.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    method.color.withOpacity(0.2),
-                    method.color.withOpacity(0.1),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                method.icon,
-                color: method.color,
-                size: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              method.name,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: method.color,
-                    letterSpacing: -0.1,
-                    fontSize: 14,
-                  ),
-            ),
-            const SizedBox(height: 2),
-            Flexible(
-              child: Text(
-                method.description,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.8),
-                      fontSize: 10,
-                    ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  void _showDonationDialog(DonationMethod method) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            method.color.withOpacity(0.2),
-                            method.color.withOpacity(0.1),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Icon(
-                        method.icon,
-                        color: method.color,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Support via ${method.name}',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.3,
-                            ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.close,
-                        color: Colors.grey.withOpacity(0.8),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
 
-                // QR Code
-                Container(
-                  width: 200,
-                  height: 200,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Image.asset(
-                    method.qrImagePath,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                const SizedBox(height: 20),
 
-                Text(
-                  method.name == 'Bitcoin'
-                      ? method.url
-                      : 'Scan the QR code or tap the button below',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey.withOpacity(0.8),
-                      ),
-                ),
-                const SizedBox(height: 20),
-
-                // Action Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      HapticFeedback.lightImpact();
-                      if (method.name == 'Bitcoin') {
-                        _copyBitcoinAddress(method.url);
-                      } else {
-                        _launchUrl(method.url);
-                      }
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: method.color,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 0,
-                    ),
-                    child: Text(
-                      method.name == 'Bitcoin'
-                          ? 'Copy Address'
-                          : 'Open ${method.name}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   void _showRoadmapDialog() {
     showDialog(
@@ -1294,23 +995,7 @@ class _AboutScreenState extends State<AboutScreen>
   }
 }
 
-class DonationMethod {
-  final String name;
-  final IconData icon;
-  final String qrImagePath;
-  final Color color;
-  final String url;
-  final String description;
 
-  DonationMethod({
-    required this.name,
-    required this.icon,
-    required this.qrImagePath,
-    required this.color,
-    required this.url,
-    required this.description,
-  });
-}
 
 class RoadmapMilestone {
   final String title;

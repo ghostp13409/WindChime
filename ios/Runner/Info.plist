@@ -49,8 +49,6 @@
 	<array>
 		<string>https</string>
 		<string>http</string>
-		<string>paypal</string>
-		<string>paypalhere</string>
 	</array>
 </dict>
 </plist>

@@ -34,6 +34,7 @@ dependencies:
   device_info_plus: ^10.1.0
   package_info_plus: ^8.3.0
   image_picker: ^1.1.2
+  in_app_purchase: ^3.1.13
 
 dev_dependencies:
   flutter_test:
@@ -87,16 +88,6 @@ flutter:
     - assets/sounds/meditation/guided/guided_imagery/MindfulnessMountainMeditationPeterMorgan.mp3
     - assets/sounds/meditation/guided/guided_imagery/PadraigTheMountain.mp3
 
-    # Guided Meditation - Self Guided Mindfulness Exercises
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3
-    - assets/sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3
-
     # Guided Meditation - Sitting Meditations
     - assets/sounds/meditation/guided/sitting_meditations/Breath, Sound and Body.mp3
     - assets/sounds/meditation/guided/sitting_meditations/Breath, Sounds, Body, Thoughts, Emotions.mp3
@@ -117,8 +108,6 @@ flutter:
     - assets/sounds/meditation/statechange/rest.wav
 
     # About page images
-    - assets/images/about/donatepaypal.png
-    - assets/images/about/donatebtc.png
     - assets/images/about/profile.png
 
 # Flutter Launcher Icons configuration
