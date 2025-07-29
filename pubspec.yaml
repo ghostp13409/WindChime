@@ -5,8 +5,8 @@ version: 0.1.0
 
 # License information
 license: GPL-3.0
-homepage: https://github.com/yourusername/windchime
-repository: https://github.com/yourusername/windchime
+homepage: https://github.com/ghostp13409/windchime
+repository: https://github.com/ghostp13409/windchime
 
 environment:
   sdk: ^3.6.1
@@ -45,70 +45,23 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    # Keep directory references for backward compatibility
-    - assets/
-    - assets/images/
-    - assets/sounds/
-    - assets/sounds/meditation/
-    - assets/sounds/meditation/statechange/
-    - assets/sounds/meditation/guided/
-
     # App images
     - assets/images/AppLogo.svg
     - assets/images/logo.png
+    - assets/images/about/profile.png
 
-    # Breathwork meditation sounds
+    # Bundled audio files (smaller files only)
     - assets/sounds/meditation/Anxiety.mp3
     - assets/sounds/meditation/Focus.mp3
     - assets/sounds/meditation/Sleep.mp3
     - assets/sounds/meditation/happy.mp3
-
-    # Guided Meditation - Body Scan
-    - assets/sounds/meditation/guided/body_scan/Body Scan.mp3
-    - assets/sounds/meditation/guided/body_scan/Fifteen Minute Body Scan.mp3
-    - assets/sounds/meditation/guided/body_scan/Forty-Five Minute Body Scan.mp3
-    - assets/sounds/meditation/guided/body_scan/Four Minute Body Scan.mp3
-    - assets/sounds/meditation/guided/body_scan/Twenty Minute Body Scan.mp3
-
-    # Guided Meditation - Breathing Practices
-    - assets/sounds/meditation/guided/breathing_practices/Five Minute Breathing.mp3
-    - assets/sounds/meditation/guided/breathing_practices/Six Minute Breath Awareness.mp3
-    - assets/sounds/meditation/guided/breathing_practices/Ten Minute Breathing.mp3
-    - assets/sounds/meditation/guided/breathing_practices/Ten Minute Mindfulness of Breathing.mp3
-    - assets/sounds/meditation/guided/breathing_practices/Three Minute Breathing.mp3
-
-    # Guided Meditation - Brief Mindfulness Practices
-    - assets/sounds/meditation/guided/brief_mindfulness_practices/Brief Mindfulness Practice.mp3
-    - assets/sounds/meditation/guided/brief_mindfulness_practices/The Breathing Space.mp3
-    - assets/sounds/meditation/guided/brief_mindfulness_practices/The Tension Release Meditation.mp3
-    - assets/sounds/meditation/guided/brief_mindfulness_practices/Three Minute Mindfulness of Sounds.mp3
-    - assets/sounds/meditation/guided/brief_mindfulness_practices/Three Step Breathing Space.mp3
-
-    # Guided Meditation - Guided Imagery
-    - assets/sounds/meditation/guided/guided_imagery/MindfulnessMountainMeditationPeterMorgan.mp3
-    - assets/sounds/meditation/guided/guided_imagery/PadraigTheMountain.mp3
-
-    # Guided Meditation - Sitting Meditations
-    - assets/sounds/meditation/guided/sitting_meditations/Breath, Sound and Body.mp3
-    - assets/sounds/meditation/guided/sitting_meditations/Breath, Sounds, Body, Thoughts, Emotions.mp3
-    - assets/sounds/meditation/guided/sitting_meditations/Compassionate Breath.mp3
-    - assets/sounds/meditation/guided/sitting_meditations/Seated Meditation.mp3
-    - assets/sounds/meditation/guided/sitting_meditations/Sitting Meditation.mp3
-    - assets/sounds/meditation/guided/sitting_meditations/Ten Minute Wisdom Meditation.mp3
-
-    # App sounds
     - assets/sounds/startup/bell.wav
     - assets/sounds/startup/completetask.mp3
     - assets/sounds/startup/smallbell.mp3
-
-    # Breathwork state change sounds
     - assets/sounds/meditation/statechange/breath_in.wav
     - assets/sounds/meditation/statechange/breath_out.wav
     - assets/sounds/meditation/statechange/hold.wav
     - assets/sounds/meditation/statechange/rest.wav
-
-    # About page images
-    - assets/images/about/profile.png
 
 # Flutter Launcher Icons configuration
 

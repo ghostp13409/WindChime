@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:windchime/data/repositories/meditation_repository.dart';
 import 'package:windchime/models/meditation/session_history.dart';
+import 'package:windchime/services/audio_download_service.dart';
 
 class GuidedMeditationSessionScreen extends StatefulWidget {
   final String title;
@@ -138,8 +139,42 @@ class _GuidedMeditationSessionScreenState
     _audioPlayer = AudioPlayer();
 
     try {
-      // Set up audio source
-      await _audioPlayer.setAsset('assets/${widget.audioPath}');
+      // Get the audio file path (bundled or downloaded)
+      final audioDownloadService = AudioDownloadService();
+      final audioFilePath =
+          await audioDownloadService.getAudioFilePath(widget.audioPath);
+
+      if (audioFilePath == null) {
+        // File not downloaded yet, try to download it
+        final success = await audioDownloadService.downloadAudio(
+          widget.audioPath,
+          onError: (error) {
+            debugPrint('Download error: $error');
+          },
+        );
+
+        if (success) {
+          // Try to get the path again after download
+          final downloadedPath =
+              await audioDownloadService.getAudioFilePath(widget.audioPath);
+          if (downloadedPath != null) {
+            await _audioPlayer.setFilePath(downloadedPath);
+          } else {
+            throw Exception('Failed to get downloaded file path');
+          }
+        } else {
+          throw Exception('Failed to download audio file');
+        }
+      } else {
+        // File is available (bundled or downloaded)
+        if (audioFilePath.startsWith('assets/')) {
+          // Bundled file
+          await _audioPlayer.setAsset(audioFilePath);
+        } else {
+          // Downloaded file
+          await _audioPlayer.setFilePath(audioFilePath);
+        }
+      }
 
       // Listen to player state changes with managed subscription
       _playerStateSubscription = _audioPlayer.playerStateStream.listen((state) {

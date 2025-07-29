@@ -28,6 +28,7 @@ import 'package:windchime/screens/about/about_screen.dart';
 import 'package:windchime/screens/onboarding/welcome_tour.dart';
 import 'package:windchime/services/onboarding_service.dart';
 import 'package:windchime/services/in_app_purchase_service.dart';
+import 'package:windchime/services/audio_download_service.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
 import 'package:windchime/themes/dark_theme_data.dart';
@@ -48,6 +49,10 @@ Future<void> main() async {
 
   // Initialize in-app purchase service
   await InAppPurchaseService.initialize();
+
+  // Initialize audio download service
+  await AudioDownloadService().initialize();
+
   runApp(
     MultiProvider(
       providers: [

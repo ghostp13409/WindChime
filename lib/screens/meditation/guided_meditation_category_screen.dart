@@ -19,6 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/screens/meditation/guided_meditation_instruction_screen.dart';
 import 'package:windchime/models/meditation/guided_meditation.dart';
+import 'package:windchime/services/audio_download_service.dart';
+import 'package:windchime/config/audio_config.dart';
+import 'package:windchime/widgets/shared/download_progress_widget.dart';
 
 class GuidedMeditationCategoryScreen extends StatefulWidget {
   final String categoryId;
@@ -44,6 +47,11 @@ class _GuidedMeditationCategoryScreenState
     with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
+
+  final AudioDownloadService _downloadService = AudioDownloadService();
+  bool _isDownloading = false;
+  double _downloadProgress = 0.0;
+  String _downloadMessage = '';
 
   // Define meditation data for each category
   Map<String, List<Map<String, dynamic>>> get categoryMeditations => {
@@ -264,80 +272,80 @@ class _GuidedMeditationCategoryScreenState
             'difficulty': 'Beginner',
           },
         ],
-        // 'self_guided': [
-        //   {
-        //     'title': 'Five Minutes Just Bells',
-        //     'duration': '5:32',
-        //     'description': 'Silent meditation with beginning and ending bells',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3',
-        //     'difficulty': 'Beginner',
-        //   },
-        //   {
-        //     'title': 'Ten Minutes Just Bells',
-        //     'duration': '10:32',
-        //     'description': 'Extended silent practice with bell markers',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3',
-        //     'difficulty': 'Beginner',
-        //   },
-        //   {
-        //     'title': 'Twenty Minutes Just Bells',
-        //     'duration': '20:30',
-        //     'description': 'Longer silent meditation with bells',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3',
-        //     'difficulty': 'Intermediate',
-        //   },
-        //   {
-        //     'title': 'Twenty Minute Bells (5 min intervals)',
-        //     'duration': '20:29',
-        //     'description': 'Structured meditation with 5-minute interval bells',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3',
-        //     'difficulty': 'Intermediate',
-        //   },
-        //   {
-        //     'title': 'Twenty-Five Minute Bells (5 min intervals)',
-        //     'duration': '25:31',
-        //     'description': 'Extended practice with regular bell intervals',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3',
-        //     'difficulty': 'Intermediate',
-        //   },
-        //   {
-        //     'title': 'Thirty Minute Bells (5 min intervals)',
-        //     'duration': '30:28',
-        //     'description': 'Half-hour meditation with interval structure',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3',
-        //     'difficulty': 'Advanced',
-        //   },
-        //   {
-        //     'title': 'Forty-Five Minute Bells (15 min intervals)',
-        //     'duration': '45:33',
-        //     'description': 'Long meditation with 15-minute bell intervals',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3',
-        //     'difficulty': 'Advanced',
-        //   },
-        //   {
-        //     'title': 'Forty-Five Minute Bells (5 min intervals)',
-        //     'duration': '45:35',
-        //     'description': 'Extended meditation with frequent bell intervals',
-        //     'source': 'Mindfulness Bells',
-        //     'audioPath':
-        //         'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3',
-        //     'difficulty': 'Advanced',
-        //   },
-        // ],
+        'self_guided': [
+          {
+            'title': 'Five Minutes Just Bells',
+            'duration': '5:32',
+            'description': 'Silent meditation with beginning and ending bells',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3',
+            'difficulty': 'Beginner',
+          },
+          {
+            'title': 'Ten Minutes Just Bells',
+            'duration': '10:32',
+            'description': 'Extended silent practice with bell markers',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Ten Minutes Just Bells.mp3',
+            'difficulty': 'Beginner',
+          },
+          {
+            'title': 'Twenty Minutes Just Bells',
+            'duration': '20:30',
+            'description': 'Longer silent meditation with bells',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minutes Just Bells.mp3',
+            'difficulty': 'Intermediate',
+          },
+          {
+            'title': 'Twenty Minute Bells (5 min intervals)',
+            'duration': '20:29',
+            'description': 'Structured meditation with 5-minute interval bells',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty Minute Bells (5 min intervals).mp3',
+            'difficulty': 'Intermediate',
+          },
+          {
+            'title': 'Twenty-Five Minute Bells (5 min intervals)',
+            'duration': '25:31',
+            'description': 'Extended practice with regular bell intervals',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Twenty-Five Minute Bells (5 min intervals).mp3',
+            'difficulty': 'Intermediate',
+          },
+          {
+            'title': 'Thirty Minute Bells (5 min intervals)',
+            'duration': '30:28',
+            'description': 'Half-hour meditation with interval structure',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Thirty Minute Bells (5 min intervals).mp3',
+            'difficulty': 'Advanced',
+          },
+          {
+            'title': 'Forty-Five Minute Bells (15 min intervals)',
+            'duration': '45:33',
+            'description': 'Long meditation with 15-minute bell intervals',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (15 min intervals).mp3',
+            'difficulty': 'Advanced',
+          },
+          {
+            'title': 'Forty-Five Minute Bells (5 min intervals)',
+            'duration': '45:35',
+            'description': 'Extended meditation with frequent bell intervals',
+            'source': 'Mindfulness Bells',
+            'audioPath':
+                'sounds/meditation/guided/self_guided_mindfulness_exercises/Forty-Five Minute Bells (5 min intervals).mp3',
+            'difficulty': 'Advanced',
+          },
+        ],
       };
 
   @override
@@ -394,7 +402,32 @@ class _GuidedMeditationCategoryScreenState
     }
   }
 
-  void _startMeditation(Map<String, dynamic> meditationData) {
+  void _startMeditation(Map<String, dynamic> meditationData) async {
+    final audioPath = meditationData['audioPath'];
+
+    // Debug logging
+    print('Audio path: $audioPath');
+    print('Should download: ${AudioConfig.shouldDownload(audioPath)}');
+    print('Download URL: ${AudioConfig.getDownloadUrl(audioPath)}');
+
+    // Check if this is a downloadable file
+    if (AudioConfig.shouldDownload(audioPath)) {
+      // Check if already downloaded
+      final isDownloaded = await _downloadService.isDownloaded(audioPath);
+      print('Is downloaded: $isDownloaded');
+
+      if (!isDownloaded) {
+        // Show download dialog
+        await _showDownloadDialog(audioPath, meditationData);
+        return;
+      }
+    }
+
+    // Proceed with meditation
+    _navigateToMeditation(meditationData);
+  }
+
+  void _navigateToMeditation(Map<String, dynamic> meditationData) {
     // Convert map data to GuidedMeditation object
     final meditation = GuidedMeditation(
       id: '${widget.categoryId}_${meditationData['title'].toString().replaceAll(' ', '_').toLowerCase()}',
@@ -421,6 +454,120 @@ class _GuidedMeditationCategoryScreenState
         ),
       ),
     );
+  }
+
+  Future<void> _showDownloadDialog(
+      String audioPath, Map<String, dynamic> meditationData) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Download Required'),
+        content: Text(
+          'This meditation needs to be downloaded first. Would you like to download "${meditationData['title']}"?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _downloadAndStartMeditation(audioPath, meditationData);
+            },
+            child: const Text('Download'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _downloadAndStartMeditation(
+      String audioPath, Map<String, dynamic> meditationData) async {
+    setState(() {
+      _isDownloading = true;
+      _downloadProgress = 0.0;
+      _downloadMessage = 'Downloading ${meditationData['title']}...';
+    });
+
+    try {
+      final success = await _downloadService.downloadAudio(
+        audioPath,
+        onProgress: (progress) {
+          setState(() {
+            _downloadProgress = progress;
+          });
+        },
+        onError: (error) {
+          setState(() {
+            _isDownloading = false;
+          });
+          _showErrorDialog(error);
+        },
+      );
+
+      if (success) {
+        setState(() {
+          _isDownloading = false;
+        });
+        _navigateToMeditation(meditationData);
+      } else {
+        setState(() {
+          _isDownloading = false;
+        });
+        _showErrorDialog(
+            'Download failed. Please check your internet connection and try again.');
+      }
+    } catch (e) {
+      setState(() {
+        _isDownloading = false;
+      });
+      _showErrorDialog('Download error: $e');
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Download Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _testDownload() async {
+    // Test with a sample meditation
+    final testMeditation = {
+      'title': 'Test Meditation',
+      'audioPath':
+          'sounds/meditation/guided/sitting_meditations/Seated Meditation.mp3',
+    };
+
+    print('=== TESTING DOWNLOAD SYSTEM ===');
+    print('Audio path: ${testMeditation['audioPath']}');
+    print(
+        'Should download: ${AudioConfig.shouldDownload(testMeditation['audioPath'] ?? '')}');
+    print(
+        'Download URL: ${AudioConfig.getDownloadUrl(testMeditation['audioPath'] ?? '')}');
+
+    final isDownloaded =
+        await _downloadService.isDownloaded(testMeditation['audioPath'] ?? '');
+    print('Is downloaded: $isDownloaded');
+
+    if (!isDownloaded) {
+      await _showDownloadDialog(
+          testMeditation['audioPath'] ?? '', testMeditation);
+    } else {
+      print('File is already downloaded!');
+    }
   }
 
   int _parseDurationToSeconds(String duration) {
@@ -874,37 +1021,75 @@ class _GuidedMeditationCategoryScreenState
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child: Column(
+          child: Stack(
             children: [
-              // Modern Header exactly like home screen
-              _buildModernHeader(),
+              Column(
+                children: [
+                  // Modern Header exactly like home screen
+                  _buildModernHeader(),
 
-              // Category description section
-              _buildCategoryDescription(),
+                  // Category description section
+                  _buildCategoryDescription(),
 
-              const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-              // Meditations list
-              Expanded(
-                child: meditations.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No meditations available',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: Colors.grey.withOpacity(0.6)),
-                        ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: meditations.length,
-                        itemBuilder: (context, index) {
-                          return _buildMeditationCard(meditations[index]);
-                        },
-                      ),
+                  // Meditations list
+                  Expanded(
+                    child: meditations.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No meditations available',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      color: Colors.grey.withOpacity(0.6)),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              // Debug button for testing
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: ElevatedButton(
+                                  onPressed: () => _testDownload(),
+                                  child: const Text('Test Download System'),
+                                ),
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: meditations.length,
+                                  itemBuilder: (context, index) {
+                                    return _buildMeditationCard(
+                                        meditations[index]);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                ],
               ),
+
+              // Download progress overlay
+              if (_isDownloading)
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: DownloadProgressWidget(
+                      progress: _downloadProgress,
+                      message: _downloadMessage,
+                      onCancel: () {
+                        setState(() {
+                          _isDownloading = false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

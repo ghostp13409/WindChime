@@ -21,6 +21,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:windchime/models/meditation/guided_meditation.dart';
 import 'package:windchime/models/meditation/session_history.dart';
 import 'package:windchime/data/repositories/meditation_repository.dart';
+import 'package:windchime/services/audio_download_service.dart';
 
 enum PlaybackState {
   stopped,
@@ -129,9 +130,44 @@ class GuidedMeditationService extends ChangeNotifier {
       _currentMeditation = meditation;
       _updatePlaybackState(PlaybackState.loading);
 
-      await _audioPlayer.setAsset(meditation.audioPath);
-      _updatePlaybackState(PlaybackState.paused);
+      // Get the audio file path (bundled or downloaded)
+      final audioDownloadService = AudioDownloadService();
+      final audioFilePath =
+          await audioDownloadService.getAudioFilePath(meditation.audioPath);
 
+      if (audioFilePath == null) {
+        // File not downloaded yet, try to download it
+        final success = await audioDownloadService.downloadAudio(
+          meditation.audioPath,
+          onError: (error) {
+            debugPrint('Download error: $error');
+          },
+        );
+
+        if (success) {
+          // Try to get the path again after download
+          final downloadedPath =
+              await audioDownloadService.getAudioFilePath(meditation.audioPath);
+          if (downloadedPath != null) {
+            await _audioPlayer.setFilePath(downloadedPath);
+          } else {
+            throw Exception('Failed to get downloaded file path');
+          }
+        } else {
+          throw Exception('Failed to download audio file');
+        }
+      } else {
+        // File is available (bundled or downloaded)
+        if (audioFilePath.startsWith('assets/')) {
+          // Bundled file
+          await _audioPlayer.setAsset(audioFilePath);
+        } else {
+          // Downloaded file
+          await _audioPlayer.setFilePath(audioFilePath);
+        }
+      }
+
+      _updatePlaybackState(PlaybackState.paused);
       notifyListeners();
     } catch (e) {
       debugPrint('Error loading meditation: $e');
