@@ -88,4 +88,4 @@ class InAppPurchaseConfig {
         return 'card_giftcard';
     }
   }
-} 
+}
