@@ -35,8 +35,6 @@ class _AboutScreenState extends State<AboutScreen>
   late Animation<double> _fadeAnimation;
   int _currentPage = 0;
 
-
-
   final List<SocialLink> _socialLinks = [
     SocialLink(
       icon: Icons.code,
@@ -129,8 +127,6 @@ class _AboutScreenState extends State<AboutScreen>
       }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -486,91 +482,7 @@ class _AboutScreenState extends State<AboutScreen>
           ),
           const SizedBox(height: 32),
 
-          // Support Development section (integrated)
-          Row(
-            children: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFFFFCF86).withOpacity(0.2),
-                      const Color(0xFFFFCF86).withOpacity(0.1),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.favorite,
-                  color: Color(0xFFFFCF86),
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Support Development',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: -0.2,
-                          ),
-                    ),
-                    Text(
-                      'Help me bring WindChime to more people or to buy a coffee',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.grey.withOpacity(0.8),
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              // Roadmap info button
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    _showRoadmapDialog();
-                  },
-                  icon: Icon(
-                    Icons.info_outline,
-                    color: Colors.grey.withOpacity(0.8),
-                    size: 20,
-                  ),
-                  iconSize: 20,
-                  padding: const EdgeInsets.all(8),
-                  constraints: const BoxConstraints(
-                    minWidth: 36,
-                    minHeight: 36,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'If WindChime brings you peace, please consider helping me reach more people! '
-            'I\'m a solo developer with limited resources to publish widely or add bigger features. '
-            'So, your donations helps a lot! Rest assured, WindChime is and will always be free and open source. '
-            'If you are as broke as me, just sharing it helps too!',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.6,
-                  letterSpacing: 0.2,
-                ),
-          ),
-          const SizedBox(height: 20),
-
-          // In-App Purchase Donation Widget
+          // Donation Screen
           const DonationWidget(),
         ],
       ),
@@ -724,143 +636,6 @@ class _AboutScreenState extends State<AboutScreen>
     );
   }
 
-
-
-
-
-  void _showRoadmapDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            constraints: BoxConstraints(
-              maxWidth: 400,
-              maxHeight: MediaQuery.of(context).size.height * 0.8,
-            ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            const Color(0xFFFFCF86).withOpacity(0.2),
-                            const Color(0xFFFFCF86).withOpacity(0.1),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.route,
-                        color: Color(0xFFFFCF86),
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Development Roadmap',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: -0.3,
-                            ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: Icon(
-                        Icons.close,
-                        color: Colors.grey.withOpacity(0.8),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-
-                // Scrollable content
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        // Roadmap content
-                        Text(
-                          'Your support helps reach these milestones',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.grey.withOpacity(0.8),
-                                  ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        // Milestones
-                        ..._buildRoadmapMilestones(),
-
-                        const SizedBox(height: 24),
-
-                        // Call to action
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xFFFFCF86).withOpacity(0.1),
-                                const Color(0xFFFFCF86).withOpacity(0.05),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: const Color(0xFFFFCF86).withOpacity(0.2),
-                            ),
-                          ),
-                          child: Text(
-                            'All contributions, big or small, goes 100% to development! well except for the ones that goes into coffee.',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: const Color(0xFFFFCF86),
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.5,
-                                ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   List<Widget> _buildRoadmapMilestones() {
     final milestones = [
       RoadmapMilestone(
@@ -994,8 +769,6 @@ class _AboutScreenState extends State<AboutScreen>
     );
   }
 }
-
-
 
 class RoadmapMilestone {
   final String title;
