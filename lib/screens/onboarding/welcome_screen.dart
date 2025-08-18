@@ -120,14 +120,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         ),
                       ],
                     ),
-                    child: Icon(
-                      Icons.self_improvement,
-                      size: 64,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.color
-                          ?.withOpacity(0.8),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(32),
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        width: 64,
+                        height: 64,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
 
