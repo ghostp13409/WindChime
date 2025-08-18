@@ -43,9 +43,9 @@ class AudioConfig {
 
     // Guided Imagery
     'sounds/meditation/guided/guided_imagery/MindfulnessMountainMeditationPeterMorgan.mp3':
-        'mountain_meditation_peter_morgan.mp3',
+        'mindfulnessmountainmeditationpetermorgan.mp3',
     'sounds/meditation/guided/guided_imagery/PadraigTheMountain.mp3':
-        'padraig_mountain.mp3',
+        'padraigthemountain.mp3',
 
     // Self Guided Mindfulness Exercises
     'sounds/meditation/guided/self_guided_mindfulness_exercises/Five Minutes Just Bells.mp3':

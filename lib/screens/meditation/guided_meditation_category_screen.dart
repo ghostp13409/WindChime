@@ -543,33 +543,6 @@ class _GuidedMeditationCategoryScreenState
     );
   }
 
-  void _testDownload() async {
-    // Test with a sample meditation
-    final testMeditation = {
-      'title': 'Test Meditation',
-      'audioPath':
-          'sounds/meditation/guided/sitting_meditations/Seated Meditation.mp3',
-    };
-
-    print('=== TESTING DOWNLOAD SYSTEM ===');
-    print('Audio path: ${testMeditation['audioPath']}');
-    print(
-        'Should download: ${AudioConfig.shouldDownload(testMeditation['audioPath'] ?? '')}');
-    print(
-        'Download URL: ${AudioConfig.getDownloadUrl(testMeditation['audioPath'] ?? '')}');
-
-    final isDownloaded =
-        await _downloadService.isDownloaded(testMeditation['audioPath'] ?? '');
-    print('Is downloaded: $isDownloaded');
-
-    if (!isDownloaded) {
-      await _showDownloadDialog(
-          testMeditation['audioPath'] ?? '', testMeditation);
-    } else {
-      print('File is already downloaded!');
-    }
-  }
-
   int _parseDurationToSeconds(String duration) {
     final parts = duration.split(':');
     if (parts.length == 2) {
@@ -1046,29 +1019,13 @@ class _GuidedMeditationCategoryScreenState
                                       color: Colors.grey.withOpacity(0.6)),
                             ),
                           )
-                        : Column(
-                            children: [
-                              // Debug button for testing
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: ElevatedButton(
-                                  onPressed: () => _testDownload(),
-                                  child: const Text('Test Download System'),
-                                ),
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: meditations.length,
-                                  itemBuilder: (context, index) {
-                                    return _buildMeditationCard(
-                                        meditations[index]);
-                                  },
-                                ),
-                              ),
-                            ],
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: meditations.length,
+                            itemBuilder: (context, index) {
+                              return _buildMeditationCard(meditations[index]);
+                            },
                           ),
                   ),
                 ],

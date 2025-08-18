@@ -30,8 +30,6 @@ class MeditationHomeScreen extends StatefulWidget {
 }
 
 class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
-  bool _showDemo = false;
-
   // Temp Image URLs
   static const String _sleep = 'images/meditation/sleep.png';
   static const String _focus = 'images/meditation/focus.png';
@@ -157,25 +155,6 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       ),
     ];
 
-    if (_showDemo) {
-      return [
-        MeditationCategory(
-          name: 'Demo',
-          icon: Icons.play_circle_outline,
-          color: const Color(0xFF00C896),
-          meditations: [
-            Meditation(
-              title: 'Quick Demo',
-              subtitle: 'Try a 10-second session',
-              duration: '10 sec',
-              image: _focus,
-            ),
-          ],
-        ),
-        ...baseCategories,
-      ];
-    }
-
     return baseCategories;
   }
 
@@ -234,26 +213,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                             );
                           },
                           onLongPress: () {
-                            HapticFeedback.mediumImpact();
-                            setState(() {
-                              _showDemo = !_showDemo;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  _showDemo
-                                      ? 'Demo mode enabled'
-                                      : 'Demo mode disabled',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: const Color(0xFF00C896),
-                                duration: const Duration(seconds: 2),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            );
+                            // Removed demo/test logic
                           },
                           child: Container(
                             padding: const EdgeInsets.all(12),

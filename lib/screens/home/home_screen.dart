@@ -219,19 +219,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildSectionTabs() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      padding: const EdgeInsets.all(4),
+      margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.1),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 12,
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 8,
             offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
@@ -252,12 +252,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                 decoration: BoxDecoration(
                   color: _currentPage == 0
                       ? Theme.of(context).colorScheme.surface
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(9),
                   border: _currentPage == 0
                       ? Border.all(
                           color:
@@ -268,47 +268,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   boxShadow: _currentPage == 0
                       ? [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 8,
+                            color: Colors.black.withOpacity(0.12),
+                            blurRadius: 6,
                             offset: const Offset(0, 2),
                             spreadRadius: 0,
                           ),
                         ]
                       : null,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.air,
-                      size: 18,
-                      color: _currentPage == 0
-                          ? Theme.of(context).textTheme.bodyLarge?.color
-                          : Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.color
-                              ?.withOpacity(0.6),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Breathwork',
-                      style: TextStyle(
-                        color: _currentPage == 0
-                            ? Theme.of(context).textTheme.bodyLarge?.color
-                            : Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.color
-                                ?.withOpacity(0.6),
-                        fontWeight: _currentPage == 0
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                        fontSize: 15,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  Icons.air,
+                  size: 20,
+                  color: _currentPage == 0
+                      ? Theme.of(context).textTheme.bodyLarge?.color
+                      : Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.color
+                          ?.withOpacity(0.6),
                 ),
               ),
             ),
@@ -326,12 +303,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                 decoration: BoxDecoration(
                   color: _currentPage == 1
                       ? Theme.of(context).colorScheme.surface
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(9),
                   border: _currentPage == 1
                       ? Border.all(
                           color:
@@ -342,47 +319,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   boxShadow: _currentPage == 1
                       ? [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 8,
+                            color: Colors.black.withOpacity(0.12),
+                            blurRadius: 6,
                             offset: const Offset(0, 2),
                             spreadRadius: 0,
                           ),
                         ]
                       : null,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.headset,
-                      size: 18,
-                      color: _currentPage == 1
-                          ? Theme.of(context).textTheme.bodyLarge?.color
-                          : Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.color
-                              ?.withOpacity(0.6),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Guided',
-                      style: TextStyle(
-                        color: _currentPage == 1
-                            ? Theme.of(context).textTheme.bodyLarge?.color
-                            : Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.color
-                                ?.withOpacity(0.6),
-                        fontWeight: _currentPage == 1
-                            ? FontWeight.w600
-                            : FontWeight.w500,
-                        fontSize: 15,
-                        letterSpacing: 0.3,
-                      ),
-                    ),
-                  ],
+                child: Icon(
+                  Icons.headset,
+                  size: 20,
+                  color: _currentPage == 1
+                      ? Theme.of(context).textTheme.bodyLarge?.color
+                      : Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.color
+                          ?.withOpacity(0.6),
                 ),
               ),
             ),
@@ -446,46 +400,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Elegant header with history button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          // Header with description and history button
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Theme.of(context).dividerColor.withOpacity(0.1),
+                width: 1,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
+                    Icon(
+                      Icons.headset,
+                      size: 20,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.color
+                          ?.withOpacity(0.8),
+                    ),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Guided Meditations',
                         style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: -0.5,
-                                  fontSize: 32,
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: -0.2,
                                 ),
                       ),
                     ),
-                    // History button
+                    // Compact history button
                     Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color:
                               Theme.of(context).dividerColor.withOpacity(0.2),
                           width: 1,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
                       ),
                       child: IconButton(
                         onPressed: () {
@@ -503,40 +467,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: Theme.of(context)
                               .iconTheme
                               .color
-                              ?.withOpacity(0.8),
+                              ?.withOpacity(0.7),
                         ),
-                        iconSize: 22,
-                        padding: const EdgeInsets.all(12),
-                        tooltip: 'Guided Meditation History',
+                        iconSize: 18,
+                        padding: const EdgeInsets.all(6),
+                        constraints:
+                            const BoxConstraints(minWidth: 30, minHeight: 30),
+                        tooltip: 'History',
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 8),
                 Text(
                   'Expert-guided meditation experiences with soothing narration and mindful awareness practices.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey.withOpacity(0.7),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.3,
-                        height: 1.4,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey.withOpacity(0.8),
+                        height: 1.3,
+                        fontSize: 12,
                       ),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 24),
-
-          // Meditation categories grid
+          // Optimized grid layout with better space utilization
           Expanded(
             child: GridView.builder(
               physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.zero,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.85,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.9,
               ),
               itemCount: meditationCategories.length,
               itemBuilder: (context, index) {
@@ -556,12 +520,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(28),
+                      borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.04),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
+                          blurRadius: 16,
+                          offset: const Offset(0, 6),
                           spreadRadius: 0,
                         ),
                         BoxShadow(
@@ -573,7 +537,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(28),
+                      borderRadius: BorderRadius.circular(20),
                       child: Stack(
                         children: [
                           // Subtle gradient overlay
@@ -592,14 +556,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                           // Content
                           Padding(
-                            padding: const EdgeInsets.all(24),
+                            padding: const EdgeInsets.all(18),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Icon with elegant styling
                                 Container(
-                                  width: 56,
-                                  height: 56,
+                                  width: 48,
+                                  height: 48,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       colors: [
@@ -609,11 +573,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
-                                    borderRadius: BorderRadius.circular(18),
+                                    borderRadius: BorderRadius.circular(14),
                                   ),
                                   child: Icon(
                                     category['icon'] as IconData,
-                                    size: 28,
+                                    size: 24,
                                     color: color,
                                   ),
                                 ),
@@ -633,12 +597,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.w600,
                                             letterSpacing: -0.2,
                                             height: 1.1,
-                                            fontSize: 16,
+                                            fontSize: 15,
                                           ),
-                                      maxLines: 1,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     Text(
                                       category['description'] as String,
                                       style: Theme.of(context)
@@ -648,7 +612,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             color: Colors.grey.withOpacity(0.8),
                                             height: 1.3,
                                             letterSpacing: 0.0,
-                                            fontSize: 11,
+                                            fontSize: 10,
                                           ),
                                       maxLines: 3,
                                       overflow: TextOverflow.ellipsis,
@@ -686,242 +650,539 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildBreathworkPage() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Elegant header with history button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Breathwork',
-                        style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  fontWeight: FontWeight.w300,
-                                  letterSpacing: -0.5,
-                                  fontSize: 32,
-                                ),
-                      ),
-                    ),
-                    // History button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color:
-                              Theme.of(context).dividerColor.withOpacity(0.2),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.05),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const BreathworkHistoryScreen(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.history,
-                          color: Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withOpacity(0.8),
-                        ),
-                        iconSize: 22,
-                        padding: const EdgeInsets.all(12),
-                        tooltip: 'Session History',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Conscious breathing techniques to reduce stress, improve focus, and enhance emotional well-being through guided patterns.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey.withOpacity(0.7),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.3,
-                        height: 1.4,
-                      ),
-                ),
-              ],
+  List<Widget> _buildBreathworkSlivers() {
+    return [
+      // Header with description and history button
+      SliverToBoxAdapter(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.1),
+              width: 1,
             ),
           ),
-
-          const SizedBox(height: 24),
-
-          // Professional grid layout
-          Expanded(
-            child: GridView.builder(
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                childAspectRatio: 0.85,
-              ),
-              itemCount: breathingPatterns.length,
-              itemBuilder: (context, index) {
-                final entry = breathingPatterns.entries.elementAt(index);
-                final key = entry.key;
-                final pattern = entry.value;
-
-                return GestureDetector(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    _startMeditation(key, _getDisplayTitle(key));
-                  },
-                  child: Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.air,
+                    size: 20,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Breathwork',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.2,
+                          ),
+                    ),
+                  ),
+                  // Compact history button
+                  Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                          spreadRadius: 0,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).dividerColor.withOpacity(0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const BreathworkHistoryScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.history,
+                        color:
+                            Theme.of(context).iconTheme.color?.withOpacity(0.7),
+                      ),
+                      iconSize: 18,
+                      padding: const EdgeInsets.all(6),
+                      constraints:
+                          const BoxConstraints(minWidth: 30, minHeight: 30),
+                      tooltip: 'History',
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Conscious breathing techniques to reduce stress, improve focus, and enhance emotional well-being through guided patterns.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey.withOpacity(0.8),
+                      height: 1.3,
+                      fontSize: 12,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      // Grid layout with padding
+      SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        sliver: SliverGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 0.9,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final entry = breathingPatterns.entries.elementAt(index);
+              final key = entry.key;
+              final pattern = entry.value;
+
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _startMeditation(key, _getDisplayTitle(key));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      children: [
+                        // Subtle gradient overlay
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                pattern.primaryColor.withOpacity(0.08),
+                                pattern.primaryColor.withOpacity(0.04),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
                         ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                          spreadRadius: 0,
+
+                        // Content
+                        Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Icon with elegant styling
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      pattern.primaryColor.withOpacity(0.2),
+                                      pattern.primaryColor.withOpacity(0.1),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: Icon(
+                                  _getIconForPattern(key),
+                                  size: 24,
+                                  color: pattern.primaryColor,
+                                ),
+                              ),
+
+                              const Spacer(),
+
+                              // Text content
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _getDisplayTitle(key),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: -0.2,
+                                          height: 1.1,
+                                          fontSize: 15,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    pattern.name,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: pattern.primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                          letterSpacing: 0.0,
+                                          fontSize: 11,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _getShortDescription(key),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          height: 1.3,
+                                          letterSpacing: 0.0,
+                                          fontSize: 10,
+                                        ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(28),
-                      child: Stack(
-                        children: [
-                          // Subtle gradient overlay
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  pattern.primaryColor.withOpacity(0.08),
-                                  pattern.primaryColor.withOpacity(0.04),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                          ),
-
-                          // Content
-                          Padding(
-                            padding: const EdgeInsets.all(24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Icon with elegant styling
-                                Container(
-                                  width: 56,
-                                  height: 56,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        pattern.primaryColor.withOpacity(0.2),
-                                        pattern.primaryColor.withOpacity(0.1),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Icon(
-                                    _getIconForPattern(key),
-                                    size: 28,
-                                    color: pattern.primaryColor,
-                                  ),
-                                ),
-
-                                const Spacer(),
-
-                                // Text content
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _getDisplayTitle(key),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            letterSpacing: -0.2,
-                                            height: 1.1,
-                                            fontSize: 16,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      pattern.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: pattern.primaryColor,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.0,
-                                            fontSize: 12,
-                                          ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      _getShortDescription(key),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: Colors.grey.withOpacity(0.8),
-                                            height: 1.3,
-                                            letterSpacing: 0.0,
-                                            fontSize: 11,
-                                          ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
-                );
-              },
+                ),
+              );
+            },
+            childCount: breathingPatterns.length,
+          ),
+        ),
+      ),
+
+      // Bottom padding
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 24),
+      ),
+    ];
+  }
+
+  List<Widget> _buildGuidedMeditationSlivers() {
+    // Define the 6 main meditation categories
+    final meditationCategories = [
+      {
+        'id': 'breathing_practices',
+        'title': 'Breathing Practices',
+        'icon': Icons.air,
+        'color': const Color(0xFF7B65E4),
+        'description':
+            'Cultivate present moment awareness through mindful breathing exercises that help center your mind and body',
+      },
+      {
+        'id': 'brief_mindfulness',
+        'title': 'Brief Mindfulness',
+        'icon': Icons.self_improvement,
+        'color': const Color(0xFFF6815B),
+        'description':
+            'Short powerful sessions for quick resets during your day, providing instant grounding and mental clarity',
+      },
+      {
+        'id': 'body_scan',
+        'title': 'Body Scan',
+        'icon': Icons.accessibility_new,
+        'color': const Color(0xFFFA6E5A),
+        'description':
+            'Systematic journey through your body to develop embodied awareness and release physical tension',
+      },
+      {
+        'id': 'sitting_meditations',
+        'title': 'Sitting Meditations',
+        'icon': Icons.event_seat,
+        'color': const Color(0xFFFFCF86),
+        'description':
+            'Traditional seated practices combining breath, sound, and thought awareness for deep inner stillness',
+      },
+      {
+        'id': 'guided_imagery',
+        'title': 'Guided Imagery',
+        'icon': Icons.landscape,
+        'color': const Color(0xFF4CAF50),
+        'description':
+            'Visualization techniques using imagination to foster calm, resilience, and emotional balance',
+      },
+      {
+        'id': 'self_guided',
+        'title': 'Self Guided',
+        'icon': Icons.notifications_none,
+        'color': const Color(0xFF9C27B0),
+        'description':
+            'Silent meditation with mindfulness bells to structure your personal practice and deepen concentration',
+      },
+    ];
+
+    return [
+      // Header with description and history button
+      SliverToBoxAdapter(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.1),
+              width: 1,
             ),
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.headset,
+                    size: 20,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withOpacity(0.8),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Guided Meditations',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: -0.2,
+                          ),
+                    ),
+                  ),
+                  // Compact history button
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Theme.of(context).dividerColor.withOpacity(0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const GuidedMeditationHistoryScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.history,
+                        color:
+                            Theme.of(context).iconTheme.color?.withOpacity(0.7),
+                      ),
+                      iconSize: 18,
+                      padding: const EdgeInsets.all(6),
+                      constraints:
+                          const BoxConstraints(minWidth: 30, minHeight: 30),
+                      tooltip: 'History',
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Expert-guided meditation experiences with soothing narration and mindful awareness practices.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.grey.withOpacity(0.8),
+                      height: 1.3,
+                      fontSize: 12,
+                    ),
+              ),
+            ],
+          ),
+        ),
       ),
-    );
+
+      // Grid layout with padding
+      SliverPadding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        sliver: SliverGrid(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12,
+            crossAxisSpacing: 12,
+            childAspectRatio: 0.9,
+          ),
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final category = meditationCategories[index];
+              final color = category['color'] as Color;
+
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  _navigateToGuidedMeditationCategory(
+                    category['id'] as String,
+                    category['title'] as String,
+                    category['description'] as String,
+                    color,
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.04),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.02),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      children: [
+                        // Subtle gradient overlay
+                        Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                color.withOpacity(0.08),
+                                color.withOpacity(0.04),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                          ),
+                        ),
+
+                        // Content
+                        Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Icon with elegant styling
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      color.withOpacity(0.2),
+                                      color.withOpacity(0.1),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                child: Icon(
+                                  category['icon'] as IconData,
+                                  size: 24,
+                                  color: color,
+                                ),
+                              ),
+
+                              const Spacer(),
+
+                              // Text content
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    category['title'] as String,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: -0.2,
+                                          height: 1.1,
+                                          fontSize: 15,
+                                        ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    category['description'] as String,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          height: 1.3,
+                                          letterSpacing: 0.0,
+                                          fontSize: 10,
+                                        ),
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            childCount: meditationCategories.length,
+          ),
+        ),
+      ),
+
+      // Bottom padding
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 24),
+      ),
+    ];
   }
 
   String _getDisplayTitle(String key) {
@@ -974,40 +1235,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Main content
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Column(
-                children: [
-                  // Modern Header
-                  _buildModernHeader(),
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: Column(
+            children: [
+              // Fixed Header - doesn't scroll
+              _buildModernHeader(),
 
-                  // Section Tabs
-                  _buildSectionTabs(),
+              // Fixed Section Tabs - doesn't scroll
+              _buildSectionTabs(),
 
-                  const SizedBox(height: 8),
-
-                  // Swipeable Content
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      onPageChanged: (index) {
-                        setState(() {
-                          _currentPage = index;
-                        });
-                      },
-                      children: [
-                        _buildBreathworkPage(),
-                        _buildGuidedMeditationPage(),
-                      ],
+              // Swipeable content area with PageView
+              Expanded(
+                child: PageView(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  children: [
+                    // Breathwork page
+                    CustomScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      slivers: _buildBreathworkSlivers(),
                     ),
-                  ),
-                ],
+                    // Guided meditation page
+                    CustomScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      slivers: _buildGuidedMeditationSlivers(),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -22,6 +22,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:windchime/data/repositories/meditation_repository.dart';
 import 'package:windchime/models/meditation/session_history.dart';
 import 'package:windchime/services/audio_download_service.dart';
+import 'package:windchime/config/audio_config.dart';
 
 class GuidedMeditationSessionScreen extends StatefulWidget {
   final String title;
@@ -49,6 +50,7 @@ class GuidedMeditationSessionScreen extends StatefulWidget {
 class _GuidedMeditationSessionScreenState
     extends State<GuidedMeditationSessionScreen> with TickerProviderStateMixin {
   final _meditationRepository = MeditationRepository();
+  final _downloadService = AudioDownloadService();
 
   // Audio player
   late AudioPlayer _audioPlayer;
@@ -139,41 +141,21 @@ class _GuidedMeditationSessionScreenState
     _audioPlayer = AudioPlayer();
 
     try {
-      // Get the audio file path (bundled or downloaded)
-      final audioDownloadService = AudioDownloadService();
-      final audioFilePath =
-          await audioDownloadService.getAudioFilePath(widget.audioPath);
+      // Determine the correct audio source
+      String? audioSource;
 
-      if (audioFilePath == null) {
-        // File not downloaded yet, try to download it
-        final success = await audioDownloadService.downloadAudio(
-          widget.audioPath,
-          onError: (error) {
-            debugPrint('Download error: $error');
-          },
-        );
-
-        if (success) {
-          // Try to get the path again after download
-          final downloadedPath =
-              await audioDownloadService.getAudioFilePath(widget.audioPath);
-          if (downloadedPath != null) {
-            await _audioPlayer.setFilePath(downloadedPath);
-          } else {
-            throw Exception('Failed to get downloaded file path');
-          }
+      if (AudioConfig.shouldDownload(widget.audioPath)) {
+        // For downloadable files, get the local file path
+        audioSource = await _downloadService.getAudioFilePath(widget.audioPath);
+        if (audioSource != null) {
+          await _audioPlayer.setFilePath(audioSource);
         } else {
-          throw Exception('Failed to download audio file');
+          throw Exception('Downloaded audio file not found');
         }
       } else {
-        // File is available (bundled or downloaded)
-        if (audioFilePath.startsWith('assets/')) {
-          // Bundled file
-          await _audioPlayer.setAsset(audioFilePath);
-        } else {
-          // Downloaded file
-          await _audioPlayer.setFilePath(audioFilePath);
-        }
+        // For bundled files, use asset path
+        audioSource = 'assets/${widget.audioPath}';
+        await _audioPlayer.setAsset(audioSource);
       }
 
       // Listen to player state changes with managed subscription
@@ -525,24 +507,6 @@ class _GuidedMeditationSessionScreenState
                     fontWeight: FontWeight.w400,
                   ),
               textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: 16),
-
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: widget.categoryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                'You can resume anytime',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: widget.categoryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                textAlign: TextAlign.center,
-              ),
             ),
 
             const SizedBox(height: 32),
@@ -1648,26 +1612,6 @@ class _GuidedMeditationSessionScreenState
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 1.0,
                                     color: widget.categoryColor,
-                                  ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 4),
-
-                          // Animated subtitle
-                          AnimatedOpacity(
-                            duration: const Duration(milliseconds: 300),
-                            opacity: _isPlaying ? 0.8 : 1.0,
-                            child: Text(
-                              'Guided Meditation',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    color: Colors.grey.withOpacity(0.7),
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w500,
-                                    letterSpacing: 0.5,
                                   ),
                             ),
                           ),
