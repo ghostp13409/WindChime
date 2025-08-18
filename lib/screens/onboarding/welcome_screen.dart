@@ -96,12 +96,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 24),
 
                   // App Logo/Icon
                   Container(
-                    width: 120,
-                    height: 120,
+                    width: 96,
+                    height: 96,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -131,7 +131,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
 
                   // Welcome Title
                   Text(
@@ -144,7 +144,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
                   // Subtitle
                   Text(
@@ -157,7 +157,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 24),
 
                   // Features
                   _buildFeatureItem(
@@ -168,7 +168,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     color: const Color(0xFF7B65E4),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
                   _buildFeatureItem(
                     icon: Icons.headset,
@@ -178,7 +178,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     color: const Color(0xFFF6815B),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
                   _buildFeatureItem(
                     icon: Icons.timeline,
@@ -188,7 +188,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     color: const Color(0xFF4CAF50),
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
 
                   // Welcome message
                   Container(
@@ -216,7 +216,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 20),
 
                   // Get Started Button
                   Container(
@@ -286,7 +286,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
                 ],
               ),
             ),

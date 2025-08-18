@@ -89,7 +89,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
         opacity: _fadeAnimation,
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             // Header
             Text(
@@ -102,7 +102,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             Text(
               'Experience mindfulness with expert narration',
@@ -114,11 +114,11 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 48),
+            const SizedBox(height: 24),
 
             // Meditation animation
             SizedBox(
-              height: 200,
+              height: 160,
               child: Center(
                 child: AnimatedBuilder(
                   animation: _pulseAnimation,
@@ -157,7 +157,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
 
             // Instructions
             Container(
@@ -213,7 +213,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
                   ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             // Category features
             _buildFeatureItem(
@@ -223,7 +223,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               color: const Color(0xFF7B65E4),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             _buildFeatureItem(
               icon: Icons.self_improvement,
@@ -232,7 +232,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               color: const Color(0xFFF6815B),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             _buildFeatureItem(
               icon: Icons.accessibility_new,
@@ -241,7 +241,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               color: const Color(0xFFFA6E5A),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             _buildFeatureItem(
               icon: Icons.event_seat,
@@ -250,7 +250,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               color: const Color(0xFFFFCF86),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             _buildFeatureItem(
               icon: Icons.landscape,
@@ -259,7 +259,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               color: const Color(0xFF4CAF50),
             ),
 
-            const SizedBox(height: 48),
+            const SizedBox(height: 20),
 
             // Complete button
             Container(
@@ -320,7 +320,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
           ],
         ),
       ),

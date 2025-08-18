@@ -90,7 +90,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
         opacity: _fadeAnimation,
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             // Header
             Text(
@@ -103,7 +103,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             Text(
               'Learn the fundamentals of conscious breathing',
@@ -115,11 +115,11 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: 48),
+            const SizedBox(height: 24),
 
             // Breathing animation circle
             SizedBox(
-              height: 200,
+              height: 160,
               child: Center(
                 child: AnimatedBuilder(
                   animation: _breathAnimation,
@@ -158,7 +158,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
 
             // Instructions
             Container(
@@ -203,7 +203,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
 
             // Features
             _buildFeatureItem(
@@ -213,7 +213,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               color: const Color(0xFF7B65E4),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             _buildFeatureItem(
               icon: Icons.timer,
@@ -222,7 +222,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               color: const Color(0xFFF6815B),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             _buildFeatureItem(
               icon: Icons.volume_up,
@@ -231,7 +231,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               color: const Color(0xFF4CAF50),
             ),
 
-            const SizedBox(height: 48),
+            const SizedBox(height: 20),
 
             // Continue button
             Container(
@@ -292,7 +292,7 @@ class _BreathworkTutorialScreenState extends State<BreathworkTutorialScreen>
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
           ],
         ),
       ),
