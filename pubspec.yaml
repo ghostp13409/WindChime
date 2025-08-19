@@ -48,6 +48,7 @@ flutter:
     # App images
     - assets/images/AppLogo.svg
     - assets/images/logo.png
+    - assets/images/logo2.png
     - assets/images/about/profile.png
 
     # Bundled audio files (smaller files only)

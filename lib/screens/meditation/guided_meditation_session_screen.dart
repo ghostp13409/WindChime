@@ -147,11 +147,7 @@ class _GuidedMeditationSessionScreenState
       if (AudioConfig.shouldDownload(widget.audioPath)) {
         // For downloadable files, get the local file path
         audioSource = await _downloadService.getAudioFilePath(widget.audioPath);
-        if (audioSource != null) {
-          await _audioPlayer.setFilePath(audioSource);
-        } else {
-          throw Exception('Downloaded audio file not found');
-        }
+        await _audioPlayer.setFilePath(audioSource!);
       } else {
         // For bundled files, use asset path
         audioSource = 'assets/${widget.audioPath}';

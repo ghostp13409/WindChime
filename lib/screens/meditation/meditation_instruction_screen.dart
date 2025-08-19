@@ -305,13 +305,12 @@ class _MeditationInstructionScreenState
         child: SafeArea(
           child: FadeTransition(
             opacity: _fadeAnimation,
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header with back button and info icon
-                  Row(
+            child: Column(
+              children: [
+                // Compact Header
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: Row(
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -319,7 +318,7 @@ class _MeditationInstructionScreenState
                           Navigator.of(context).pop();
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(8),
                           decoration: const BoxDecoration(
                             color: Colors.black26,
                             shape: BoxShape.circle,
@@ -327,7 +326,7 @@ class _MeditationInstructionScreenState
                           child: const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
-                            size: 24,
+                            size: 20,
                           ),
                         ),
                       ),
@@ -337,7 +336,7 @@ class _MeditationInstructionScreenState
                           GestureDetector(
                             onTap: _showDurationSettings,
                             child: Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: widget.breathingPattern.primaryColor
                                     .withOpacity(0.2),
@@ -351,15 +350,15 @@ class _MeditationInstructionScreenState
                               child: Icon(
                                 Icons.timer_outlined,
                                 color: widget.breathingPattern.primaryColor,
-                                size: 24,
+                                size: 20,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 8),
                           GestureDetector(
                             onTap: _navigateToInfoScreen,
                             child: Container(
-                              padding: const EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
                                 color: widget.breathingPattern.primaryColor
                                     .withOpacity(0.2),
@@ -373,7 +372,7 @@ class _MeditationInstructionScreenState
                               child: Icon(
                                 Icons.info_outline_rounded,
                                 color: widget.breathingPattern.primaryColor,
-                                size: 24,
+                                size: 20,
                               ),
                             ),
                           ),
@@ -381,228 +380,243 @@ class _MeditationInstructionScreenState
                       ),
                     ],
                   ),
+                ),
 
-                  const SizedBox(height: 40),
-
-                  // Title and meditation info
-                  Text(
-                    'Ready to begin?',
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.white,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color:
-                          widget.breathingPattern.primaryColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: widget.breathingPattern.primaryColor
-                            .withOpacity(0.4),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _getMeditationIcon(),
-                          color: widget.breathingPattern.primaryColor,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${widget.meditation.title} • $_selectedDuration min',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  // Instructions section
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                // Compact Title Section
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            'About This Meditation',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          // Technique overview
-                          _buildTechniqueOverview(),
-
-                          const SizedBox(height: 24),
-
-                          Text(
-                            'Instructions',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _buildInstructionCard(
-                            icon: Icons.air_rounded,
-                            title: 'Breathing Pattern',
-                            description: widget.breathingPattern.description,
-                            details: _getBreathingPatternDetails(),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _buildInstructionCard(
-                            icon: Icons.self_improvement,
-                            title: 'Find Your Position',
-                            description: _getPositionInstructions(),
-                            details: _getPositionDetails(),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _buildInstructionCard(
-                            icon: Icons.visibility_rounded,
-                            title: 'Visual Guidance',
-                            description:
-                                'Start by watching the breathing circle expand and contract while listening to the gentle audio cues. This helps you learn the rhythm naturally',
-                            details:
-                                'The visual and audio work together to guide your perfect timing',
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _buildInstructionCard(
-                            icon: Icons.self_improvement_rounded,
-                            title: 'Mindful Transition',
-                            description:
-                                'Once you feel comfortable with the rhythm, set your phone aside and close your eyes. Let the audio cues become your meditation guide',
-                            details:
-                                'Trust the sounds to carry you deeper into peaceful breathing',
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _buildInstructionCard(
-                            icon: Icons.psychology_rounded,
-                            title: 'Mindful Focus',
-                            description: _getMindfulnessInstructions(),
-                            details: _getMindfulnessDetails(),
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Benefits section
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.1),
-                                width: 1,
+                          Expanded(
+                            child: Text(
+                              'Ready to begin?',
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white,
+                                letterSpacing: 0.8,
                               ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.auto_awesome,
-                                      color:
-                                          widget.breathingPattern.primaryColor,
-                                      size: 20,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'What to Expect',
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  _getBenefitsText(),
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white.withOpacity(0.8),
-                                    height: 1.5,
-                                    letterSpacing: 0.3,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                         ],
                       ),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: widget.breathingPattern.primaryColor
+                              .withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: widget.breathingPattern.primaryColor
+                                .withOpacity(0.4),
+                            width: 1,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _getMeditationIcon(),
+                              color: widget.breathingPattern.primaryColor,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              '${widget.meditation.title} • $_selectedDuration min',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Scrollable Content
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 8),
+
+                        Text(
+                          'About This Meditation',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Technique overview
+                        _buildTechniqueOverview(),
+
+                        const SizedBox(height: 16),
+
+                        Text(
+                          'Instructions',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildInstructionCard(
+                          icon: Icons.air_rounded,
+                          title: 'Breathing Pattern',
+                          description: widget.breathingPattern.description,
+                          details: _getBreathingPatternDetails(),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildInstructionCard(
+                          icon: Icons.self_improvement,
+                          title: 'Find Your Position',
+                          description: _getPositionInstructions(),
+                          details: _getPositionDetails(),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildInstructionCard(
+                          icon: Icons.visibility_rounded,
+                          title: 'Visual Guidance',
+                          description:
+                              'Start by watching the breathing circle expand and contract while listening to the gentle audio cues. This helps you learn the rhythm naturally',
+                          details:
+                              'The visual and audio work together to guide your perfect timing',
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildInstructionCard(
+                          icon: Icons.self_improvement_rounded,
+                          title: 'Mindful Transition',
+                          description:
+                              'Once you feel comfortable with the rhythm, set your phone aside and close your eyes. Let the audio cues become your meditation guide',
+                          details:
+                              'Trust the sounds to carry you deeper into peaceful breathing',
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        _buildInstructionCard(
+                          icon: Icons.psychology_rounded,
+                          title: 'Mindful Focus',
+                          description: _getMindfulnessInstructions(),
+                          details: _getMindfulnessDetails(),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Benefits section
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.1),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.auto_awesome,
+                                    color: widget.breathingPattern.primaryColor,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'What to Expect',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                _getBenefitsText(),
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white.withOpacity(0.8),
+                                  height: 1.4,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ),
+                ),
 
-                  // Start button
-                  const SizedBox(height: 24),
-                  SizedBox(
+                // Compact Start button
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: _startMeditation,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: widget.breathingPattern.primaryColor,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 0,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.play_arrow_rounded, size: 24),
-                          const SizedBox(width: 8),
+                          const Icon(Icons.play_arrow_rounded, size: 22),
+                          const SizedBox(width: 6),
                           Text(
                             'Begin Meditation',
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
+                              letterSpacing: 0.3,
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -618,10 +632,10 @@ class _MeditationInstructionScreenState
   }) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Colors.white.withOpacity(0.08),
           width: 1,
@@ -631,18 +645,18 @@ class _MeditationInstructionScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: widget.breathingPattern.primaryColor.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               icon,
               color: widget.breathingPattern.primaryColor,
-              size: 24,
+              size: 18,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -650,28 +664,28 @@ class _MeditationInstructionScreenState
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.8),
-                    height: 1.4,
+                    letterSpacing: 0.2,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  details,
+                  description,
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white.withOpacity(0.8),
                     height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  details,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white.withOpacity(0.6),
+                    height: 1.2,
                     fontStyle: FontStyle.italic,
                   ),
                 ),
@@ -705,10 +719,10 @@ class _MeditationInstructionScreenState
   Widget _buildTechniqueOverview() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: widget.breathingPattern.primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: widget.breathingPattern.primaryColor.withOpacity(0.3),
           width: 1,
@@ -722,14 +736,14 @@ class _MeditationInstructionScreenState
               Icon(
                 _getMeditationIcon(),
                 color: widget.breathingPattern.primaryColor,
-                size: 24,
+                size: 18,
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   _getTechniqueTitle(),
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
@@ -737,22 +751,22 @@ class _MeditationInstructionScreenState
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             _getTechniqueDescription(),
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 13,
               color: Colors.white.withOpacity(0.9),
-              height: 1.5,
+              height: 1.4,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Text(
             _getScientificBasis(),
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 12,
               color: Colors.white.withOpacity(0.7),
-              height: 1.4,
+              height: 1.3,
               fontStyle: FontStyle.italic,
             ),
           ),
