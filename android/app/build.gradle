@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.windchime.app"
-    compileSdk = 34  // Explicitly set compileSdk
+    compileSdk = 35  // Explicitly set compileSdk
     ndkVersion "25.1.8937393"
 
     compileSdkVersion 35
