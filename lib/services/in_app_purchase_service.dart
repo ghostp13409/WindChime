@@ -18,10 +18,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:windchime/config/in_app_purchase_config.dart';
 
 class InAppPurchaseService {
@@ -52,8 +49,9 @@ class InAppPurchaseService {
 
   static Future<void> _loadProducts() async {
     try {
-      final ProductDetailsResponse response = await _inAppPurchase.queryProductDetails(_productIds.toSet());
-      
+      final ProductDetailsResponse response =
+          await _inAppPurchase.queryProductDetails(_productIds.toSet());
+
       if (response.notFoundIDs.isNotEmpty) {
         debugPrint('Products not found: ${response.notFoundIDs}');
       }
@@ -80,9 +78,10 @@ class InAppPurchaseService {
       } else {
         _purchasePending = false;
         if (purchaseDetails.status == PurchaseStatus.error) {
-          onPurchaseError?.call(purchaseDetails.error?.message ?? 'Purchase failed');
+          onPurchaseError
+              ?.call(purchaseDetails.error?.message ?? 'Purchase failed');
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-                   purchaseDetails.status == PurchaseStatus.restored) {
+            purchaseDetails.status == PurchaseStatus.restored) {
           _handleSuccessfulPurchase(purchaseDetails);
         }
         if (purchaseDetails.pendingCompletePurchase) {
@@ -114,25 +113,23 @@ class InAppPurchaseService {
       return false;
     }
 
-    final ProductDetails? product = _products.firstWhere(
+    final ProductDetails product = _products.firstWhere(
       (element) => element.id == productId,
       orElse: () => throw Exception('Product not found'),
     );
 
-    if (product != null) {
-      final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-      
-      try {
-        if (product.id == InAppPurchaseConfig.smallDonationId || 
-            product.id == InAppPurchaseConfig.mediumDonationId || 
-            product.id == InAppPurchaseConfig.largeDonationId) {
-          await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
-        }
-        return true;
-      } catch (e) {
-        onPurchaseError?.call('Purchase failed: $e');
-        return false;
+    final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
+
+    try {
+      if (product.id == InAppPurchaseConfig.smallDonationId ||
+          product.id == InAppPurchaseConfig.mediumDonationId ||
+          product.id == InAppPurchaseConfig.largeDonationId) {
+        await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
       }
+      return true;
+    } catch (e) {
+      onPurchaseError?.call('Purchase failed: $e');
+      return false;
     }
     return false;
   }
@@ -155,4 +152,4 @@ class InAppPurchaseService {
   static void dispose() {
     _subscription?.cancel();
   }
-} 
+}

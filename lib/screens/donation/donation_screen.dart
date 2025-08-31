@@ -235,10 +235,8 @@ class _DonationScreenState extends State<DonationScreen>
                                             ),
                                       ),
                                       const SizedBox(height: 16),
-                                      ..._products
-                                          .map((product) =>
-                                              _buildDonationOption(product))
-                                          .toList(),
+                                      ..._products.map((product) =>
+                                          _buildDonationOption(product)),
                                     ],
                                   ),
                                 ),
