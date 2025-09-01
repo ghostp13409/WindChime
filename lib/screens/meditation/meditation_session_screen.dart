@@ -400,23 +400,29 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _showCompletionDialog() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1C2031).withOpacity(0.95),
+        backgroundColor: isLightTheme
+            ? Theme.of(context).cardColor
+            : const Color(0xFF1C2031).withOpacity(0.95),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
+        title: Text(
           '🧘‍♀️ Session Complete',
-          style: TextStyle(color: Colors.white, fontSize: 24),
+          style: TextStyle(
+              color: isLightTheme ? Colors.black87 : Colors.white, fontSize: 24),
           textAlign: TextAlign.center,
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'How are you feeling?',
-              style: TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(
+                  color: isLightTheme ? Colors.black54 : Colors.white70,
+                  fontSize: 16),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
@@ -425,7 +431,9 @@ class _OptimizedMeditationSessionScreenState
               builder: (context, seconds, child) {
                 return Text(
                   'Duration: ${_formatTime(seconds ~/ 10)}',
-                  style: const TextStyle(color: Colors.white60, fontSize: 14),
+                  style: TextStyle(
+                      color: isLightTheme ? Colors.black45 : Colors.white60,
+                      fontSize: 14),
                   textAlign: TextAlign.center,
                 );
               },
@@ -448,13 +456,15 @@ class _OptimizedMeditationSessionScreenState
 
   Widget _buildEmotionButton(
       String emoji, String label, VoidCallback onPressed) {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: Colors.white30),
+          border: Border.all(
+              color: isLightTheme ? Colors.black26 : Colors.white30),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -462,7 +472,9 @@ class _OptimizedMeditationSessionScreenState
             Text(emoji, style: const TextStyle(fontSize: 24)),
             const SizedBox(height: 4),
             Text(label,
-                style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                style: TextStyle(
+                    color: isLightTheme ? Colors.black54 : Colors.white70,
+                    fontSize: 12)),
           ],
         ),
       ),
@@ -584,6 +596,20 @@ class _OptimizedMeditationSessionScreenState
     final screenSize = MediaQuery.of(context).size;
     _particleSystem.updateScreenSize(screenSize.width, screenSize.height);
 
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+
+    final gradientColors = isLightTheme
+        ? [
+            widget.breathingPattern.primaryColor.withOpacity(0.8),
+            const Color(0xFFFFFFFF),
+            const Color(0xFFE3F2F1),
+          ]
+        : [
+            widget.breathingPattern.primaryColor.withOpacity(0.8),
+            const Color(0xFF0F1419),
+            const Color(0xFF1A1B2E),
+          ];
+
     return PopScope(
       canPop: false, // Prevent direct popping
       onPopInvokedWithResult: (didPop, result) async {
@@ -601,11 +627,7 @@ class _OptimizedMeditationSessionScreenState
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                widget.breathingPattern.primaryColor.withOpacity(0.8),
-                const Color(0xFF0F1419),
-                const Color(0xFF1A1B2E),
-              ],
+              colors: gradientColors,
               stops: const [0.0, 0.6, 1.0],
             ),
           ),
@@ -615,7 +637,8 @@ class _OptimizedMeditationSessionScreenState
               RepaintBoundary(
                 child: CustomPaint(
                   size: Size.infinite,
-                  painter: OptimizedParticlePainter(_particleSystem),
+                  painter: OptimizedParticlePainter(_particleSystem,
+                      isLightTheme: isLightTheme),
                 ),
               ),
 
@@ -648,12 +671,15 @@ class _OptimizedMeditationSessionScreenState
                             onTap: () => _showExitDialog(),
                             child: Container(
                               padding: const EdgeInsets.all(12),
-                              decoration: const BoxDecoration(
-                                color: Colors.black26,
+                              decoration: BoxDecoration(
+                                color: isLightTheme
+                                    ? Colors.white.withOpacity(0.5)
+                                    : Colors.black26,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.close,
-                                  color: Colors.white, size: 24),
+                              child: Icon(Icons.close,
+                                  color: isLightTheme ? Colors.black : Colors.white,
+                                  size: 24),
                             ),
                           ),
                           // Empty spacer to balance the layout
@@ -669,10 +695,10 @@ class _OptimizedMeditationSessionScreenState
                         children: [
                           Text(
                             widget.meditation.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.w300,
-                              color: Colors.white,
+                              color: isLightTheme ? Colors.black87 : Colors.white,
                               letterSpacing: 1.2,
                             ),
                             textAlign: TextAlign.center,
@@ -682,7 +708,9 @@ class _OptimizedMeditationSessionScreenState
                             widget.breathingPattern.name,
                             style: TextStyle(
                               fontSize: 16,
-                              color: Colors.white.withOpacity(0.7),
+                              color: isLightTheme
+                                  ? Colors.black54
+                                  : Colors.white.withOpacity(0.7),
                               letterSpacing: 0.5,
                             ),
                             textAlign: TextAlign.center,
@@ -715,14 +743,18 @@ class _OptimizedMeditationSessionScreenState
                                       children: [
                                         Icon(
                                           _getStageIcon(breathState),
-                                          color: Colors.white,
+                                          color: isLightTheme
+                                              ? Colors.black87
+                                              : Colors.white,
                                           size: 16,
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
                                           '${remainingTime}s',
-                                          style: const TextStyle(
-                                            color: Colors.white,
+                                          style: TextStyle(
+                                            color: isLightTheme
+                                                ? Colors.black87
+                                                : Colors.white,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w500,
                                             letterSpacing: 0.5,
@@ -758,10 +790,12 @@ class _OptimizedMeditationSessionScreenState
                                       opacity: _fadeAnimation.value,
                                       child: Text(
                                         instruction,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w400,
-                                          color: Colors.white,
+                                          color: isLightTheme
+                                              ? Colors.black87
+                                              : Colors.white,
                                           letterSpacing: 1.0,
                                         ),
                                         textAlign: TextAlign.center,
@@ -848,11 +882,13 @@ class _OptimizedMeditationSessionScreenState
                                                     (context, seconds, child) {
                                                   return Text(
                                                     _formatTime(seconds ~/ 10),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                       fontSize: 28,
                                                       fontWeight:
                                                           FontWeight.w300,
-                                                      color: Colors.white,
+                                                      color: isLightTheme
+                                                          ? Colors.black87
+                                                          : Colors.white,
                                                       letterSpacing: 2.0,
                                                     ),
                                                   );
@@ -867,8 +903,11 @@ class _OptimizedMeditationSessionScreenState
                                                     'Cycle $cycle',
                                                     style: TextStyle(
                                                       fontSize: 12,
-                                                      color: Colors.white
-                                                          .withOpacity(0.8),
+                                                      color: isLightTheme
+                                                          ? Colors.black54
+                                                          : Colors.white
+                                                              .withOpacity(
+                                                                  0.8),
                                                       letterSpacing: 1.0,
                                                     ),
                                                   );
@@ -924,8 +963,10 @@ class _OptimizedMeditationSessionScreenState
                                           _getBreathingGuideText(breathState),
                                           style: TextStyle(
                                             fontSize: 14,
-                                            color:
-                                                Colors.white.withOpacity(0.6),
+                                            color: isLightTheme
+                                                ? Colors.black54
+                                                : Colors.white
+                                                    .withOpacity(0.6),
                                             letterSpacing: 0.5,
                                           ),
                                           textAlign: TextAlign.center,
@@ -993,19 +1034,22 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _showExitDialog() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1C2031).withOpacity(0.95),
+        backgroundColor: isLightTheme
+            ? Theme.of(context).cardColor
+            : const Color(0xFF1C2031).withOpacity(0.95),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
+        title: Text(
           'End Session?',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: isLightTheme ? Colors.black87 : Colors.white),
           textAlign: TextAlign.center,
         ),
-        content: const Text(
+        content: Text(
           'Your progress will be saved',
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: isLightTheme ? Colors.black54 : Colors.white70),
           textAlign: TextAlign.center,
         ),
         actions: [
@@ -1014,8 +1058,9 @@ class _OptimizedMeditationSessionScreenState
             children: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Continue',
-                    style: TextStyle(color: Colors.white70)),
+                child: Text('Continue',
+                    style: TextStyle(
+                        color: isLightTheme ? Colors.black54 : Colors.white70)),
               ),
               TextButton(
                 onPressed: () async {
@@ -1141,8 +1186,9 @@ class OptimizedParticle {
 // Optimized Custom Painters
 class OptimizedParticlePainter extends CustomPainter {
   final ParticleSystem particleSystem;
+  final bool isLightTheme;
 
-  OptimizedParticlePainter(this.particleSystem);
+  OptimizedParticlePainter(this.particleSystem, {required this.isLightTheme});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1155,7 +1201,8 @@ class OptimizedParticlePainter extends CustomPainter {
     // Group particles by similar properties to reduce paint object creation
     for (var particle in particleSystem.particles) {
       // Use a simple circle without anti-aliasing for better performance
-      paint.color = Colors.white.withOpacity(particle.opacity);
+      paint.color =
+          (isLightTheme ? Colors.black : Colors.white).withOpacity(particle.opacity);
 
       canvas.drawCircle(
         Offset(
@@ -1170,7 +1217,7 @@ class OptimizedParticlePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant OptimizedParticlePainter oldDelegate) {
-    return particleSystem.needsRepaint;
+    return particleSystem.needsRepaint || isLightTheme != oldDelegate.isLightTheme;
   }
 }
 

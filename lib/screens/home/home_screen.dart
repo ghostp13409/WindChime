@@ -540,14 +540,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       borderRadius: BorderRadius.circular(20),
                       child: Stack(
                         children: [
-                          // Subtle gradient overlay
+                          // Enhanced gradient overlay for better contrast in light mode
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
-                                colors: [
-                                  color.withOpacity(0.08),
-                                  color.withOpacity(0.04),
-                                ],
+                                colors: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? [
+                                        color.withOpacity(0.18),
+                                        color.withOpacity(0.12),
+                                      ]
+                                    : [
+                                        color.withOpacity(0.08),
+                                        color.withOpacity(0.04),
+                                      ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                               ),
@@ -560,25 +566,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Icon with elegant styling
+                                // Icon with enhanced styling for better contrast
                                 Container(
                                   width: 48,
                                   height: 48,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
-                                      colors: [
-                                        color.withOpacity(0.2),
-                                        color.withOpacity(0.1),
-                                      ],
+                                      colors: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? [
+                                              color.withOpacity(0.35),
+                                              color.withOpacity(0.25),
+                                            ]
+                                          : [
+                                              color.withOpacity(0.2),
+                                              color.withOpacity(0.1),
+                                            ],
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                     ),
                                     borderRadius: BorderRadius.circular(14),
+                                    boxShadow: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? [
+                                            BoxShadow(
+                                              color: color.withOpacity(0.3),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ]
+                                        : null,
                                   ),
                                   child: Icon(
                                     category['icon'] as IconData,
                                     size: 24,
-                                    color: color,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.white
+                                        : color,
                                   ),
                                 ),
 
@@ -782,14 +807,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(20),
                     child: Stack(
                       children: [
-                        // Subtle gradient overlay
+                        // Enhanced gradient overlay for better contrast in light mode
                         Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [
-                                pattern.primaryColor.withOpacity(0.08),
-                                pattern.primaryColor.withOpacity(0.04),
-                              ],
+                              colors: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? [
+                                      pattern.primaryColor.withOpacity(0.18),
+                                      pattern.primaryColor.withOpacity(0.12),
+                                    ]
+                                  : [
+                                      pattern.primaryColor.withOpacity(0.08),
+                                      pattern.primaryColor.withOpacity(0.04),
+                                    ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -808,19 +839,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 height: 48,
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
-                                    colors: [
-                                      pattern.primaryColor.withOpacity(0.2),
-                                      pattern.primaryColor.withOpacity(0.1),
-                                    ],
+                                    colors: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? [
+                                            pattern.primaryColor
+                                                .withOpacity(0.35),
+                                            pattern.primaryColor
+                                                .withOpacity(0.25),
+                                          ]
+                                        : [
+                                            pattern.primaryColor
+                                                .withOpacity(0.2),
+                                            pattern.primaryColor
+                                                .withOpacity(0.1),
+                                          ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
                                   borderRadius: BorderRadius.circular(14),
+                                  boxShadow: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? [
+                                          BoxShadow(
+                                            color: pattern.primaryColor
+                                                .withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
                                 ),
                                 child: Icon(
                                   _getIconForPattern(key),
                                   size: 24,
-                                  color: pattern.primaryColor,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : pattern.primaryColor,
                                 ),
                               ),
 
@@ -1085,14 +1140,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(20),
                     child: Stack(
                       children: [
-                        // Subtle gradient overlay
+                        // Enhanced gradient overlay for better contrast in light mode
                         Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [
-                                color.withOpacity(0.08),
-                                color.withOpacity(0.04),
-                              ],
+                              colors: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? [
+                                      color.withOpacity(0.18),
+                                      color.withOpacity(0.12),
+                                    ]
+                                  : [
+                                      color.withOpacity(0.08),
+                                      color.withOpacity(0.04),
+                                    ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -1105,25 +1166,44 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Icon with elegant styling
+                              // Icon with enhanced styling for better contrast
                               Container(
                                 width: 48,
                                 height: 48,
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
-                                    colors: [
-                                      color.withOpacity(0.2),
-                                      color.withOpacity(0.1),
-                                    ],
+                                    colors: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? [
+                                            color.withOpacity(0.35),
+                                            color.withOpacity(0.25),
+                                          ]
+                                        : [
+                                            color.withOpacity(0.2),
+                                            color.withOpacity(0.1),
+                                          ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
                                   borderRadius: BorderRadius.circular(14),
+                                  boxShadow: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? [
+                                          BoxShadow(
+                                            color: color.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
                                 ),
                                 child: Icon(
                                   category['icon'] as IconData,
                                   size: 24,
-                                  color: color,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : color,
                                 ),
                               ),
 

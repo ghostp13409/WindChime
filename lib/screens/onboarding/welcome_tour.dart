@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:windchime/screens/onboarding/welcome_screen.dart';
 import 'package:windchime/screens/onboarding/breathwork_tutorial_screen.dart';
 import 'package:windchime/screens/onboarding/guided_tutorial_screen.dart';
+import 'package:windchime/screens/onboarding/theme_selection_screen.dart';
 
 class WelcomeTour extends StatefulWidget {
   final VoidCallback onComplete;
@@ -69,7 +70,7 @@ class _WelcomeTourState extends State<WelcomeTour>
   }
 
   void _nextPage() {
-    if (_currentPage < 2) {
+    if (_currentPage < 3) {
       HapticFeedback.lightImpact();
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),
@@ -104,7 +105,7 @@ class _WelcomeTourState extends State<WelcomeTour>
                     children: [
                       // Page indicators
                       Row(
-                        children: List.generate(3, (index) {
+                        children: List.generate(4, (index) {
                           return Container(
                             margin: const EdgeInsets.only(right: 8),
                             width: _currentPage == index ? 24 : 8,
@@ -155,8 +156,12 @@ class _WelcomeTourState extends State<WelcomeTour>
                       onSkip: _skipTour,
                     ),
                     GuidedTutorialScreen(
-                      onComplete: widget.onComplete,
+                      onComplete: _nextPage,
                       onSkip: _skipTour,
+                    ),
+                    ThemeSelectionScreen(
+                      onNext: widget.onComplete,
+                      onSkip: widget.onComplete,
                     ),
                   ],
                 ),

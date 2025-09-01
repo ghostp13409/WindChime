@@ -294,11 +294,17 @@ class _MeditationInstructionScreenState
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              widget.breathingPattern.primaryColor.withOpacity(0.3),
-              const Color(0xFF1A1B2E).withOpacity(0.8),
-              const Color(0xFF0F1419),
-            ],
+            colors: Theme.of(context).brightness == Brightness.light
+                ? [
+                    widget.breathingPattern.primaryColor.withOpacity(0.15),
+                    Colors.white,
+                    Colors.white,
+                  ]
+                : [
+                    widget.breathingPattern.primaryColor.withOpacity(0.3),
+                    const Color(0xFF1A1B2E).withOpacity(0.8),
+                    const Color(0xFF0F1419),
+                  ],
             stops: const [0.0, 0.5, 1.0],
           ),
         ),
@@ -394,10 +400,13 @@ class _MeditationInstructionScreenState
                           Expanded(
                             child: Text(
                               'Ready to begin?',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w300,
-                                color: Colors.white,
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                                 letterSpacing: 0.8,
                               ),
                             ),
@@ -453,10 +462,13 @@ class _MeditationInstructionScreenState
 
                         Text(
                           'About This Meditation',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                             letterSpacing: 0.3,
                           ),
                         ),
@@ -470,10 +482,13 @@ class _MeditationInstructionScreenState
 
                         Text(
                           'Instructions',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white,
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
                             letterSpacing: 0.3,
                           ),
                         ),
@@ -554,10 +569,13 @@ class _MeditationInstructionScreenState
                                   const SizedBox(width: 6),
                                   Text(
                                     'What to Expect',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? Colors.black
+                                          : Colors.white,
                                     ),
                                   ),
                                 ],
@@ -567,7 +585,10 @@ class _MeditationInstructionScreenState
                                 _getBenefitsText(),
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.black87
+                                      : Colors.white.withOpacity(0.8),
                                   height: 1.4,
                                   letterSpacing: 0.2,
                                 ),
@@ -663,10 +684,12 @@ class _MeditationInstructionScreenState
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                     letterSpacing: 0.2,
                   ),
                 ),
@@ -675,7 +698,9 @@ class _MeditationInstructionScreenState
                   description,
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black87
+                        : Colors.white.withOpacity(0.8),
                     height: 1.3,
                   ),
                 ),
@@ -684,7 +709,9 @@ class _MeditationInstructionScreenState
                   details,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.6),
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black54
+                        : Colors.white.withOpacity(0.6),
                     height: 1.2,
                     fontStyle: FontStyle.italic,
                   ),
@@ -742,10 +769,12 @@ class _MeditationInstructionScreenState
               Expanded(
                 child: Text(
                   _getTechniqueTitle(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
               ),
@@ -756,7 +785,9 @@ class _MeditationInstructionScreenState
             _getTechniqueDescription(),
             style: TextStyle(
               fontSize: 13,
-              color: Colors.white.withOpacity(0.9),
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black87
+                  : Colors.white.withOpacity(0.9),
               height: 1.4,
             ),
           ),
@@ -765,7 +796,9 @@ class _MeditationInstructionScreenState
             _getScientificBasis(),
             style: TextStyle(
               fontSize: 12,
-              color: Colors.white.withOpacity(0.7),
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black54
+                  : Colors.white.withOpacity(0.7),
               height: 1.3,
               fontStyle: FontStyle.italic,
             ),

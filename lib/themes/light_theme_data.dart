@@ -20,30 +20,30 @@ import 'package:flutter/material.dart';
 ThemeData lightThemeData = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.light,
-  primaryColor: Color(0xFF26A69A),
-  scaffoldBackgroundColor: Color(0xFFFDFDFD),
-  cardColor: Color(0xFFFFFFFF),
-  iconTheme: IconThemeData(
-    color: Color(0xFF212121),
+  primaryColor: const Color(0xFF80CBC4),
+  scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+  cardColor: const Color(0xFFFFFFFF),
+  iconTheme: const IconThemeData(
+    color: Color(0xFF424242),
   ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
-      color: Color(0xFF212121),
+      color: Color(0xFF424242),
       fontWeight: FontWeight.bold,
       fontSize: 28,
     ),
     displayMedium: TextStyle(
-      color: Color(0xFF212121),
+      color: Color(0xFF424242),
       fontWeight: FontWeight.w600,
       fontSize: 24,
     ),
     displaySmall: TextStyle(
-      color: Color(0xFF212121),
+      color: Color(0xFF424242),
       fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
     bodyLarge: TextStyle(
-      color: Color(0xFF212121),
+      color: Color(0xFF424242),
       fontWeight: FontWeight.w400,
       fontSize: 16,
     ),

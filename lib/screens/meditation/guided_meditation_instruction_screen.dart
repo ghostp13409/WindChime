@@ -369,7 +369,9 @@ class _GuidedMeditationInstructionScreenState
           Text(
             widget.meditation.description,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                 ),
           ),
@@ -379,7 +381,9 @@ class _GuidedMeditationInstructionScreenState
               Text(
                 'by ${widget.meditation.instructor}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.6),
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black54
+                          : Colors.grey.withOpacity(0.6),
                       fontSize: 10,
                     ),
               ),
@@ -388,7 +392,9 @@ class _GuidedMeditationInstructionScreenState
                 Text(
                   '• ${widget.meditation.playCount} plays',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.withOpacity(0.6),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black54
+                            : Colors.grey.withOpacity(0.6),
                         fontSize: 10,
                       ),
                 ),
@@ -480,7 +486,9 @@ class _GuidedMeditationInstructionScreenState
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.7),
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.7),
                       height: 1.2,
                       fontSize: 12,
                     ),
@@ -532,7 +540,9 @@ class _GuidedMeditationInstructionScreenState
             '• Simply follow along with the guidance\n'
             '• It\'s okay if your mind wanders',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.8),
                   height: 1.4,
                   fontSize: 12,
                 ),
@@ -644,7 +654,9 @@ class _GuidedMeditationInstructionScreenState
           Text(
             detailedDescription,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.8),
                   height: 1.4,
                   fontSize: 12,
                 ),
@@ -722,7 +734,9 @@ class _GuidedMeditationInstructionScreenState
           Text(
             widget.meditation.whatToExpect!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                   fontSize: 12,
                 ),
@@ -913,7 +927,9 @@ class _GuidedMeditationInstructionScreenState
           Text(
             widget.meditation.instructorBio!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                   fontSize: 12,
                 ),

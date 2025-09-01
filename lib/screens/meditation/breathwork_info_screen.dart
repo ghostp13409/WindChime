@@ -72,14 +72,20 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              widget.breathingPattern.primaryColor.withOpacity(0.12),
-              const Color(0xFF1A1B2E).withOpacity(0.7),
-              const Color(0xFF0F1419),
-            ],
-            stops: const [0.0, 0.5, 1.0],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: Theme.of(context).brightness == Brightness.light
+                ? [
+                    widget.breathingPattern.primaryColor.withOpacity(0.15),
+                    Colors.white,
+                    Colors.white,
+                  ]
+                : [
+                    widget.breathingPattern.primaryColor.withOpacity(0.12),
+                    const Color(0xFF1A1B2E).withOpacity(0.7),
+                    const Color(0xFF0F1419),
+                  ],
+            stops: const [0.0, 0.3, 1.0],
           ),
         ),
         child: SafeArea(
@@ -145,14 +151,21 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.black26,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white.withOpacity(0.5)
+                  : Colors.black26,
               shape: BoxShape.circle,
-              border:
-                  Border.all(color: Colors.white.withOpacity(0.15), width: 0.5),
+              border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(0.1)
+                      : Colors.white.withOpacity(0.15),
+                  width: 0.5),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
               size: 22,
             ),
           ),
@@ -167,10 +180,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
             children: [
               Text(
                 'Research & Science',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                   letterSpacing: 0.5,
                 ),
               ),
@@ -179,7 +192,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                 _getTechniqueTitle(),
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white.withOpacity(0.8),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.color
+                      ?.withOpacity(0.8),
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -191,10 +208,13 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildTechniqueOverview() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return Card(
       elevation: 0,
       margin: EdgeInsets.zero,
-      color: widget.breathingPattern.primaryColor.withOpacity(0.07),
+      color: isLightTheme
+          ? widget.breathingPattern.primaryColor.withOpacity(0.1)
+          : widget.breathingPattern.primaryColor.withOpacity(0.07),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -212,10 +232,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                 Expanded(
                   child: Text(
                     'Pattern & Mechanism',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                 ),
@@ -226,7 +246,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
               _getPatternMechanism(),
               style: TextStyle(
                 fontSize: 13,
-                color: Colors.white.withOpacity(0.9),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.color
+                    ?.withOpacity(0.9),
                 height: 1.5,
                 letterSpacing: 0.2,
               ),
@@ -238,10 +262,13 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildScientificEvidence() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return Card(
       elevation: 0,
       margin: EdgeInsets.zero,
-      color: Colors.white.withOpacity(0.03),
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.03)
+          : Colors.white.withOpacity(0.03),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -258,10 +285,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                 const SizedBox(width: 8),
                 Text(
                   'Scientific Evidence',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -296,7 +323,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                       _getUseCase(),
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.9),
                         height: 1.4,
                       ),
                     ),
@@ -312,7 +343,9 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
               Card(
                 elevation: 0,
                 margin: EdgeInsets.zero,
-                color: Colors.white.withOpacity(0.03),
+                color: isLightTheme
+                    ? Colors.black.withOpacity(0.03)
+                    : Colors.white.withOpacity(0.03),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
                 child: Padding(
@@ -322,10 +355,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                     children: [
                       Text(
                         'Alternative Options',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -333,7 +366,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                         _getAlternativeOptions(),
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.white.withOpacity(0.8),
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withOpacity(0.8),
                           height: 1.4,
                         ),
                       ),
@@ -370,7 +407,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                       evidence,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.9),
                         height: 1.5,
                         letterSpacing: 0.2,
                       ),
@@ -384,11 +425,14 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
 
   Widget _buildResearchLinks() {
     final links = _getResearchLinks();
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
 
     return Card(
       elevation: 0,
       margin: EdgeInsets.zero,
-      color: Colors.white.withOpacity(0.02),
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.02)
+          : Colors.white.withOpacity(0.02),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -405,10 +449,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                 const SizedBox(width: 8),
                 Text(
                   'Research Studies',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -422,6 +466,7 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildResearchLinkCard(Map<String, String> link) {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
@@ -429,7 +474,9 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
         child: Card(
           elevation: 0,
           margin: EdgeInsets.zero,
-          color: Colors.white.withOpacity(0.04),
+          color: isLightTheme
+              ? Colors.black.withOpacity(0.04)
+              : Colors.white.withOpacity(0.04),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -457,7 +504,9 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                     ),
                     Icon(
                       Icons.open_in_new_rounded,
-                      color: Colors.white.withOpacity(0.6),
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
                       size: 14,
                     ),
                   ],
@@ -468,7 +517,9 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                     link['authors']!,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.white.withOpacity(0.7),
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.7)
+                          : Colors.white.withOpacity(0.7),
                       fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -479,7 +530,9 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                     link['journal']!,
                     style: TextStyle(
                       fontSize: 11,
-                      color: Colors.white.withOpacity(0.6),
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
                     ),
                   ),
                 ],
@@ -492,10 +545,13 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildReferences() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return Card(
       elevation: 0,
       margin: EdgeInsets.zero,
-      color: Colors.white.withOpacity(0.02),
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.02)
+          : Colors.white.withOpacity(0.02),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -512,10 +568,10 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                 const SizedBox(width: 8),
                 Text(
                   'References',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -525,7 +581,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
               'All research cited above is from peer-reviewed scientific journals and validated clinical studies. This breathing technique is backed by evidence-based research in neuroscience, physiology, and clinical psychology.',
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.white.withOpacity(0.8),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.color
+                    ?.withOpacity(0.8),
                 height: 1.4,
                 fontStyle: FontStyle.italic,
               ),
@@ -535,7 +595,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
               'Last Updated: June 2025',
               style: TextStyle(
                 fontSize: 10,
-                color: Colors.white.withOpacity(0.6),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.color
+                    ?.withOpacity(0.6),
               ),
             ),
           ],

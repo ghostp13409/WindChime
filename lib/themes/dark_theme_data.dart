@@ -45,10 +45,40 @@ ThemeData darkThemeData = ThemeData(
       fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
+    headlineLarge: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w300,
+      fontSize: 32,
+    ),
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 22,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    ),
+    titleSmall: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+    ),
     bodyLarge: TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w400,
       fontSize: 16,
+    ),
+    bodyMedium: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+    ),
+    bodySmall: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w400,
+      fontSize: 12,
     ),
   ),
 );

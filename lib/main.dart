@@ -32,6 +32,7 @@ import 'package:windchime/services/audio_download_service.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
 import 'package:windchime/themes/dark_theme_data.dart';
+import 'package:windchime/themes/light_theme_data.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
@@ -54,10 +55,8 @@ Future<void> main() async {
   await AudioDownloadService().initialize();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-      ],
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
       child: const MainApp(),
     ),
   );
@@ -142,10 +141,31 @@ class _MainAppState extends State<MainApp> {
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
+          // Update system theme detection in provider
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final brightness = MediaQuery.of(context).platformBrightness;
+            themeProvider.updateSystemTheme(brightness == Brightness.dark);
+          });
+
+          // Determine the theme based on the selected mode
+          ThemeData themeData;
+          switch (themeProvider.themeMode) {
+            case ThemeModeOption.light:
+              themeData = lightThemeData;
+              break;
+            case ThemeModeOption.dark:
+              themeData = darkThemeData;
+              break;
+            case ThemeModeOption.system:
+              // For system mode, use the provider's system theme detection
+              themeData =
+                  themeProvider.isDarkTheme ? darkThemeData : lightThemeData;
+              break;
+          }
+
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme:
-                themeProvider.isDarkTheme ? darkThemeData : ThemeData.light(),
+            theme: themeData,
             home: _isFirstTime
                 ? WelcomeTour(onComplete: _onWelcomeComplete)
                 : const HomeScreen(),

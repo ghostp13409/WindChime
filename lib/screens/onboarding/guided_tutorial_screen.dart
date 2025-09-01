@@ -302,7 +302,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Start Exploring',
+                      'Continue',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -311,7 +311,7 @@ class _GuidedTutorialScreenState extends State<GuidedTutorialScreen>
                     ),
                     const SizedBox(width: 8),
                     const Icon(
-                      Icons.explore,
+                      Icons.arrow_forward,
                       color: Colors.white,
                       size: 20,
                     ),

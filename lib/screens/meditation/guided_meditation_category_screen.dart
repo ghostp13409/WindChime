@@ -392,11 +392,11 @@ class _GuidedMeditationCategoryScreenState
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty.toLowerCase()) {
       case 'beginner':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF388E3C); // Darker Green
       case 'intermediate':
-        return const Color(0xFFFF9800);
+        return const Color(0xFFFFA000); // Amber
       case 'advanced':
-        return const Color(0xFFF44336);
+        return const Color(0xFFD32F2F); // Darker Red
       default:
         return Colors.grey;
     }
@@ -798,7 +798,11 @@ class _GuidedMeditationCategoryScreenState
           Text(
             _getCategoryDescription(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey.withOpacity(0.7),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.color
+                      ?.withOpacity(0.8),
                   fontWeight: FontWeight.w400,
                   letterSpacing: 0.3,
                   height: 1.4,
@@ -926,7 +930,11 @@ class _GuidedMeditationCategoryScreenState
                           Text(
                             meditation['description'],
                             style: TextStyle(
-                              color: Colors.grey.withOpacity(0.8),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color
+                                  ?.withOpacity(0.8),
                               height: 1.3,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -941,7 +949,11 @@ class _GuidedMeditationCategoryScreenState
                           Text(
                             'by ${meditation['source']}',
                             style: TextStyle(
-                              color: Colors.grey.withOpacity(0.7),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color
+                                  ?.withOpacity(0.7),
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
@@ -1016,7 +1028,11 @@ class _GuidedMeditationCategoryScreenState
                                   .textTheme
                                   .bodyLarge
                                   ?.copyWith(
-                                      color: Colors.grey.withOpacity(0.6)),
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color
+                                          ?.withOpacity(0.8)),
                             ),
                           )
                         : ListView.builder(
