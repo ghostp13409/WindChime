@@ -144,7 +144,8 @@ class _MainAppState extends State<MainApp> {
         builder: (context, themeProvider, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: darkThemeData,
+            theme:
+                themeProvider.isDarkTheme ? darkThemeData : ThemeData.light(),
             home: _isFirstTime
                 ? WelcomeTour(onComplete: _onWelcomeComplete)
                 : const HomeScreen(),

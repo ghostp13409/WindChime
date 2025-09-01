@@ -18,6 +18,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import 'package:windchime/providers/theme_provider.dart';
 import 'feedback_screen.dart';
 import 'package:windchime/widgets/shared/donation_widget.dart';
 
@@ -168,103 +170,122 @@ class _AboutScreenState extends State<AboutScreen>
 
   Widget _buildModernHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-      child: Row(
-        children: [
-          // Back Button
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context).dividerColor.withOpacity(0.2),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+        padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+        child: Row(
+          children: [
+            // Back Button
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.2),
+                  width: 1,
                 ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Theme.of(context).iconTheme.color?.withOpacity(0.8),
-              ),
-              iconSize: 20,
-              padding: const EdgeInsets.all(12),
-            ),
-          ),
-
-          const SizedBox(width: 16),
-
-          // Title Section
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'About',
-                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w300,
-                        letterSpacing: -0.5,
-                        fontSize: 32,
-                      ),
-                ),
-                Text(
-                  'WindChime meditation app',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.grey.withOpacity(0.7),
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.3,
-                      ),
-                ),
-              ],
-            ),
-          ),
-
-          // Feedback Button
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context).dividerColor.withOpacity(0.2),
-                width: 1,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: IconButton(
-              onPressed: () {
-                HapticFeedback.lightImpact();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const FeedbackScreen(),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Theme.of(context).iconTheme.color?.withOpacity(0.8),
+                ),
+                iconSize: 20,
+                padding: const EdgeInsets.all(12),
+              ),
+            ),
+
+            const SizedBox(width: 16),
+
+            // Title Section
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'About',
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          fontWeight: FontWeight.w300,
+                          letterSpacing: -0.5,
+                          fontSize: 32,
+                        ),
+                  ),
+                  Text(
+                    'WindChime meditation app',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.grey.withOpacity(0.7),
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.3,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Feedback Button
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.2),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FeedbackScreen(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.feedback_outlined,
+                  color: Theme.of(context).primaryColor,
+                ),
+                iconSize: 20,
+                padding: const EdgeInsets.all(12),
+                tooltip: 'Send Feedback',
+              ),
+            ),
+            // Theme Toggle Button
+            const SizedBox(width: 16),
+            Builder(
+              builder: (context) {
+                final themeProvider = Provider.of<ThemeProvider>(context);
+                return IconButton(
+                  icon: Icon(
+                    themeProvider.isDarkTheme
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  tooltip: 'Toggle Theme',
+                  onPressed: () {
+                    themeProvider.toggleTheme();
+                    HapticFeedback.lightImpact();
+                  },
                 );
               },
-              icon: Icon(
-                Icons.feedback_outlined,
-                color: Theme.of(context).primaryColor,
-              ),
-              iconSize: 20,
-              padding: const EdgeInsets.all(12),
-              tooltip: 'Send Feedback',
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ));
   }
 
   Widget _buildMadeBySection() {

@@ -21,7 +21,14 @@ ThemeData darkThemeData = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.dark,
   primaryColor: Color(0xFF26A69A),
-  scaffoldBackgroundColor: Color(0xFF121421),
+  scaffoldBackgroundColor: Color(0xFF080A12),
+  colorScheme: const ColorScheme.dark(
+    surface: Color(0xFF080A12),
+    background: Color(0xFF080A12),
+    primary: Color(0xFF26A69A),
+    onSurface: Colors.white,
+    onBackground: Colors.white,
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       color: Colors.white,
