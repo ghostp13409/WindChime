@@ -132,65 +132,65 @@ class _GuidedMeditationInstructionScreenState
             opacity: _fadeAnimation,
             child: Column(
               children: [
-                // Header
-                _buildHeader(),
+                // Compact Header
+                _buildCompactHeader(),
 
                 // Content
                 Expanded(
                   child: SlideTransition(
                     position: _slideAnimation,
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 12),
 
                           // Meditation Info Card
                           _buildMeditationInfoCard(),
 
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 16),
 
                           // About This Meditation
                           _buildAboutSection(),
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 16),
 
                           // Instructions Section
                           _buildInstructionsSection(),
 
-                          const SizedBox(height: 24),
-
                           // What to Expect
-                          if (widget.meditation.whatToExpect != null)
+                          if (widget.meditation.whatToExpect != null) ...[
+                            const SizedBox(height: 16),
                             _buildWhatToExpectSection(),
-
-                          const SizedBox(height: 24),
+                          ],
 
                           // Research & Sources
-                          if (widget.meditation.researchLinks.isNotEmpty)
+                          if (widget.meditation.researchLinks.isNotEmpty) ...[
+                            const SizedBox(height: 16),
                             _buildResearchSection(),
-
-                          const SizedBox(height: 24),
+                          ],
 
                           // Instructor Info
-                          if (widget.meditation.instructorBio != null)
+                          if (widget.meditation.instructorBio != null) ...[
+                            const SizedBox(height: 16),
                             _buildInstructorSection(),
+                          ],
 
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 16),
 
                           // Preparation Tips
                           _buildPreparationTips(),
 
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),
                   ),
                 ),
 
-                // Start Button
-                _buildStartButton(),
+                // Compact Start Button
+                _buildCompactStartButton(),
               ],
             ),
           ),
@@ -199,24 +199,24 @@ class _GuidedMeditationInstructionScreenState
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildCompactHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: Theme.of(context).dividerColor.withOpacity(0.2),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 6,
+                  offset: const Offset(0, 1),
                 ),
               ],
             ),
@@ -226,27 +226,27 @@ class _GuidedMeditationInstructionScreenState
                 Icons.arrow_back_ios_new,
                 color: Theme.of(context).iconTheme.color?.withOpacity(0.8),
               ),
-              iconSize: 22,
-              padding: const EdgeInsets.all(12),
+              iconSize: 18,
+              padding: const EdgeInsets.all(8),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Prepare to Meditate',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: -0.5,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: -0.3,
                       ),
                 ),
                 Text(
                   'Get ready for your session',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey.withOpacity(0.8),
-                        letterSpacing: 0.2,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey.withOpacity(0.7),
+                        letterSpacing: 0.1,
                       ),
                 ),
               ],
@@ -259,19 +259,19 @@ class _GuidedMeditationInstructionScreenState
 
   Widget _buildMeditationInfoCard() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -281,10 +281,10 @@ class _GuidedMeditationInstructionScreenState
           Row(
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(12),
                   gradient: LinearGradient(
                     colors: [
                       widget.categoryColor,
@@ -295,28 +295,28 @@ class _GuidedMeditationInstructionScreenState
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.categoryColor.withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                      color: widget.categoryColor.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
                 child: Icon(
                   Icons.headphones,
                   color: Colors.white,
-                  size: 24,
+                  size: 20,
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.meditation.title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            letterSpacing: -0.3,
+                            letterSpacing: -0.2,
                           ),
                     ),
                     const SizedBox(height: 4),
@@ -324,34 +324,34 @@ class _GuidedMeditationInstructionScreenState
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: widget.categoryColor.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
                             widget.meditation.formattedDuration,
                             style: TextStyle(
                               color: widget.categoryColor,
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 6),
                         if (widget.meditation.rating > 0)
                           Row(
                             children: [
                               Icon(
                                 Icons.star,
-                                size: 14,
+                                size: 12,
                                 color: Colors.amber,
                               ),
                               const SizedBox(width: 2),
                               Text(
                                 widget.meditation.rating.toStringAsFixed(1),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.grey.withOpacity(0.8),
                                 ),
@@ -365,31 +365,37 @@ class _GuidedMeditationInstructionScreenState
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
             widget.meditation.description,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.4,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black87
+                      : Colors.grey.withOpacity(0.8),
+                  height: 1.3,
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Row(
             children: [
               Text(
                 'by ${widget.meditation.instructor}',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.6),
-                      fontSize: 11,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black54
+                          : Colors.grey.withOpacity(0.6),
+                      fontSize: 10,
                     ),
               ),
               if (widget.meditation.playCount > 0) ...[
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
                 Text(
                   '• ${widget.meditation.playCount} plays',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.withOpacity(0.6),
-                        fontSize: 11,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.black54
+                            : Colors.grey.withOpacity(0.6),
+                        fontSize: 10,
                       ),
                 ),
               ],
@@ -406,33 +412,33 @@ class _GuidedMeditationInstructionScreenState
       children: [
         Text(
           'Instructions',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
-                letterSpacing: -0.3,
+                letterSpacing: -0.2,
               ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         _buildInstructionItem(
           icon: Icons.headphones,
           title: 'Use headphones',
           description: 'For the best experience, use headphones or earbuds',
           color: widget.categoryColor,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         _buildInstructionItem(
           icon: Icons.volume_up,
           title: 'Adjust volume',
           description: 'Set a comfortable volume level before starting',
           color: widget.categoryColor,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         _buildInstructionItem(
           icon: Icons.self_improvement,
           title: 'Find your position',
           description: 'Sit or lie down in a comfortable position',
           color: widget.categoryColor,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         _buildInstructionItem(
           icon: Icons.phone_iphone,
           title: 'Minimize distractions',
@@ -452,36 +458,39 @@ class _GuidedMeditationInstructionScreenState
     return Row(
       children: [
         Container(
-          width: 40,
-          height: 40,
+          width: 32,
+          height: 32,
           decoration: BoxDecoration(
             color: color.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
             color: color,
-            size: 20,
+            size: 16,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w500,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.1,
                     ),
               ),
               const SizedBox(height: 2),
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.7),
-                      height: 1.3,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black87
+                          : Colors.grey.withOpacity(0.7),
+                      height: 1.2,
+                      fontSize: 12,
                     ),
               ),
             ],
@@ -493,10 +502,10 @@ class _GuidedMeditationInstructionScreenState
 
   Widget _buildPreparationTips() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: widget.categoryColor.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: widget.categoryColor.withOpacity(0.2),
           width: 1,
@@ -510,29 +519,32 @@ class _GuidedMeditationInstructionScreenState
               Icon(
                 Icons.lightbulb_outline,
                 color: widget.categoryColor,
-                size: 20,
+                size: 16,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 'Preparation Tips',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: widget.categoryColor,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.1,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             '• Take a few deep breaths to settle in\n'
             '• Close your eyes or soften your gaze\n'
             '• Let go of any expectations\n'
             '• Simply follow along with the guidance\n'
             '• It\'s okay if your mind wanders',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.6,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black87
+                      : Colors.grey.withOpacity(0.8),
+                  height: 1.4,
+                  fontSize: 12,
                 ),
           ),
         ],
@@ -540,9 +552,9 @@ class _GuidedMeditationInstructionScreenState
     );
   }
 
-  Widget _buildStartButton() {
+  Widget _buildCompactStartButton() {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: SizedBox(
         width: double.infinity,
         child: Container(
@@ -555,12 +567,12 @@ class _GuidedMeditationInstructionScreenState
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: widget.categoryColor.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
+                color: widget.categoryColor.withOpacity(0.2),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
               ),
             ],
           ),
@@ -569,9 +581,9 @@ class _GuidedMeditationInstructionScreenState
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(14),
               ),
             ),
             child: Row(
@@ -580,15 +592,15 @@ class _GuidedMeditationInstructionScreenState
                 const Icon(
                   Icons.play_arrow,
                   color: Colors.white,
-                  size: 28,
+                  size: 22,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
                 Text(
                   'Start Meditation',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
+                        letterSpacing: 0.3,
                       ),
                 ),
               ],
@@ -599,15 +611,19 @@ class _GuidedMeditationInstructionScreenState
     );
   }
 
+  Widget _buildStartButton() {
+    return _buildCompactStartButton();
+  }
+
   Widget _buildAboutSection() {
     final detailedDescription =
         widget.meditation.detailedDescription ?? widget.meditation.description;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: widget.categoryColor.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: widget.categoryColor.withOpacity(0.2),
           width: 1,
@@ -621,45 +637,48 @@ class _GuidedMeditationInstructionScreenState
               Icon(
                 Icons.info_outline,
                 color: widget.categoryColor,
-                size: 20,
+                size: 16,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 'About This Meditation',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: widget.categoryColor,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.1,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             detailedDescription,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.6,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black87
+                      : Colors.grey.withOpacity(0.8),
+                  height: 1.4,
+                  fontSize: 12,
                 ),
           ),
           if (widget.meditation.tags.isNotEmpty) ...[
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: 6,
+              runSpacing: 6,
               children: widget.meditation.tags.map((tag) {
                 return Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: widget.categoryColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     tag,
                     style: TextStyle(
                       color: widget.categoryColor,
-                      fontSize: 12,
+                      fontSize: 10,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -674,19 +693,19 @@ class _GuidedMeditationInstructionScreenState
 
   Widget _buildWhatToExpectSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -698,25 +717,28 @@ class _GuidedMeditationInstructionScreenState
               Icon(
                 Icons.auto_awesome,
                 color: widget.categoryColor,
-                size: 20,
+                size: 16,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 'What to Expect',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: widget.categoryColor,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.1,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             widget.meditation.whatToExpect!,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.5,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black87
+                      : Colors.grey.withOpacity(0.8),
+                  height: 1.3,
+                  fontSize: 12,
                 ),
           ),
         ],
@@ -726,19 +748,19 @@ class _GuidedMeditationInstructionScreenState
 
   Widget _buildResearchSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -750,30 +772,30 @@ class _GuidedMeditationInstructionScreenState
               Icon(
                 Icons.science,
                 color: widget.categoryColor,
-                size: 20,
+                size: 16,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 'Research & Sources',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: widget.categoryColor,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.1,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           ...widget.meditation.researchLinks.map((link) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 8),
               child: GestureDetector(
                 onTap: () => _launchURL(link.url),
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: widget.categoryColor.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: widget.categoryColor.withOpacity(0.2),
                       width: 1,
@@ -784,9 +806,9 @@ class _GuidedMeditationInstructionScreenState
                       Icon(
                         Icons.link,
                         color: widget.categoryColor,
-                        size: 16,
+                        size: 14,
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -795,10 +817,11 @@ class _GuidedMeditationInstructionScreenState
                               link.title,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyMedium
+                                  .bodySmall
                                   ?.copyWith(
                                     color: widget.categoryColor,
                                     fontWeight: FontWeight.w500,
+                                    fontSize: 12,
                                   ),
                             ),
                             if (link.authors != null) ...[
@@ -810,11 +833,12 @@ class _GuidedMeditationInstructionScreenState
                                     .bodySmall
                                     ?.copyWith(
                                       color: Colors.grey.withOpacity(0.7),
+                                      fontSize: 10,
                                     ),
                               ),
                             ],
                             if (link.description != null) ...[
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 2),
                               Text(
                                 link.description!,
                                 style: Theme.of(context)
@@ -822,7 +846,7 @@ class _GuidedMeditationInstructionScreenState
                                     .bodySmall
                                     ?.copyWith(
                                       color: Colors.grey.withOpacity(0.6),
-                                      fontSize: 12,
+                                      fontSize: 10,
                                     ),
                               ),
                             ],
@@ -832,7 +856,7 @@ class _GuidedMeditationInstructionScreenState
                       Icon(
                         Icons.open_in_new,
                         color: Colors.grey.withOpacity(0.5),
-                        size: 16,
+                        size: 12,
                       ),
                     ],
                   ),
@@ -847,19 +871,19 @@ class _GuidedMeditationInstructionScreenState
 
   Widget _buildInstructorSection() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: Theme.of(context).dividerColor.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -869,29 +893,29 @@ class _GuidedMeditationInstructionScreenState
           Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: 32,
+                height: 32,
                 decoration: BoxDecoration(
                   color: widget.categoryColor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
                   Icons.person,
                   color: widget.categoryColor,
-                  size: 20,
+                  size: 16,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'About ${widget.meditation.instructor}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w600,
                             color: widget.categoryColor,
-                            letterSpacing: -0.2,
+                            letterSpacing: -0.1,
                           ),
                     ),
                   ],
@@ -899,21 +923,25 @@ class _GuidedMeditationInstructionScreenState
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Text(
             widget.meditation.instructorBio!,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey.withOpacity(0.8),
-                  height: 1.5,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black87
+                      : Colors.grey.withOpacity(0.8),
+                  height: 1.3,
+                  fontSize: 12,
                 ),
           ),
           if (widget.meditation.attribution != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
               widget.meditation.attribution!,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.grey.withOpacity(0.6),
                     fontStyle: FontStyle.italic,
+                    fontSize: 11,
                   ),
             ),
           ],

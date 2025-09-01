@@ -19,6 +19,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:windchime/screens/meditation/guided_meditation_instruction_screen.dart';
 import 'package:windchime/models/meditation/guided_meditation.dart';
+import 'package:windchime/services/audio_download_service.dart';
+import 'package:windchime/config/audio_config.dart';
+import 'package:windchime/widgets/shared/download_progress_widget.dart';
 
 class GuidedMeditationCategoryScreen extends StatefulWidget {
   final String categoryId;
@@ -44,6 +47,11 @@ class _GuidedMeditationCategoryScreenState
     with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
+
+  final AudioDownloadService _downloadService = AudioDownloadService();
+  bool _isDownloading = false;
+  double _downloadProgress = 0.0;
+  String _downloadMessage = '';
 
   // Define meditation data for each category
   Map<String, List<Map<String, dynamic>>> get categoryMeditations => {
@@ -384,17 +392,42 @@ class _GuidedMeditationCategoryScreenState
   Color _getDifficultyColor(String difficulty) {
     switch (difficulty.toLowerCase()) {
       case 'beginner':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF388E3C); // Darker Green
       case 'intermediate':
-        return const Color(0xFFFF9800);
+        return const Color(0xFFFFA000); // Amber
       case 'advanced':
-        return const Color(0xFFF44336);
+        return const Color(0xFFD32F2F); // Darker Red
       default:
         return Colors.grey;
     }
   }
 
-  void _startMeditation(Map<String, dynamic> meditationData) {
+  void _startMeditation(Map<String, dynamic> meditationData) async {
+    final audioPath = meditationData['audioPath'];
+
+    // Debug logging
+    print('Audio path: $audioPath');
+    print('Should download: ${AudioConfig.shouldDownload(audioPath)}');
+    print('Download URL: ${AudioConfig.getDownloadUrl(audioPath)}');
+
+    // Check if this is a downloadable file
+    if (AudioConfig.shouldDownload(audioPath)) {
+      // Check if already downloaded
+      final isDownloaded = await _downloadService.isDownloaded(audioPath);
+      print('Is downloaded: $isDownloaded');
+
+      if (!isDownloaded) {
+        // Show download dialog
+        await _showDownloadDialog(audioPath, meditationData);
+        return;
+      }
+    }
+
+    // Proceed with meditation
+    _navigateToMeditation(meditationData);
+  }
+
+  void _navigateToMeditation(Map<String, dynamic> meditationData) {
     // Convert map data to GuidedMeditation object
     final meditation = GuidedMeditation(
       id: '${widget.categoryId}_${meditationData['title'].toString().replaceAll(' ', '_').toLowerCase()}',
@@ -419,6 +452,93 @@ class _GuidedMeditationCategoryScreenState
           meditation: meditation,
           categoryColor: widget.categoryColor,
         ),
+      ),
+    );
+  }
+
+  Future<void> _showDownloadDialog(
+      String audioPath, Map<String, dynamic> meditationData) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Download Required'),
+        content: Text(
+          'This meditation needs to be downloaded first. Would you like to download "${meditationData['title']}"?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _downloadAndStartMeditation(audioPath, meditationData);
+            },
+            child: const Text('Download'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _downloadAndStartMeditation(
+      String audioPath, Map<String, dynamic> meditationData) async {
+    setState(() {
+      _isDownloading = true;
+      _downloadProgress = 0.0;
+      _downloadMessage = 'Downloading ${meditationData['title']}...';
+    });
+
+    try {
+      final success = await _downloadService.downloadAudio(
+        audioPath,
+        onProgress: (progress) {
+          setState(() {
+            _downloadProgress = progress;
+          });
+        },
+        onError: (error) {
+          setState(() {
+            _isDownloading = false;
+          });
+          _showErrorDialog(error);
+        },
+      );
+
+      if (success) {
+        setState(() {
+          _isDownloading = false;
+        });
+        _navigateToMeditation(meditationData);
+      } else {
+        setState(() {
+          _isDownloading = false;
+        });
+        _showErrorDialog(
+            'Download failed. Please check your internet connection and try again.');
+      }
+    } catch (e) {
+      setState(() {
+        _isDownloading = false;
+      });
+      _showErrorDialog('Download error: $e');
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Download Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
       ),
     );
   }
@@ -678,7 +798,11 @@ class _GuidedMeditationCategoryScreenState
           Text(
             _getCategoryDescription(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.grey.withOpacity(0.7),
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.color
+                      ?.withOpacity(0.8),
                   fontWeight: FontWeight.w400,
                   letterSpacing: 0.3,
                   height: 1.4,
@@ -806,7 +930,11 @@ class _GuidedMeditationCategoryScreenState
                           Text(
                             meditation['description'],
                             style: TextStyle(
-                              color: Colors.grey.withOpacity(0.8),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color
+                                  ?.withOpacity(0.8),
                               height: 1.3,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
@@ -821,7 +949,11 @@ class _GuidedMeditationCategoryScreenState
                           Text(
                             'by ${meditation['source']}',
                             style: TextStyle(
-                              color: Colors.grey.withOpacity(0.7),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color
+                                  ?.withOpacity(0.7),
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
@@ -874,37 +1006,63 @@ class _GuidedMeditationCategoryScreenState
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
-          child: Column(
+          child: Stack(
             children: [
-              // Modern Header exactly like home screen
-              _buildModernHeader(),
+              Column(
+                children: [
+                  // Modern Header exactly like home screen
+                  _buildModernHeader(),
 
-              // Category description section
-              _buildCategoryDescription(),
+                  // Category description section
+                  _buildCategoryDescription(),
 
-              const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-              // Meditations list
-              Expanded(
-                child: meditations.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No meditations available',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: Colors.grey.withOpacity(0.6)),
-                        ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: meditations.length,
-                        itemBuilder: (context, index) {
-                          return _buildMeditationCard(meditations[index]);
-                        },
-                      ),
+                  // Meditations list
+                  Expanded(
+                    child: meditations.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No meditations available',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color
+                                          ?.withOpacity(0.8)),
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: meditations.length,
+                            itemBuilder: (context, index) {
+                              return _buildMeditationCard(meditations[index]);
+                            },
+                          ),
+                  ),
+                ],
               ),
+
+              // Download progress overlay
+              if (_isDownloading)
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: DownloadProgressWidget(
+                      progress: _downloadProgress,
+                      message: _downloadMessage,
+                      onCancel: () {
+                        setState(() {
+                          _isDownloading = false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

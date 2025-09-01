@@ -773,7 +773,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
               });
               HapticFeedback.lightImpact();
             },
-            activeColor: Theme.of(context).primaryColor,
+            activeThumbColor: Theme.of(context).primaryColor,
           ),
         ],
       ),

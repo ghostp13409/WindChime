@@ -30,8 +30,6 @@ class MeditationHomeScreen extends StatefulWidget {
 }
 
 class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
-  bool _showDemo = false;
-
   // Temp Image URLs
   static const String _sleep = 'images/meditation/sleep.png';
   static const String _focus = 'images/meditation/focus.png';
@@ -106,7 +104,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Sleep',
         icon: Icons.nightlight_round,
-        color: const Color(0xFF8E97FD),
+        color: const Color(0xFF4B5AEF), // More vibrant blue-purple
         meditations: [
           Meditation(
             title: 'Sleep Mode',
@@ -119,7 +117,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Focus',
         icon: Icons.psychology,
-        color: const Color(0xFFF6815B),
+        color: const Color(0xFFEF6C00), // More vibrant orange
         meditations: [
           Meditation(
             title: 'Focus Mode',
@@ -132,7 +130,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Anxiety',
         icon: Icons.healing,
-        color: const Color(0xFF4CAF50),
+        color: const Color(0xFF388E3C), // More vibrant green
         meditations: [
           Meditation(
             title: 'Anxiety Mode',
@@ -145,7 +143,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
       MeditationCategory(
         name: 'Happiness',
         icon: Icons.self_improvement,
-        color: const Color(0xFFFFCF86),
+        color: const Color(0xFFFFB300), // More vibrant yellow
         meditations: [
           Meditation(
             title: 'Happiness Mode',
@@ -156,25 +154,6 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
         ],
       ),
     ];
-
-    if (_showDemo) {
-      return [
-        MeditationCategory(
-          name: 'Demo',
-          icon: Icons.play_circle_outline,
-          color: const Color(0xFF00C896),
-          meditations: [
-            Meditation(
-              title: 'Quick Demo',
-              subtitle: 'Try a 10-second session',
-              duration: '10 sec',
-              image: _focus,
-            ),
-          ],
-        ),
-        ...baseCategories,
-      ];
-    }
 
     return baseCategories;
   }
@@ -198,7 +177,10 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
@@ -234,26 +216,7 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                             );
                           },
                           onLongPress: () {
-                            HapticFeedback.mediumImpact();
-                            setState(() {
-                              _showDemo = !_showDemo;
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  _showDemo
-                                      ? 'Demo mode enabled'
-                                      : 'Demo mode disabled',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: const Color(0xFF00C896),
-                                duration: const Duration(seconds: 2),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                            );
+                            // Removed demo/test logic
                           },
                           child: Container(
                             padding: const EdgeInsets.all(12),
@@ -296,21 +259,40 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
+                          gradient:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? null
+                                  : LinearGradient(
+                                      colors: [
+                                        category.color,
+                                        category.color.withOpacity(0.8),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
                           color: Theme.of(context).brightness == Brightness.dark
                               ? category.color.withOpacity(0.2)
-                              : category.color.withOpacity(0.9),
+                              : null,
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: category.color,
-                            width: 2,
+                            width:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? 1
+                                    : 2,
                           ),
                           boxShadow:
                               Theme.of(context).brightness == Brightness.light
                                   ? [
                                       BoxShadow(
+                                        color: category.color.withOpacity(0.4),
+                                        blurRadius: 12,
+                                        offset: Offset(0, 6),
+                                      ),
+                                      BoxShadow(
                                         color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 10,
-                                        offset: Offset(0, 4),
+                                        blurRadius: 8,
+                                        offset: Offset(0, 2),
                                       ),
                                     ]
                                   : null,
@@ -320,21 +302,45 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                category.icon,
-                                size: 40, // Reduced icon size
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
-                                    ? category.color
-                                    : Colors.white,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? BoxDecoration(
+                                        color: Colors.white.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(12),
+                                      )
+                                    : null,
+                                child: Icon(
+                                  category.icon,
+                                  size: 32,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? category.color
+                                      : Colors.white,
+                                ),
                               ),
                               const SizedBox(height: 12), // Reduced spacing
                               Text(
                                 category.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16, // Reduced font size
+                                style: TextStyle(
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.white,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
+                                  shadows: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? [
+                                          Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.3),
+                                            offset: Offset(0, 1),
+                                            blurRadius: 2,
+                                          ),
+                                        ]
+                                      : null,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -343,10 +349,24 @@ class _MeditationHomeScreenState extends State<MeditationHomeScreen> {
                                 category.meditations.first.subtitle,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 12, // Reduced font size
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? Colors.white.withOpacity(0.8)
+                                      : Colors.white.withOpacity(0.9),
+                                  fontSize: 12,
+                                  shadows: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? [
+                                          Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            offset: Offset(0, 1),
+                                            blurRadius: 1,
+                                          ),
+                                        ]
+                                      : null,
                                 ),
-                                maxLines: 2, // Prevent overflow
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],

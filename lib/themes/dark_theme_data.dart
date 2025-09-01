@@ -21,7 +21,14 @@ ThemeData darkThemeData = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.dark,
   primaryColor: Color(0xFF26A69A),
-  scaffoldBackgroundColor: Color(0xFF121421),
+  scaffoldBackgroundColor: Color(0xFF080A12),
+  colorScheme: const ColorScheme.dark(
+    surface: Color(0xFF080A12),
+    background: Color(0xFF080A12),
+    primary: Color(0xFF26A69A),
+    onSurface: Colors.white,
+    onBackground: Colors.white,
+  ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
       color: Colors.white,
@@ -38,10 +45,40 @@ ThemeData darkThemeData = ThemeData(
       fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
+    headlineLarge: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w300,
+      fontSize: 32,
+    ),
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 22,
+    ),
+    titleMedium: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    ),
+    titleSmall: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+    ),
     bodyLarge: TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.w400,
       fontSize: 16,
+    ),
+    bodyMedium: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+    ),
+    bodySmall: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w400,
+      fontSize: 12,
     ),
   ),
 );

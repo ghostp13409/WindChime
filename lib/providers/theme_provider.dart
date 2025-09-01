@@ -16,14 +16,79 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
+enum ThemeModeOption {
+  light,
+  dark,
+  system,
+}
 
 class ThemeProvider with ChangeNotifier {
-  bool _isDarkTheme = true;
+  ThemeModeOption _themeMode = ThemeModeOption.dark;
+  bool _systemIsDark = false;
 
-  bool get isDarkTheme => _isDarkTheme;
+  ThemeProvider() {
+    // Initialize system theme detection
+    _updateSystemTheme();
+  }
+
+  ThemeModeOption get themeMode => _themeMode;
+
+  bool get isDarkTheme {
+    switch (_themeMode) {
+      case ThemeModeOption.light:
+        return false;
+      case ThemeModeOption.dark:
+        return true;
+      case ThemeModeOption.system:
+        return _systemIsDark;
+    }
+  }
+
+  void setThemeMode(ThemeModeOption mode) {
+    _themeMode = mode;
+    notifyListeners();
+  }
 
   void toggleTheme() {
-    _isDarkTheme = !_isDarkTheme;
+    // Cycle through light -> dark -> system -> light...
+    switch (_themeMode) {
+      case ThemeModeOption.light:
+        _themeMode = ThemeModeOption.dark;
+        break;
+      case ThemeModeOption.dark:
+        _themeMode = ThemeModeOption.system;
+        break;
+      case ThemeModeOption.system:
+        _themeMode = ThemeModeOption.light;
+        break;
+    }
     notifyListeners();
+  }
+
+  void _updateSystemTheme() {
+    // This will be called when the app starts to detect system theme
+    final brightness =
+        SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    _systemIsDark = brightness == Brightness.dark;
+  }
+
+  void updateSystemTheme(bool isDark) {
+    _systemIsDark = isDark;
+    if (_themeMode == ThemeModeOption.system) {
+      notifyListeners();
+    }
+  }
+
+  String getThemeModeDisplayName() {
+    switch (_themeMode) {
+      case ThemeModeOption.light:
+        return 'Light';
+      case ThemeModeOption.dark:
+        return 'Dark';
+      case ThemeModeOption.system:
+        return 'System (${_systemIsDark ? 'Dark' : 'Light'})';
+    }
   }
 }

@@ -20,11 +20,21 @@ import 'package:flutter/material.dart';
 ThemeData lightThemeData = ThemeData(
   fontFamily: 'Montserrat',
   brightness: Brightness.light,
-  primaryColor: Color(0xFF26A69A),
-  scaffoldBackgroundColor: Color(0xFFFDFDFD),
-  cardColor: Color(0xFFFFFFFF),
-  iconTheme: IconThemeData(
-    color: Color(0xFF212121),
+  primaryColor: const Color(0xFF80CBC4),
+  scaffoldBackgroundColor: const Color(0xFFFAFAFA),
+  cardColor: const Color(0xFFFFFFFF),
+  dividerColor: const Color(0xFFE0E0E0),
+  colorScheme: const ColorScheme.light(
+    surface: Color(0xFFFFFFFF),
+    background: Color(0xFFFAFAFA),
+    primary: Color(0xFF80CBC4),
+    onSurface: Color(0xFF212121),
+    onBackground: Color(0xFF212121),
+    secondary: Color(0xFF26A69A),
+    tertiary: Color(0xFF4DB6AC),
+  ),
+  iconTheme: const IconThemeData(
+    color: Color(0xFF424242),
   ),
   textTheme: const TextTheme(
     displayLarge: TextStyle(
@@ -42,10 +52,45 @@ ThemeData lightThemeData = ThemeData(
       fontWeight: FontWeight.w500,
       fontSize: 20,
     ),
-    bodyLarge: TextStyle(
+    headlineLarge: TextStyle(
       color: Color(0xFF212121),
+      fontWeight: FontWeight.w300,
+      fontSize: 32,
+    ),
+    headlineSmall: TextStyle(
+      color: Color(0xFF212121),
+      fontWeight: FontWeight.w600,
+      fontSize: 20,
+    ),
+    titleLarge: TextStyle(
+      color: Color(0xFF212121),
+      fontWeight: FontWeight.w600,
+      fontSize: 22,
+    ),
+    titleMedium: TextStyle(
+      color: Color(0xFF212121),
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
+    ),
+    titleSmall: TextStyle(
+      color: Color(0xFF212121),
+      fontWeight: FontWeight.w600,
+      fontSize: 14,
+    ),
+    bodyLarge: TextStyle(
+      color: Color(0xFF424242),
       fontWeight: FontWeight.w400,
       fontSize: 16,
+    ),
+    bodyMedium: TextStyle(
+      color: Color(0xFF424242),
+      fontWeight: FontWeight.w400,
+      fontSize: 14,
+    ),
+    bodySmall: TextStyle(
+      color: Color(0xFF616161),
+      fontWeight: FontWeight.w400,
+      fontSize: 12,
     ),
   ),
 );

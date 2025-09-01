@@ -72,14 +72,20 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              widget.breathingPattern.primaryColor.withOpacity(0.2),
-              const Color(0xFF1A1B2E).withOpacity(0.8),
-              const Color(0xFF0F1419),
-            ],
-            stops: const [0.0, 0.5, 1.0],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: Theme.of(context).brightness == Brightness.light
+                ? [
+                    widget.breathingPattern.primaryColor.withOpacity(0.15),
+                    Colors.white,
+                    Colors.white,
+                  ]
+                : [
+                    widget.breathingPattern.primaryColor.withOpacity(0.12),
+                    const Color(0xFF1A1B2E).withOpacity(0.7),
+                    const Color(0xFF0F1419),
+                  ],
+            stops: const [0.0, 0.3, 1.0],
           ),
         ),
         child: SafeArea(
@@ -87,35 +93,40 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
             opacity: _fadeAnimation,
             child: Column(
               children: [
-                // Header
-                _buildHeader(),
+                // Header (reduced padding)
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: _buildHeader(),
+                ),
 
                 // Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24.0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Technique Overview
+                        // Technique Overview (compact)
                         _buildTechniqueOverview(),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
 
-                        // Scientific Evidence
+                        // Scientific Evidence (compact)
                         _buildScientificEvidence(),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
 
-                        // Research Links
+                        // Research Links (compact)
                         _buildResearchLinks(),
 
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 12),
 
-                        // References
+                        // References (compact)
                         _buildReferences(),
 
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -129,222 +140,246 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(24.0),
-      child: Row(
-        children: [
-          // Back button
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: Colors.black26,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-                size: 24,
-              ),
+    return Row(
+      children: [
+        // Back button
+        GestureDetector(
+          onTap: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white.withOpacity(0.5)
+                  : Colors.black26,
+              shape: BoxShape.circle,
+              border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black.withOpacity(0.1)
+                      : Colors.white.withOpacity(0.15),
+                  width: 0.5),
+            ),
+            child: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
+              size: 22,
             ),
           ),
-
-          const SizedBox(width: 16),
-
-          // Title
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Research & Science',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _getTechniqueTitle(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white.withOpacity(0.8),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTechniqueOverview() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: widget.breathingPattern.primaryColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: widget.breathingPattern.primaryColor.withOpacity(0.3),
-          width: 1,
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+
+        const SizedBox(width: 10),
+
+        // Title
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                Icons.science_rounded,
-                color: widget.breathingPattern.primaryColor,
-                size: 28,
+              Text(
+                'Research & Science',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  letterSpacing: 0.5,
+                ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  'Pattern & Mechanism',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+              const SizedBox(height: 2),
+              Text(
+                _getTechniqueTitle(),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.color
+                      ?.withOpacity(0.8),
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            _getPatternMechanism(),
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.white.withOpacity(0.9),
-              height: 1.6,
-              letterSpacing: 0.3,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTechniqueOverview() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      color: isLightTheme
+          ? widget.breathingPattern.primaryColor.withOpacity(0.1)
+          : widget.breathingPattern.primaryColor.withOpacity(0.07),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.science_rounded,
+                  color: widget.breathingPattern.primaryColor,
+                  size: 22,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Pattern & Mechanism',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              _getPatternMechanism(),
+              style: TextStyle(
+                fontSize: 13,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.color
+                    ?.withOpacity(0.9),
+                height: 1.5,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildScientificEvidence() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.verified_rounded,
-                color: widget.breathingPattern.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'Scientific Evidence',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ..._buildEvidenceList(),
-
-          const SizedBox(height: 20),
-
-          // Use Case
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: widget.breathingPattern.primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.03)
+          : Colors.white.withOpacity(0.03),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
+                Icon(
+                  Icons.verified_rounded,
+                  color: widget.breathingPattern.primaryColor,
+                  size: 18,
+                ),
+                const SizedBox(width: 8),
                 Text(
-                  'Best Use Case',
+                  'Scientific Evidence',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: widget.breathingPattern.primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  _getUseCase(),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white.withOpacity(0.9),
-                    height: 1.5,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
             ),
-          ),
+            const SizedBox(height: 8),
+            ..._buildEvidenceList(),
 
-          const SizedBox(height: 16),
+            const SizedBox(height: 10),
 
-          // Alternative Options
-          if (_getAlternativeOptions().isNotEmpty)
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.1),
-                  width: 1,
+            // Use Case
+            Card(
+              elevation: 0,
+              margin: EdgeInsets.zero,
+              color: widget.breathingPattern.primaryColor.withOpacity(0.08),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Best Use Case',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: widget.breathingPattern.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      _getUseCase(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.9),
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Alternative Options',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _getAlternativeOptions(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white.withOpacity(0.8),
-                      height: 1.5,
-                    ),
-                  ),
-                ],
-              ),
             ),
-        ],
+
+            const SizedBox(height: 8),
+
+            // Alternative Options
+            if (_getAlternativeOptions().isNotEmpty)
+              Card(
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                color: isLightTheme
+                    ? Colors.black.withOpacity(0.03)
+                    : Colors.white.withOpacity(0.03),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Alternative Options',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _getAlternativeOptions(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withOpacity(0.8),
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -372,7 +407,11 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
                       evidence,
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.color
+                            ?.withOpacity(0.9),
                         height: 1.5,
                         letterSpacing: 0.2,
                       ),
@@ -386,113 +425,119 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
 
   Widget _buildResearchLinks() {
     final links = _getResearchLinks();
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
 
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.link_rounded,
-                color: widget.breathingPattern.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'Research Studies',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.02)
+          : Colors.white.withOpacity(0.02),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.link_rounded,
+                  color: widget.breathingPattern.primaryColor,
+                  size: 18,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ...links.map((link) => _buildResearchLinkCard(link)),
-        ],
+                const SizedBox(width: 8),
+                Text(
+                  'Research Studies',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            ...links.map((link) => _buildResearchLinkCard(link)),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildResearchLinkCard(Map<String, String> link) {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 8),
       child: GestureDetector(
         onTap: () => _launchURL(link['url']!),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: widget.breathingPattern.primaryColor.withOpacity(0.3),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.article_rounded,
-                    color: widget.breathingPattern.primaryColor,
-                    size: 18,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      link['title']!,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: widget.breathingPattern.primaryColor,
-                        fontWeight: FontWeight.w600,
-                        height: 1.4,
+        child: Card(
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          color: isLightTheme
+              ? Colors.black.withOpacity(0.04)
+              : Colors.white.withOpacity(0.04),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.article_rounded,
+                      color: widget.breathingPattern.primaryColor,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        link['title']!,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: widget.breathingPattern.primaryColor,
+                          fontWeight: FontWeight.w600,
+                          height: 1.3,
+                        ),
                       ),
                     ),
-                  ),
-                  Icon(
-                    Icons.open_in_new_rounded,
-                    color: Colors.white.withOpacity(0.6),
-                    size: 16,
+                    Icon(
+                      Icons.open_in_new_rounded,
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
+                      size: 14,
+                    ),
+                  ],
+                ),
+                if (link['authors'] != null) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    link['authors']!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.7)
+                          : Colors.white.withOpacity(0.7),
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ],
-              ),
-              if (link['authors'] != null) ...[
-                const SizedBox(height: 8),
-                Text(
-                  link['authors']!,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.white.withOpacity(0.7),
-                    fontStyle: FontStyle.italic,
+                if (link['journal'] != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    link['journal']!,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isLightTheme
+                          ? Colors.black.withOpacity(0.6)
+                          : Colors.white.withOpacity(0.6),
+                    ),
                   ),
-                ),
+                ],
               ],
-              if (link['journal'] != null) ...[
-                const SizedBox(height: 4),
-                Text(
-                  link['journal']!,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white.withOpacity(0.6),
-                  ),
-                ),
-              ],
-            ],
+            ),
           ),
         ),
       ),
@@ -500,57 +545,65 @@ class _BreathworkInfoScreenState extends State<BreathworkInfoScreen>
   }
 
   Widget _buildReferences() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.menu_book_rounded,
-                color: widget.breathingPattern.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'References',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      color: isLightTheme
+          ? Colors.black.withOpacity(0.02)
+          : Colors.white.withOpacity(0.02),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.menu_book_rounded,
+                  color: widget.breathingPattern.primaryColor,
+                  size: 18,
                 ),
+                const SizedBox(width: 8),
+                Text(
+                  'References',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'All research cited above is from peer-reviewed scientific journals and validated clinical studies. This breathing technique is backed by evidence-based research in neuroscience, physiology, and clinical psychology.',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.color
+                    ?.withOpacity(0.8),
+                height: 1.4,
+                fontStyle: FontStyle.italic,
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'All research cited above is from peer-reviewed scientific journals and validated clinical studies. This breathing technique is backed by evidence-based research in neuroscience, physiology, and clinical psychology.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withOpacity(0.8),
-              height: 1.6,
-              fontStyle: FontStyle.italic,
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Last Updated: June 2025',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.white.withOpacity(0.6),
+            const SizedBox(height: 8),
+            Text(
+              'Last Updated: June 2025',
+              style: TextStyle(
+                fontSize: 10,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.color
+                    ?.withOpacity(0.6),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
