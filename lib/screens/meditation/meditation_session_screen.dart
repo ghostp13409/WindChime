@@ -69,6 +69,11 @@ class _OptimizedMeditationSessionScreenState
   final ValueNotifier<double> _progressNotifier = ValueNotifier(0.0);
   final ValueNotifier<int> _stageRemainingTimeNotifier = ValueNotifier(0);
 
+  // Preparation phase state
+  bool _isInPreparation = true;
+  int _preparationCountdown = 3; // 3-2-1 countdown
+  Timer? _preparationTimer;
+
   // Session variables
   int _seconds = 0;
   late Timer _timer;
@@ -96,7 +101,7 @@ class _OptimizedMeditationSessionScreenState
     _setupOptimizedParticleSystem();
     _setupAudio();
     _setupStateChangeAudio();
-    _startMeditation();
+    _startPreparationPhase();
   }
 
   void _setupAnimations() {
@@ -245,6 +250,63 @@ class _OptimizedMeditationSessionScreenState
     } catch (e) {
       debugPrint('Error playing state change sound: $e');
     }
+  }
+
+  void _startPreparationPhase() {
+    if (!mounted) return;
+
+    // Start breathing animation for preparation
+    _breathingController.repeat();
+    _particleController.repeat();
+
+    // Countdown: 2 seconds per count (3, 2, 1)
+    _preparationTimer =
+        Timer.periodic(const Duration(milliseconds: 2000), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
+
+      setState(() {
+        _preparationCountdown--;
+      });
+
+      if (_preparationCountdown <= 0) {
+        timer.cancel();
+        _endPreparationPhase();
+      }
+    });
+  }
+
+  Future<void> _endPreparationPhase() async {
+    if (!mounted) return;
+
+    // Add a smooth transition by showing "Begin" briefly
+    setState(() {
+      _preparationCountdown = 0; // This will show empty text
+    });
+
+    // Wait for the last countdown animation to complete (much longer for calmness)
+    await Future.delayed(const Duration(milliseconds: 1500));
+
+    // Add "Begin" or similar transition text
+    setState(() {
+      _isInPreparation = false;
+    });
+
+    // Much longer delay for very smooth transition to breathing session
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    // Start the actual meditation
+    _startMeditation();
+  }
+
+  Future<void> _skipPreparation() async {
+    _preparationTimer?.cancel();
+    setState(() {
+      _preparationCountdown = 0;
+    });
+    await _endPreparationPhase();
   }
 
   void _startMeditation() {
@@ -412,7 +474,8 @@ class _OptimizedMeditationSessionScreenState
         title: Text(
           '🧘‍♀️ Session Complete',
           style: TextStyle(
-              color: isLightTheme ? Colors.black87 : Colors.white, fontSize: 24),
+              color: isLightTheme ? Colors.black87 : Colors.white,
+              fontSize: 24),
           textAlign: TextAlign.center,
         ),
         content: Column(
@@ -463,8 +526,8 @@ class _OptimizedMeditationSessionScreenState
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(
-              color: isLightTheme ? Colors.black26 : Colors.white30),
+          border:
+              Border.all(color: isLightTheme ? Colors.black26 : Colors.white30),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -570,7 +633,8 @@ class _OptimizedMeditationSessionScreenState
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
+    _preparationTimer?.cancel();
     _particleTicker.stop();
     _breathingController.dispose();
     _particleController.dispose();
@@ -678,7 +742,9 @@ class _OptimizedMeditationSessionScreenState
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(Icons.close,
-                                  color: isLightTheme ? Colors.black : Colors.white,
+                                  color: isLightTheme
+                                      ? Colors.black
+                                      : Colors.white,
                                   size: 24),
                             ),
                           ),
@@ -698,7 +764,8 @@ class _OptimizedMeditationSessionScreenState
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.w300,
-                              color: isLightTheme ? Colors.black87 : Colors.white,
+                              color:
+                                  isLightTheme ? Colors.black87 : Colors.white,
                               letterSpacing: 1.2,
                             ),
                             textAlign: TextAlign.center,
@@ -779,149 +846,418 @@ class _OptimizedMeditationSessionScreenState
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // Breathing instruction
-                            ValueListenableBuilder<String>(
-                              valueListenable: _instructionNotifier,
-                              builder: (context, instruction, child) {
-                                return AnimatedBuilder(
-                                  animation: _fadeAnimation,
-                                  builder: (context, child) {
-                                    return Opacity(
-                                      opacity: _fadeAnimation.value,
-                                      child: Text(
-                                        instruction,
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w400,
-                                          color: isLightTheme
-                                              ? Colors.black87
-                                              : Colors.white,
-                                          letterSpacing: 1.0,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                            // Show preparation or breathing content
+                            if (_isInPreparation) ...[
+                              // Preparation countdown
+                              Text(
+                                'Get ready to breathe',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w400,
+                                  color: isLightTheme
+                                      ? Colors.black87
+                                      : Colors.white,
+                                  letterSpacing: 1.0,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
 
-                            // Main breathing visualization - constrained to prevent overflow
-                            Flexible(
-                              flex: 2,
-                              child: Center(
-                                child: RepaintBoundary(
-                                  child: AnimatedBuilder(
-                                    animation: _breathingAnimation,
-                                    builder: (context, child) {
-                                      double progress = _getBreathingProgress();
-                                      // Reduced max size to prevent overflow
-                                      double size = 160 + (progress * 60);
-
-                                      return Stack(
+                              // Preparation visualization
+                              Flexible(
+                                flex: 2,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Preparation circle with countdown only
+                                      Stack(
                                         alignment: Alignment.center,
                                         children: [
-                                          // Outer glow rings - smaller sizes
-                                          for (int i = 3; i >= 1; i--)
-                                            AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 800),
-                                              width: size + (i * 20),
-                                              height: size + (i * 20),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color:
-                                                      _getBreathingStateColor()
-                                                          .withOpacity(0.1 / i),
-                                                  width: 2,
+                                          // Outer breathing ring
+                                          AnimatedBuilder(
+                                            animation: _breathingAnimation,
+                                            builder: (context, child) {
+                                              return Transform.scale(
+                                                scale: 1.0 +
+                                                    (_breathingAnimation.value *
+                                                        0.1),
+                                                child: Container(
+                                                  width: 240,
+                                                  height: 240,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    gradient: RadialGradient(
+                                                      colors: [
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(0.0),
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(0.1),
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(0.2),
+                                                        Colors.transparent,
+                                                      ],
+                                                      stops: const [
+                                                        0.0,
+                                                        0.4,
+                                                        0.7,
+                                                        1.0
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
+                                              );
+                                            },
+                                          ),
 
-                                          // Main breathing orb
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            curve: Curves.easeInOutSine,
-                                            width: size,
-                                            height: size,
+                                          // Main preparation circle
+                                          Container(
+                                            width: 200,
+                                            height: 200,
                                             decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               gradient: RadialGradient(
                                                 colors: [
                                                   _getBreathingStateColor()
-                                                      .withOpacity(0.8),
+                                                      .withOpacity(0.3),
                                                   _getBreathingStateColor()
-                                                      .withOpacity(0.4),
+                                                      .withOpacity(0.2),
                                                   _getBreathingStateColor()
                                                       .withOpacity(0.1),
                                                 ],
-                                                stops: const [0.0, 0.7, 1.0],
+                                                stops: const [0.0, 0.6, 1.0],
                                               ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color:
-                                                      _getBreathingStateColor()
-                                                          .withOpacity(0.4),
-                                                  blurRadius: 30,
-                                                  spreadRadius: 10,
+                                              border: Border.all(
+                                                color: _getBreathingStateColor()
+                                                    .withOpacity(0.4),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: Center(
+                                              // Countdown number only - improved transitions
+                                              child: AnimatedSwitcher(
+                                                duration: const Duration(
+                                                    milliseconds: 1500),
+                                                switchInCurve:
+                                                    Curves.easeInOutCubic,
+                                                switchOutCurve:
+                                                    Curves.easeInOutCubic,
+                                                transitionBuilder:
+                                                    (child, animation) {
+                                                  return FadeTransition(
+                                                    opacity: Tween<double>(
+                                                      begin: 0.0,
+                                                      end: 1.0,
+                                                    ).animate(CurvedAnimation(
+                                                      parent: animation,
+                                                      curve: Interval(0.0, 1.0,
+                                                          curve: Curves
+                                                              .easeInOutCubic),
+                                                    )),
+                                                    child: ScaleTransition(
+                                                      scale: Tween<double>(
+                                                        begin: 0.8,
+                                                        end: 1.0,
+                                                      ).animate(CurvedAnimation(
+                                                        parent: animation,
+                                                        curve: Interval(
+                                                            0.0, 1.0,
+                                                            curve: Curves
+                                                                .easeInOutCubic),
+                                                      )),
+                                                      child: child,
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  _preparationCountdown > 0
+                                                      ? '$_preparationCountdown'
+                                                      : '',
+                                                  key: ValueKey(
+                                                      _preparationCountdown),
+                                                  style: TextStyle(
+                                                    fontSize: 56,
+                                                    fontWeight: FontWeight.w300,
+                                                    color: isLightTheme
+                                                        ? Colors.black87
+                                                        : Colors.white,
+                                                  ),
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
-                                          // Centered Text Widgets (Timer and Cycle)
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ValueListenableBuilder<int>(
-                                                valueListenable:
-                                                    _secondsNotifier,
-                                                builder:
-                                                    (context, seconds, child) {
-                                                  return Text(
-                                                    _formatTime(seconds ~/ 10),
-                                                    style: TextStyle(
-                                                      fontSize: 28,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: isLightTheme
-                                                          ? Colors.black87
-                                                          : Colors.white,
-                                                      letterSpacing: 2.0,
+
+                                          // Skip button in bottom right
+                                          Positioned(
+                                            bottom: 20,
+                                            right: 20,
+                                            child: GestureDetector(
+                                              onTap: _skipPreparation,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 8),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      _getBreathingStateColor()
+                                                          .withOpacity(0.15),
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                    color:
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(0.3),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      'Skip',
+                                                      style: TextStyle(
+                                                        color:
+                                                            _getBreathingStateColor(),
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 12,
+                                                      ),
                                                     ),
-                                                  );
-                                                },
-                                              ),
-                                              const SizedBox(height: 6),
-                                              ValueListenableBuilder<int>(
-                                                valueListenable: _cycleNotifier,
-                                                builder:
-                                                    (context, cycle, child) {
-                                                  return Text(
-                                                    'Cycle $cycle',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: isLightTheme
-                                                          ? Colors.black54
-                                                          : Colors.white
-                                                              .withOpacity(
-                                                                  0.8),
-                                                      letterSpacing: 1.0,
+                                                    const SizedBox(width: 4),
+                                                    Icon(
+                                                      Icons.skip_next,
+                                                      color:
+                                                          _getBreathingStateColor(),
+                                                      size: 16,
                                                     ),
-                                                  );
-                                                },
+                                                  ],
+                                                ),
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ],
-                                      );
-                                    },
+                                      ),
+
+                                      const SizedBox(height: 40),
+
+                                      // Instruction text below circle with improved transitions
+                                      Container(
+                                        height:
+                                            60, // Fixed height to prevent layout shifts
+                                        child: AnimatedSwitcher(
+                                          duration: const Duration(
+                                              milliseconds: 1200),
+                                          switchInCurve: Curves.easeInOutCubic,
+                                          switchOutCurve: Curves.easeInOutCubic,
+                                          transitionBuilder:
+                                              (child, animation) {
+                                            final offsetAnimation =
+                                                Tween<Offset>(
+                                              begin: const Offset(0.0, 0.2),
+                                              end: Offset.zero,
+                                            ).animate(CurvedAnimation(
+                                              parent: animation,
+                                              curve: Interval(0.0, 1.0,
+                                                  curve: Curves.easeInOutCubic),
+                                            ));
+
+                                            final fadeAnimation = Tween<double>(
+                                              begin: 0.0,
+                                              end: 1.0,
+                                            ).animate(CurvedAnimation(
+                                              parent: animation,
+                                              curve: Interval(0.3, 1.0,
+                                                  curve: Curves.easeInOutCubic),
+                                            ));
+
+                                            return SlideTransition(
+                                              position: offsetAnimation,
+                                              child: FadeTransition(
+                                                opacity: fadeAnimation,
+                                                child: child,
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            key:
+                                                ValueKey(_preparationCountdown),
+                                            child: Text(
+                                              _preparationCountdown == 3
+                                                  ? 'Follow the Animation'
+                                                  : _preparationCountdown == 2
+                                                      ? 'Get used to the Rhythm and Audio Cues'
+                                                      : _preparationCountdown ==
+                                                              1
+                                                          ? 'Put Down Your Phone'
+                                                          : '',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w400,
+                                                color: isLightTheme
+                                                    ? Colors.black54
+                                                    : Colors.white
+                                                        .withOpacity(0.8),
+                                                letterSpacing: 1.0,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                            ),
+                            ] else ...[
+                              // Normal breathing instruction
+                              ValueListenableBuilder<String>(
+                                valueListenable: _instructionNotifier,
+                                builder: (context, instruction, child) {
+                                  return AnimatedBuilder(
+                                    animation: _fadeAnimation,
+                                    builder: (context, child) {
+                                      return Opacity(
+                                        opacity: _fadeAnimation.value,
+                                        child: Text(
+                                          instruction,
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w400,
+                                            color: isLightTheme
+                                                ? Colors.black87
+                                                : Colors.white,
+                                            letterSpacing: 1.0,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+
+                              // Main breathing visualization - constrained to prevent overflow
+                              Flexible(
+                                flex: 2,
+                                child: Center(
+                                  child: RepaintBoundary(
+                                    child: AnimatedBuilder(
+                                      animation: _breathingAnimation,
+                                      builder: (context, child) {
+                                        double progress =
+                                            _getBreathingProgress();
+                                        // Reduced max size to prevent overflow
+                                        double size = 160 + (progress * 60);
+
+                                        return Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            // Outer glow rings - smaller sizes
+                                            for (int i = 3; i >= 1; i--)
+                                              AnimatedContainer(
+                                                duration: const Duration(
+                                                    milliseconds: 800),
+                                                width: size + (i * 20),
+                                                height: size + (i * 20),
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color:
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(
+                                                                0.1 / i),
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                              ),
+
+                                            // Main breathing orb
+                                            AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              curve: Curves.easeInOutSine,
+                                              width: size,
+                                              height: size,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                gradient: RadialGradient(
+                                                  colors: [
+                                                    _getBreathingStateColor()
+                                                        .withOpacity(0.8),
+                                                    _getBreathingStateColor()
+                                                        .withOpacity(0.4),
+                                                    _getBreathingStateColor()
+                                                        .withOpacity(0.1),
+                                                  ],
+                                                  stops: const [0.0, 0.7, 1.0],
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color:
+                                                        _getBreathingStateColor()
+                                                            .withOpacity(0.4),
+                                                    blurRadius: 30,
+                                                    spreadRadius: 10,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            // Centered Text Widgets (Timer and Cycle)
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      _secondsNotifier,
+                                                  builder: (context, seconds,
+                                                      child) {
+                                                    return Text(
+                                                      _formatTime(
+                                                          seconds ~/ 10),
+                                                      style: TextStyle(
+                                                        fontSize: 28,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: isLightTheme
+                                                            ? Colors.black87
+                                                            : Colors.white,
+                                                        letterSpacing: 2.0,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                                const SizedBox(height: 6),
+                                                ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      _cycleNotifier,
+                                                  builder:
+                                                      (context, cycle, child) {
+                                                    return Text(
+                                                      'Cycle $cycle',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: isLightTheme
+                                                            ? Colors.black54
+                                                            : Colors.white
+                                                                .withOpacity(
+                                                                    0.8),
+                                                        letterSpacing: 1.0,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
 
                             // Breathing guide text with expand/shrink animation
                             ValueListenableBuilder<BreathingState>(
@@ -965,8 +1301,7 @@ class _OptimizedMeditationSessionScreenState
                                             fontSize: 14,
                                             color: isLightTheme
                                                 ? Colors.black54
-                                                : Colors.white
-                                                    .withOpacity(0.6),
+                                                : Colors.white.withOpacity(0.6),
                                             letterSpacing: 0.5,
                                           ),
                                           textAlign: TextAlign.center,
@@ -1049,7 +1384,8 @@ class _OptimizedMeditationSessionScreenState
         ),
         content: Text(
           'Your progress will be saved',
-          style: TextStyle(color: isLightTheme ? Colors.black54 : Colors.white70),
+          style:
+              TextStyle(color: isLightTheme ? Colors.black54 : Colors.white70),
           textAlign: TextAlign.center,
         ),
         actions: [
@@ -1201,8 +1537,8 @@ class OptimizedParticlePainter extends CustomPainter {
     // Group particles by similar properties to reduce paint object creation
     for (var particle in particleSystem.particles) {
       // Use a simple circle without anti-aliasing for better performance
-      paint.color =
-          (isLightTheme ? Colors.black : Colors.white).withOpacity(particle.opacity);
+      paint.color = (isLightTheme ? Colors.black : Colors.white)
+          .withOpacity(particle.opacity);
 
       canvas.drawCircle(
         Offset(
@@ -1217,7 +1553,8 @@ class OptimizedParticlePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant OptimizedParticlePainter oldDelegate) {
-    return particleSystem.needsRepaint || isLightTheme != oldDelegate.isLightTheme;
+    return particleSystem.needsRepaint ||
+        isLightTheme != oldDelegate.isLightTheme;
   }
 }
 

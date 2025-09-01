@@ -187,7 +187,7 @@ For support, feedback, or questions:
 - Open an issue on GitHub
 
 ## 🔮 Roadmap
-
+- [x] Light Mode
 - [ ] User Accounts for Data Migrations and Backups
 - [ ] Better Insights into session histories
 - [ ] Push Notifications

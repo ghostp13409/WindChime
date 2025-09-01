@@ -640,15 +640,29 @@ class _GuidedMeditationSessionScreenState
   }
 
   Widget _buildCompactSessionInfo() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+        color: isDark
+            ? Theme.of(context).colorScheme.surface.withOpacity(0.7)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: widget.categoryColor.withOpacity(0.2),
+          color: isDark
+              ? widget.categoryColor.withOpacity(0.2)
+              : widget.categoryColor.withOpacity(0.15),
           width: 1,
         ),
+        boxShadow: isDark
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
       ),
       child: Row(
         children: [
@@ -692,7 +706,9 @@ class _GuidedMeditationSessionScreenState
                 Text(
                   'by ${widget.source}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.withOpacity(0.7),
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey.withOpacity(0.7)
+                            : Colors.grey.withOpacity(0.8),
                         fontSize: 12,
                       ),
                 ),
@@ -741,7 +757,9 @@ class _GuidedMeditationSessionScreenState
                   : 'Loading...',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: Colors.grey.withOpacity(0.7),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey.withOpacity(0.7)
+                        : Colors.grey.withOpacity(0.8),
                   ),
             ),
           ],
@@ -848,14 +866,18 @@ class _GuidedMeditationSessionScreenState
         borderRadius: BorderRadius.circular(size / 3),
         border: isSecondary
             ? Border.all(
-                color: widget.categoryColor.withOpacity(0.3),
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? widget.categoryColor.withOpacity(0.3)
+                    : widget.categoryColor.withOpacity(0.2),
                 width: 1,
               )
             : null,
         boxShadow: [
           BoxShadow(
             color: isSecondary
-                ? Colors.black.withOpacity(0.05)
+                ? Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black.withOpacity(0.05)
+                    : Colors.black.withOpacity(0.08)
                 : widget.categoryColor.withOpacity(0.3),
             blurRadius: isSecondary ? 8 : 12,
             offset: const Offset(0, 4),
@@ -904,6 +926,7 @@ class _GuidedMeditationSessionScreenState
   }
 
   Widget _buildModernHeader() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
       child: Row(
@@ -911,15 +934,17 @@ class _GuidedMeditationSessionScreenState
           // Back button with glassmorphism effect
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+              color: isDark
+                  ? Theme.of(context).colorScheme.surface.withOpacity(0.9)
+                  : Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: widget.categoryColor.withOpacity(0.2),
+                color: widget.categoryColor.withOpacity(isDark ? 0.2 : 0.15),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withOpacity(isDark ? 0.08 : 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 4),
                 ),
@@ -1016,18 +1041,21 @@ class _GuidedMeditationSessionScreenState
   }
 
   Widget _buildProgressSection() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
+        color: isDark
+            ? Theme.of(context).colorScheme.surface.withOpacity(0.6)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: widget.categoryColor.withOpacity(0.2),
+          color: widget.categoryColor.withOpacity(isDark ? 0.2 : 0.15),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.04 : 0.08),
             blurRadius: 20,
             offset: const Offset(0, 8),
             spreadRadius: 0,
@@ -1046,7 +1074,9 @@ class _GuidedMeditationSessionScreenState
                   Text(
                     'Current',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.withOpacity(0.7),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey.withOpacity(0.7)
+                              : Colors.grey.withOpacity(0.8),
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
@@ -1069,7 +1099,9 @@ class _GuidedMeditationSessionScreenState
                   Text(
                     'Total',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.grey.withOpacity(0.7),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey.withOpacity(0.7)
+                              : Colors.grey.withOpacity(0.8),
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.5,
@@ -1083,7 +1115,9 @@ class _GuidedMeditationSessionScreenState
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1.5,
-                          color: Colors.grey.withOpacity(0.8),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey.withOpacity(0.8)
+                              : Colors.grey.withOpacity(0.85),
                         ),
                   ),
                 ],
@@ -1101,7 +1135,9 @@ class _GuidedMeditationSessionScreenState
                 height: 8,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey.withOpacity(0.2)
+                      : Colors.grey.withOpacity(0.15),
                 ),
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
@@ -1139,7 +1175,9 @@ class _GuidedMeditationSessionScreenState
               return Text(
                 '$percentage% Complete',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.withOpacity(0.8),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey.withOpacity(0.8)
+                          : Colors.grey.withOpacity(0.85),
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.5,
@@ -1221,24 +1259,27 @@ class _GuidedMeditationSessionScreenState
   }
 
   Widget _buildSessionInfo() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+        color: isDark
+            ? Theme.of(context).colorScheme.surface.withOpacity(0.9)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(28),
         border: Border.all(
-          color: widget.categoryColor.withOpacity(0.2),
+          color: widget.categoryColor.withOpacity(isDark ? 0.2 : 0.15),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withOpacity(isDark ? 0.06 : 0.1),
             blurRadius: 24,
             offset: const Offset(0, 12),
             spreadRadius: 0,
           ),
           BoxShadow(
-            color: widget.categoryColor.withOpacity(0.1),
+            color: widget.categoryColor.withOpacity(isDark ? 0.1 : 0.08),
             blurRadius: 40,
             offset: const Offset(0, 8),
             spreadRadius: 0,
@@ -1316,7 +1357,10 @@ class _GuidedMeditationSessionScreenState
                             'by ${widget.source}',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey.withOpacity(0.7),
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.grey.withOpacity(0.7)
+                                          : Colors.grey.withOpacity(0.8),
                                       fontSize: 11,
                                       fontWeight: FontWeight.w500,
                                       letterSpacing: 0.3,
@@ -1347,7 +1391,9 @@ class _GuidedMeditationSessionScreenState
             child: Text(
               widget.description,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey.withOpacity(0.8),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey.withOpacity(0.8)
+                        : Colors.grey.withOpacity(0.85),
                     height: 1.5,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -1408,62 +1454,65 @@ class _GuidedMeditationSessionScreenState
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Outer glow rings
-            AnimatedBuilder(
-              animation: _pulseAnimation,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _isPlaying ? _pulseAnimation.value * 0.3 + 1.0 : 1.0,
-                  child: Container(
-                    width: 280,
-                    height: 280,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          widget.categoryColor.withOpacity(0.0),
-                          widget.categoryColor.withOpacity(0.05),
-                          widget.categoryColor.withOpacity(0.1),
-                          Colors.transparent,
-                        ],
-                        stops: const [0.0, 0.3, 0.6, 1.0],
+            // Outer glow rings (only in dark mode)
+            if (Theme.of(context).brightness == Brightness.dark) ...[
+              AnimatedBuilder(
+                animation: _pulseAnimation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _isPlaying ? _pulseAnimation.value * 0.3 + 1.0 : 1.0,
+                    child: Container(
+                      width: 280,
+                      height: 280,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            widget.categoryColor.withOpacity(0.0),
+                            widget.categoryColor.withOpacity(0.05),
+                            widget.categoryColor.withOpacity(0.1),
+                            Colors.transparent,
+                          ],
+                          stops: const [0.0, 0.3, 0.6, 1.0],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
 
-            // Middle ring
-            AnimatedBuilder(
-              animation: _pulseAnimation,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _isPlaying ? _pulseAnimation.value * 0.2 + 1.0 : 1.0,
-                  child: Container(
-                    width: 220,
-                    height: 220,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          widget.categoryColor.withOpacity(0.1),
-                          widget.categoryColor.withOpacity(0.15),
-                          Colors.transparent,
-                        ],
-                        stops: const [0.0, 0.5, 1.0],
+              // Middle ring
+              AnimatedBuilder(
+                animation: _pulseAnimation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _isPlaying ? _pulseAnimation.value * 0.2 + 1.0 : 1.0,
+                    child: Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            widget.categoryColor.withOpacity(0.1),
+                            widget.categoryColor.withOpacity(0.15),
+                            Colors.transparent,
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
+            ],
 
             // Enhanced main circle with smooth transitions
             AnimatedBuilder(
               animation:
                   Listenable.merge([_pulseAnimation, _playPauseAnimation]),
               builder: (context, child) {
+                final isDark = Theme.of(context).brightness == Brightness.dark;
                 final pulseScale =
                     _isPlaying ? _pulseAnimation.value * 0.1 + 1.0 : 1.0;
                 final playPauseScale = _playPauseAnimation.value * 0.08 + 1.0;
@@ -1477,43 +1526,59 @@ class _GuidedMeditationSessionScreenState
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
-                        colors: [
-                          widget.categoryColor
-                              .withOpacity(_isPlaying ? 0.35 : 0.25),
-                          widget.categoryColor
-                              .withOpacity(_isPlaying ? 0.25 : 0.18),
-                          widget.categoryColor
-                              .withOpacity(_isPlaying ? 0.15 : 0.10),
-                        ],
+                        colors: isDark
+                            ? [
+                                widget.categoryColor
+                                    .withOpacity(_isPlaying ? 0.35 : 0.25),
+                                widget.categoryColor
+                                    .withOpacity(_isPlaying ? 0.25 : 0.18),
+                                widget.categoryColor
+                                    .withOpacity(_isPlaying ? 0.15 : 0.10),
+                              ]
+                            : [
+                                widget.categoryColor.withOpacity(0.15),
+                                widget.categoryColor.withOpacity(0.10),
+                                widget.categoryColor.withOpacity(0.05),
+                              ],
                         stops: const [0.0, 0.6, 1.0],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: widget.categoryColor
-                              .withOpacity(_isPlaying ? 0.4 : 0.2),
-                          blurRadius: _isPlaying ? 50 : 30,
-                          spreadRadius: 0,
-                        ),
-                        if (_isPlaying)
-                          BoxShadow(
-                            color: widget.categoryColor.withOpacity(0.2),
-                            blurRadius: 80,
-                            spreadRadius: 10,
-                          ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
+                      boxShadow: isDark
+                          ? [
+                              BoxShadow(
+                                color: widget.categoryColor
+                                    .withOpacity(_isPlaying ? 0.4 : 0.2),
+                                blurRadius: _isPlaying ? 50 : 30,
+                                spreadRadius: 0,
+                              ),
+                              if (_isPlaying)
+                                BoxShadow(
+                                  color: widget.categoryColor.withOpacity(0.2),
+                                  blurRadius: 80,
+                                  spreadRadius: 10,
+                                ),
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ]
+                          : [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.08),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                     ),
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: widget.categoryColor
-                              .withOpacity(_isPlaying ? 0.5 : 0.3),
-                          width: _isPlaying ? 3 : 2,
+                          color: isDark
+                              ? widget.categoryColor
+                                  .withOpacity(_isPlaying ? 0.5 : 0.3)
+                              : widget.categoryColor.withOpacity(0.4),
+                          width: isDark ? (_isPlaying ? 3 : 2) : 2,
                         ),
                       ),
                       child: Column(
@@ -1530,15 +1595,21 @@ class _GuidedMeditationSessionScreenState
                                   width: 56,
                                   height: 56,
                                   decoration: BoxDecoration(
-                                    color: widget.categoryColor
-                                        .withOpacity(_isPlaying ? 0.3 : 0.2),
+                                    color: isDark
+                                        ? widget.categoryColor
+                                            .withOpacity(_isPlaying ? 0.3 : 0.2)
+                                        : widget.categoryColor
+                                            .withOpacity(0.15),
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      color: widget.categoryColor
-                                          .withOpacity(_isPlaying ? 0.4 : 0.3),
-                                      width: _isPlaying ? 2 : 1,
+                                      color: isDark
+                                          ? widget.categoryColor.withOpacity(
+                                              _isPlaying ? 0.4 : 0.3)
+                                          : widget.categoryColor
+                                              .withOpacity(0.4),
+                                      width: isDark ? (_isPlaying ? 2 : 1) : 2,
                                     ),
-                                    boxShadow: _isPlaying
+                                    boxShadow: isDark && _isPlaying
                                         ? [
                                             BoxShadow(
                                               color: widget.categoryColor
@@ -1547,7 +1618,16 @@ class _GuidedMeditationSessionScreenState
                                               spreadRadius: 0,
                                             ),
                                           ]
-                                        : null,
+                                        : isDark
+                                            ? null
+                                            : [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.06),
+                                                  blurRadius: 8,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ],
                                   ),
                                   child: _isLoading
                                       ? SizedBox(
@@ -1579,7 +1659,12 @@ class _GuidedMeditationSessionScreenState
                                                 : Icons.play_arrow,
                                             key: ValueKey(
                                                 '${_isPlaying}_center_icon'),
-                                            color: widget.categoryColor,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? widget.categoryColor
+                                                    : widget.categoryColor
+                                                        .withOpacity(0.9),
                                             size: 28,
                                           ),
                                         ),
@@ -1607,7 +1692,10 @@ class _GuidedMeditationSessionScreenState
                                   ?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     letterSpacing: 1.0,
-                                    color: widget.categoryColor,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? widget.categoryColor
+                                        : widget.categoryColor.withOpacity(0.9),
                                   ),
                             ),
                           ),
@@ -1625,18 +1713,21 @@ class _GuidedMeditationSessionScreenState
   }
 
   Widget _buildControls() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+        color: isDark
+            ? Theme.of(context).colorScheme.surface.withOpacity(0.8)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
         border: Border.all(
-          color: widget.categoryColor.withOpacity(0.2),
+          color: widget.categoryColor.withOpacity(isDark ? 0.2 : 0.15),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withOpacity(isDark ? 0.08 : 0.1),
             blurRadius: 24,
             offset: const Offset(0, 12),
             spreadRadius: 0,
@@ -1704,14 +1795,19 @@ class _GuidedMeditationSessionScreenState
           border: Border.all(
             color: isDisabled
                 ? Colors.grey.withOpacity(0.2)
-                : widget.categoryColor.withOpacity(0.3),
+                : Theme.of(context).brightness == Brightness.dark
+                    ? widget.categoryColor.withOpacity(0.3)
+                    : widget.categoryColor.withOpacity(0.2),
             width: 1,
           ),
           boxShadow: isDisabled
               ? null
               : [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withOpacity(
+                        Theme.of(context).brightness == Brightness.dark
+                            ? 0.1
+                            : 0.08),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),

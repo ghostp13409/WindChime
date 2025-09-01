@@ -17,6 +17,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'credits_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
@@ -627,12 +628,39 @@ class _AboutScreenState extends State<AboutScreen>
             ],
           ),
           const SizedBox(height: 20),
-          Text(
-            'About WindChime',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.2,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'About WindChime',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: -0.2,
+                    ),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CreditsScreen(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.volunteer_activism,
+                  size: 18,
+                  color: Theme.of(context).primaryColor,
                 ),
+                label: Text(
+                  'Credits',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Text(

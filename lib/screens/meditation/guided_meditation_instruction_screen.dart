@@ -370,7 +370,7 @@ class _GuidedMeditationInstructionScreenState
             widget.meditation.description,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
+                      ? Colors.black87
                       : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                 ),
@@ -487,7 +487,7 @@ class _GuidedMeditationInstructionScreenState
                 description,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.black
+                          ? Colors.black87
                           : Colors.grey.withOpacity(0.7),
                       height: 1.2,
                       fontSize: 12,
@@ -541,7 +541,7 @@ class _GuidedMeditationInstructionScreenState
             '• It\'s okay if your mind wanders',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
+                      ? Colors.black87
                       : Colors.grey.withOpacity(0.8),
                   height: 1.4,
                   fontSize: 12,
@@ -655,7 +655,7 @@ class _GuidedMeditationInstructionScreenState
             detailedDescription,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
+                      ? Colors.black87
                       : Colors.grey.withOpacity(0.8),
                   height: 1.4,
                   fontSize: 12,
@@ -735,7 +735,7 @@ class _GuidedMeditationInstructionScreenState
             widget.meditation.whatToExpect!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
+                      ? Colors.black87
                       : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                   fontSize: 12,
@@ -928,7 +928,7 @@ class _GuidedMeditationInstructionScreenState
             widget.meditation.instructorBio!,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
+                      ? Colors.black87
                       : Colors.grey.withOpacity(0.8),
                   height: 1.3,
                   fontSize: 12,
