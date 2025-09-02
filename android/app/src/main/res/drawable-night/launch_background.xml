@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Modify this file to customize your launch splash screen -->
+<!-- Dark mode launch splash screen -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@android:color/white" />
+    <item android:drawable="@android:color/black" />
 
     <!-- Centered rounded logo -->
     <item android:width="120dp"
           android:height="120dp"
           android:gravity="center">
         <shape android:shape="oval">
-            <solid android:color="@android:color/white" />
-            <stroke android:width="2dp" android:color="#E0E0E0" />
+            <solid android:color="#2C2C2C" />
+            <stroke android:width="2dp" android:color="#404040" />
         </shape>
     </item>
     

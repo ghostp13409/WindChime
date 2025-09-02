@@ -156,7 +156,7 @@ class CreditsScreen extends StatelessWidget {
           _buildTeamMember(
             context,
             'Daphne Duong',
-            'Design & QA',
+            'Product Design',
             'Contributed to design choices and quality assurance',
             'https://www.linkedin.com/in/ddaphne/',
           ),
@@ -164,7 +164,7 @@ class CreditsScreen extends StatelessWidget {
           _buildTeamMember(
             context,
             'Paul Pham',
-            'Logo Design',
+            'UI/UX',
             'Created the app logo and brand identity',
             'https://www.linkedin.com/in/paulpham368/',
           ),

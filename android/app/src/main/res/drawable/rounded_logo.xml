@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background circle -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+    <!-- Logo image with padding to create rounded effect -->
+    <item android:drawable="@drawable/splash_logo"
+          android:top="8dp"
+          android:bottom="8dp"
+          android:left="8dp"
+          android:right="8dp">
+    </item>
+</layer-list>
