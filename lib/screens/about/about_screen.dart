@@ -47,20 +47,19 @@ class _AboutScreenState extends State<AboutScreen>
     SocialLink(
       icon: FontAwesomeIcons.github,
       label: 'GitHub',
-      url: 'https://www.github.com/ghostp13409',
+      url: String.fromEnvironment('GITHUB_SOCIAL'),
       color: const Color.fromARGB(255, 109, 111, 114),
     ),
     SocialLink(
       icon: FontAwesomeIcons.linkedin,
       label: 'LinkedIn',
-      url: 'https://www.linkedin.com/in/parth-gajjar09',
+      url: String.fromEnvironment('LINKEDIN_SOCIAL'),
       color: const Color(0xFF0077B5),
     ),
     SocialLink(
       icon: FontAwesomeIcons.instagram,
       label: 'Instagram',
-      url:
-          'https://www.instagram.com/p_13_4/profilecard/?igsh=MTBrbThrNHc1aWR3NA==',
+      url: String.fromEnvironment('INSTAGRAM_SOCIAL'),
       color: const Color(0xFFE1306C),
     ),
   ];
