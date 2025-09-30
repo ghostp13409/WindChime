@@ -124,7 +124,7 @@ class InAppPurchaseService {
       if (product.id == InAppPurchaseConfig.smallDonationId ||
           product.id == InAppPurchaseConfig.mediumDonationId ||
           product.id == InAppPurchaseConfig.largeDonationId) {
-        await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+        await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
       }
       return true;
     } catch (e) {
