@@ -1,7 +1,7 @@
 name: windchime
 description: "A Mindfulness App for Meditation, Sleep, and Focus"
 publish_to: "none"
-version: 1.0.0+12
+version: 1.0.0+14
 
 # License information
 license: GPL-3.0
