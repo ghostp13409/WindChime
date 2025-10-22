@@ -29,12 +29,14 @@ class OptimizedMeditationSessionScreen extends StatefulWidget {
   final BreathingPattern breathingPattern;
   final Meditation meditation;
   final VoidCallback onClose;
+  final bool useVoiceCues;
 
   const OptimizedMeditationSessionScreen({
     super.key,
     required this.breathingPattern,
     required this.meditation,
     required this.onClose,
+    this.useVoiceCues = false,
   });
 
   @override
@@ -78,6 +80,10 @@ class _OptimizedMeditationSessionScreenState
   double _sessionProgress = 0.0;
   int _stageRemainingTime = 0;
 
+  bool _isPreparing = true;
+  int _countdown = 3;
+  late Timer _preparationTimer;
+
   late ParticleSystem _particleSystem;
   late Ticker _particleTicker;
   int _frameCount = 0;
@@ -120,7 +126,7 @@ class _OptimizedMeditationSessionScreenState
     _setupOptimizedParticleSystem();
     _setupAudio();
     _setupStateChangeAudio();
-    _startMeditation();
+    _startPreparation();
   }
 
   void _setupAnimations() {
@@ -223,24 +229,43 @@ class _OptimizedMeditationSessionScreenState
   Future<void> _playStateChangeSound(BreathingState state) async {
     try {
       String soundPath;
-      switch (state) {
-        case BreathingState.breatheIn:
-          soundPath = 'assets/sounds/meditation/statechange/breath_in.wav';
-          break;
-        case BreathingState.holdIn:
-          soundPath = 'assets/sounds/meditation/statechange/hold.wav';
-          break;
-        case BreathingState.breatheOut:
-          soundPath = 'assets/sounds/meditation/statechange/breath_out.wav';
-          break;
-        case BreathingState.holdOut:
-          soundPath = 'assets/sounds/meditation/statechange/rest.wav';
-          break;
+      if (widget.useVoiceCues) {
+        switch (state) {
+          case BreathingState.breatheIn:
+            soundPath =
+                'assets/sounds/meditation/statechange/breathe_in_voice.wav';
+            break;
+          case BreathingState.holdIn:
+            soundPath = 'assets/sounds/meditation/statechange/hold_voice.wav';
+            break;
+          case BreathingState.breatheOut:
+            soundPath =
+                'assets/sounds/meditation/statechange/breathe_out_voice.wav';
+            break;
+          case BreathingState.holdOut:
+            soundPath = 'assets/sounds/meditation/statechange/rest_voice.wav';
+            break;
+        }
+      } else {
+        switch (state) {
+          case BreathingState.breatheIn:
+            soundPath = 'assets/sounds/meditation/statechange/breath_in.wav';
+            break;
+          case BreathingState.holdIn:
+            soundPath = 'assets/sounds/meditation/statechange/hold.wav';
+            break;
+          case BreathingState.breatheOut:
+            soundPath = 'assets/sounds/meditation/statechange/breath_out.wav';
+            break;
+          case BreathingState.holdOut:
+            soundPath = 'assets/sounds/meditation/statechange/rest.wav';
+            break;
+        }
       }
       if (_stateChangeAudioPlayer.playing) {
         await _stateChangeAudioPlayer.stop();
       }
-      await _stateChangeAudioPlayer.setVolume(1.0);
+      await _stateChangeAudioPlayer.setVolume(widget.useVoiceCues ? 0.2 : 1.0);
       await _stateChangeAudioPlayer.setAsset(soundPath);
       await _stateChangeAudioPlayer.seek(Duration.zero);
       _stateChangeAudioPlayer.play().catchError((error) {
@@ -251,7 +276,46 @@ class _OptimizedMeditationSessionScreenState
     }
   }
 
+  void _startPreparation() async {
+    // Play get ready sound
+    try {
+      await _stateChangeAudioPlayer.setVolume(0.5);
+      await _stateChangeAudioPlayer
+          .setAsset('assets/sounds/meditation/statechange/get_ready.wav');
+      await _stateChangeAudioPlayer.seek(Duration.zero);
+      _stateChangeAudioPlayer.play().catchError((error) {
+        debugPrint('Error during get ready audio playback: $error');
+      });
+    } catch (e) {
+      debugPrint('Error playing get ready sound: $e');
+    }
+
+    _preparationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _countdown--;
+      });
+      if (_countdown <= 0) {
+        _preparationTimer.cancel();
+        setState(() {
+          _isPreparing = false;
+        });
+        _startMeditation();
+      }
+    });
+  }
+
+  void _skipPreparation() {
+    _preparationTimer.cancel();
+    setState(() {
+      _isPreparing = false;
+    });
+    _startMeditation();
+  }
+
   void _startMeditation() {
+    // Play initial breathe in sound
+    _playStateChangeSound(BreathingState.breatheIn);
+
     _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _seconds++;
       _secondsNotifier.value = _seconds;
@@ -651,9 +715,144 @@ class _OptimizedMeditationSessionScreenState
     );
   }
 
+  Widget _buildPreparationScreen() {
+    final isLightTheme = Theme.of(context).brightness == Brightness.light;
+
+    final gradientColors = isLightTheme
+        ? [
+            widget.breathingPattern.primaryColor.withOpacity(0.8),
+            const Color(0xFFFFFFFF),
+            const Color(0xFFE3F2F1),
+          ]
+        : [
+            widget.breathingPattern.primaryColor.withOpacity(0.8),
+            const Color(0xFF0F1419),
+            const Color(0xFF1A1B2E),
+          ];
+
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+            stops: const [0.0, 0.6, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => _showExitDialog(),
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isLightTheme
+                              ? Colors.white.withOpacity(0.5)
+                              : Colors.black26,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.close,
+                            color: isLightTheme ? Colors.black : Colors.white,
+                            size: 24),
+                      ),
+                    ),
+                    const SizedBox(width: 48),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Get Ready',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w300,
+                          color: isLightTheme ? Colors.black87 : Colors.white,
+                          letterSpacing: 1.2,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      Text(
+                        '$_countdown',
+                        style: TextStyle(
+                          fontSize: 120,
+                          fontWeight: FontWeight.w200,
+                          color: isLightTheme ? Colors.black87 : Colors.white,
+                          letterSpacing: 2.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 40),
+                      Text(
+                        'Find a comfortable position\nand prepare to breathe',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: isLightTheme
+                              ? Colors.black54
+                              : Colors.white.withOpacity(0.7),
+                          letterSpacing: 0.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _skipPreparation,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      foregroundColor:
+                          isLightTheme ? Colors.black87 : Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: isLightTheme ? Colors.black26 : Colors.white30,
+                          width: 1,
+                        ),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _timer.cancel();
+    if (_isPreparing) {
+      _preparationTimer.cancel();
+    }
     _particleTicker.stop();
     _breathingController.dispose();
     _particleController.dispose();
@@ -675,6 +874,10 @@ class _OptimizedMeditationSessionScreenState
 
   @override
   Widget build(BuildContext context) {
+    if (_isPreparing) {
+      return _buildPreparationScreen();
+    }
+
     final screenSize = MediaQuery.of(context).size;
     _particleSystem.updateScreenSize(screenSize.width, screenSize.height);
 

@@ -38,15 +38,19 @@ class MeditationInstructionScreen extends StatefulWidget {
 }
 
 class _MeditationInstructionScreenState
-    extends State<MeditationInstructionScreen>
-    with SingleTickerProviderStateMixin {
+    extends State<MeditationInstructionScreen> with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
+  late AnimationController _buttonController;
+  late Animation<double> _buttonScaleAnimation;
 
   // Duration selection
   int _selectedDuration =
       0; // Will be set in initState based on current duration
   final List<int> _availableDurations = [3, 5, 10, 15, 20]; // in minutes
+
+  // Voice cues preference
+  bool _useVoiceCues = false;
 
   @override
   void initState() {
@@ -81,12 +85,22 @@ class _MeditationInstructionScreenState
       curve: Curves.easeInOutCubic,
     );
 
+    _buttonController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 150),
+    );
+
+    _buttonScaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _buttonController, curve: Curves.easeInOut),
+    );
+
     _fadeController.forward();
   }
 
   @override
   void dispose() {
     _fadeController.dispose();
+    _buttonController.dispose();
     super.dispose();
   }
 
@@ -108,6 +122,7 @@ class _MeditationInstructionScreenState
           breathingPattern: widget.breathingPattern,
           meditation: updatedMeditation,
           onClose: () => Navigator.of(context).pop(),
+          useVoiceCues: _useVoiceCues,
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
@@ -130,158 +145,6 @@ class _MeditationInstructionScreenState
           return FadeTransition(opacity: animation, child: child);
         },
         transitionDuration: const Duration(milliseconds: 600),
-      ),
-    );
-  }
-
-  void _showDurationSettings() {
-    HapticFeedback.lightImpact();
-    showDialog(
-      context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setDialogState) => AlertDialog(
-          backgroundColor: const Color(0xFF1C2031).withOpacity(0.95),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Row(
-            children: [
-              Icon(
-                Icons.timer_outlined,
-                color: widget.breathingPattern.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 8),
-              const Text(
-                'Session Duration',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Choose your meditation duration',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: _availableDurations.map((duration) {
-                  final isSelected = duration == _selectedDuration;
-                  final isRecommended = duration.toString() ==
-                      widget.meditation.duration.split(' ')[0];
-
-                  return GestureDetector(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      setDialogState(() {
-                        _selectedDuration = duration;
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? widget.breathingPattern.primaryColor
-                            : Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: isSelected
-                              ? widget.breathingPattern.primaryColor
-                              : isRecommended
-                                  ? widget.breathingPattern.primaryColor
-                                      .withOpacity(0.6)
-                                  : Colors.white.withOpacity(0.3),
-                          width: isRecommended ? 2 : 1,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '$duration min',
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Colors.white
-                                  : Colors.white.withOpacity(0.9),
-                              fontSize: 14,
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.w500,
-                            ),
-                          ),
-                          if (isRecommended) ...[
-                            const SizedBox(width: 6),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? Colors.white.withOpacity(0.2)
-                                    : widget.breathingPattern.primaryColor
-                                        .withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                'Recommended',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.2,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    setState(() {}); // Update the main widget's state
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.breathingPattern.primaryColor,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    'OK',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -337,52 +200,26 @@ class _MeditationInstructionScreenState
                         ),
                       ),
                       const Spacer(),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: _showDurationSettings,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: widget.breathingPattern.primaryColor
-                                    .withOpacity(0.2),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: widget.breathingPattern.primaryColor
-                                      .withOpacity(0.4),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.timer_outlined,
-                                color: widget.breathingPattern.primaryColor,
-                                size: 20,
-                              ),
+                      GestureDetector(
+                        onTap: _navigateToInfoScreen,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: widget.breathingPattern.primaryColor
+                                .withOpacity(0.2),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: widget.breathingPattern.primaryColor
+                                  .withOpacity(0.4),
+                              width: 1,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          GestureDetector(
-                            onTap: _navigateToInfoScreen,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: widget.breathingPattern.primaryColor
-                                    .withOpacity(0.2),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: widget.breathingPattern.primaryColor
-                                      .withOpacity(0.4),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Icon(
-                                Icons.info_outline_rounded,
-                                color: widget.breathingPattern.primaryColor,
-                                size: 20,
-                              ),
-                            ),
+                          child: Icon(
+                            Icons.info_outline_rounded,
+                            color: widget.breathingPattern.primaryColor,
+                            size: 20,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -413,7 +250,8 @@ class _MeditationInstructionScreenState
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
+                      // Meditation Name
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
@@ -433,19 +271,172 @@ class _MeditationInstructionScreenState
                             Icon(
                               _getMeditationIcon(),
                               color: widget.breathingPattern.primaryColor,
-                              size: 16,
+                              size: 14,
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              '${widget.meditation.title} • $_selectedDuration min',
+                              widget.meditation.title,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      // Settings Controls
+                      Row(
+                        children: [
+                          // Timer Setting
+                          Expanded(
+                            child: SizedBox(
+                              height: 40,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.1),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: DropdownButton<int>(
+                                  value: _selectedDuration,
+                                  onChanged: (value) {
+                                    if (value != null) {
+                                      HapticFeedback.lightImpact();
+                                      setState(() {
+                                        _selectedDuration = value;
+                                      });
+                                    }
+                                  },
+                                  items: _availableDurations.map((duration) {
+                                    return DropdownMenuItem<int>(
+                                      value: duration,
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.timer_outlined,
+                                            color: widget
+                                                .breathingPattern.primaryColor,
+                                            size: 16,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            '$duration min',
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                  underline: const SizedBox(),
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.black54
+                                        : Colors.white.withOpacity(0.6),
+                                    size: 16,
+                                  ),
+                                  dropdownColor: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : const Color(0xFF1C2031),
+                                  borderRadius: BorderRadius.circular(8),
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.black
+                                        : Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  isExpanded: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          // Audio Cues Toggle
+                          Expanded(
+                            child: SizedBox(
+                              height: 40,
+                              child: GestureDetector(
+                                onTapDown: (_) => _buttonController.forward(),
+                                onTapUp: (_) => _buttonController.reverse(),
+                                onTapCancel: () => _buttonController.reverse(),
+                                onTap: () {
+                                  HapticFeedback.lightImpact();
+                                  setState(
+                                      () => _useVoiceCues = !_useVoiceCues);
+                                },
+                                child: AnimatedBuilder(
+                                  animation: _buttonScaleAnimation,
+                                  builder: (context, child) => Transform.scale(
+                                    scale: _buttonScaleAnimation.value,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        color: _useVoiceCues
+                                            ? widget
+                                                .breathingPattern.primaryColor
+                                                .withOpacity(0.2)
+                                            : Colors.white.withOpacity(0.05),
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: _useVoiceCues
+                                              ? widget
+                                                  .breathingPattern.primaryColor
+                                                  .withOpacity(0.4)
+                                              : Colors.white.withOpacity(0.1),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            _useVoiceCues
+                                                ? Icons.record_voice_over
+                                                : Icons.volume_up,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            _useVoiceCues
+                                                ? 'Speech'
+                                                : 'Audio Cues',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

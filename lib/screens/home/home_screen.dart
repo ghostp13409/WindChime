@@ -23,6 +23,8 @@ import 'package:windchime/screens/meditation/breathwork_history_screen.dart';
 import 'package:windchime/screens/meditation/guided_meditation_history_screen.dart';
 import 'package:windchime/screens/meditation/guided_meditation_category_screen.dart';
 import 'package:windchime/services/utils/sound_utils.dart';
+import 'package:windchime/services/changelog_service.dart';
+import 'package:windchime/widgets/shared/changelog_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -97,7 +99,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       playSound('sounds/startup/completetask.mp3');
       _fadeController.forward();
+
+      // Check if changelog should be shown
+      _checkAndShowChangelog();
     });
+  }
+
+  Future<void> _checkAndShowChangelog() async {
+    final shouldShow = await ChangelogService.shouldShowChangelog();
+    if (shouldShow && mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const ChangelogDialog(),
+      ).then((_) {
+        // Mark as shown after dialog is dismissed
+        ChangelogService.markChangelogAsShown();
+      });
+    }
   }
 
   @override

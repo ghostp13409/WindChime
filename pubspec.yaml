@@ -1,7 +1,7 @@
 name: windchime
 description: "A Mindfulness App for Meditation, Sleep, and Focus"
 publish_to: "none"
-version: 1.0.0+14
+version: 1.0.0+15
 
 # License information
 license: GPL-3.0
@@ -63,14 +63,19 @@ flutter:
     - assets/sounds/meditation/statechange/breath_out.wav
     - assets/sounds/meditation/statechange/hold.wav
     - assets/sounds/meditation/statechange/rest.wav
+    - assets/sounds/meditation/statechange/breathe_in_voice.wav
+    - assets/sounds/meditation/statechange/breathe_out_voice.wav
+    - assets/sounds/meditation/statechange/hold_voice.wav
+    - assets/sounds/meditation/statechange/rest_voice.wav
+    - assets/sounds/meditation/statechange/get_ready.wav
 
 # Flutter Launcher Icons configuration
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/logo_with_background.png"
+  image_path: "assets/images/logo.png"
   remove_alpha_ios: true
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/logo_with_background.png"
+  adaptive_icon_background: "#00000000"
+  adaptive_icon_foreground: "assets/images/logo.png"
   min_sdk_version: 21
