@@ -17,6 +17,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/screens/home/home_screen.dart';
@@ -38,6 +39,12 @@ import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Lock orientation to portrait
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   // Initialize notifications
 

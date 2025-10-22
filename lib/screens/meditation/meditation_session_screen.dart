@@ -51,11 +51,13 @@ class _OptimizedMeditationSessionScreenState
   late AnimationController _particleController;
   late AnimationController _progressController;
   late AnimationController _fadeController;
+  late AnimationController _glowController;
 
   late Animation<double> _breathingAnimation;
   late Animation<double> _particleAnimation;
   late Animation<double> _progressAnimation;
   late Animation<double> _fadeAnimation;
+  late Animation<double> _glowAnimation;
 
   final ValueNotifier<int> _secondsNotifier = ValueNotifier(0);
   final ValueNotifier<int> _cycleNotifier = ValueNotifier(0);
@@ -82,6 +84,34 @@ class _OptimizedMeditationSessionScreenState
 
   Color? _cachedBreathingColor;
   BreathingState? _lastBreathState;
+
+  static const Map<String, Map<BreathingState, Color>> _colorSchemes = {
+    'sleep': {
+      BreathingState.breatheIn: Color(0xFF9B87E8), // Light purple (brighter)
+      BreathingState.holdIn: Color(0xFF7B65E4), // Primary purple
+      BreathingState.breatheOut: Color(0xFF5D4E9C), // Dark purple (darker)
+      BreathingState.holdOut: Color(0xFF6A5ACD), // Slate blue
+    },
+    'focus': {
+      BreathingState.breatheIn: Color(0xFFFF8A65), // Light orange (brighter)
+      BreathingState.holdIn: Color(0xFFF6815B), // Primary orange
+      BreathingState.breatheOut: Color(0xFFE65100), // Deep orange (darker)
+      BreathingState.holdOut: Color(0xFFD84315), // Red orange
+    },
+    'anxiety': {
+      BreathingState.breatheIn: Color(0xFF66BB6A), // Light green (brighter)
+      BreathingState.holdIn: Color(0xFF4CAF50), // Primary green
+      BreathingState.breatheOut: Color(0xFF2E7D32), // Dark green (darker)
+      BreathingState.holdOut: Color(0xFF388E3C), // Medium green
+    },
+    'happiness': {
+      BreathingState.breatheIn: Color(0xFFFFE082), // Light yellow (brighter)
+      BreathingState.holdIn: Color(0xFFFFCF86), // Primary yellow
+      BreathingState.breatheOut:
+          Color(0xFFB8860B), // Dull gold (duller and dimmer)
+      BreathingState.holdOut: Color(0xFFFFB300), // Amber
+    },
+  };
 
   @override
   void initState() {
@@ -136,8 +166,18 @@ class _OptimizedMeditationSessionScreenState
       curve: Curves.easeInOutCubic,
     );
 
+    _glowController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    );
+
+    _glowAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _glowController, curve: Curves.easeInOutSine),
+    );
+
     _breathingController.repeat();
     _particleController.repeat();
+    _glowController.repeat(reverse: true);
     _fadeController.forward();
   }
 
@@ -501,24 +541,25 @@ class _OptimizedMeditationSessionScreenState
       return _cachedBreathingColor!;
     }
 
-    Color color;
-    switch (_currentBreathState) {
-      case BreathingState.breatheIn:
-        color = const Color(0xFF8E97FD);
-        break;
-      case BreathingState.holdIn:
-        color = const Color(0xFFFFCF86);
-        break;
-      case BreathingState.breatheOut:
-        color = const Color(0xFFA1D1B0);
-        break;
-      case BreathingState.holdOut:
-        color = const Color(0xFFB197FC);
-        break;
-    }
+    String type = _getMeditationTypeForHistory();
+    Color color = _colorSchemes[type]?[_currentBreathState] ??
+        _getDefaultBreathingStateColor(_currentBreathState);
 
     _cachedBreathingColor = color;
     return color;
+  }
+
+  Color _getDefaultBreathingStateColor(BreathingState state) {
+    switch (state) {
+      case BreathingState.breatheIn:
+        return const Color(0xFF8E97FD);
+      case BreathingState.holdIn:
+        return const Color(0xFFFFCF86);
+      case BreathingState.breatheOut:
+        return const Color(0xFFA1D1B0);
+      case BreathingState.holdOut:
+        return const Color(0xFFB197FC);
+    }
   }
 
   String _getBreathingGuideText(BreathingState breathState) {
@@ -618,6 +659,7 @@ class _OptimizedMeditationSessionScreenState
     _particleController.dispose();
     _progressController.dispose();
     _fadeController.dispose();
+    _glowController.dispose();
     _audioPlayer.dispose();
     _stateChangeAudioPlayer.dispose();
 
@@ -751,52 +793,29 @@ class _OptimizedMeditationSessionScreenState
                           ),
                           const SizedBox(height: 20),
                           ValueListenableBuilder<int>(
-                            valueListenable: _stageRemainingTimeNotifier,
-                            builder: (context, remainingTime, child) {
-                              return ValueListenableBuilder<BreathingState>(
-                                valueListenable: _breathStateNotifier,
-                                builder: (context, breathState, child) {
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: _getBreathingStateColor()
-                                          .withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(18),
-                                      border: Border.all(
-                                        color: _getBreathingStateColor()
-                                            .withOpacity(0.4),
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          _getStageIcon(breathState),
-                                          color: isLightTheme
-                                              ? Colors.black87
-                                              : Colors.white,
-                                          size: 16,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          '${remainingTime}s',
-                                          style: TextStyle(
-                                            color: isLightTheme
-                                                ? Colors.black87
-                                                : Colors.white,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            letterSpacing: 0.5,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
+                            valueListenable: _secondsNotifier,
+                            builder: (context, seconds, child) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white
+                                      .withOpacity(isLightTheme ? 0.2 : 0.1),
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                child: Text(
+                                  _formatTime(seconds ~/ 10),
+                                  style: TextStyle(
+                                    color: isLightTheme
+                                        ? Colors.black87
+                                        : Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 1.0,
+                                  ),
+                                ),
                               );
                             },
                           ),
@@ -840,10 +859,13 @@ class _OptimizedMeditationSessionScreenState
                               child: Center(
                                 child: RepaintBoundary(
                                   child: AnimatedBuilder(
-                                    animation: _breathingAnimation,
+                                    animation: Listenable.merge(
+                                        [_breathingAnimation, _glowAnimation]),
                                     builder: (context, child) {
                                       double progress = _getBreathingProgress();
                                       double size = 160 + (progress * 60);
+                                      double glowBlur =
+                                          20 + (_glowAnimation.value * 20);
 
                                       return Stack(
                                         alignment: Alignment.center,
@@ -864,10 +886,7 @@ class _OptimizedMeditationSessionScreenState
                                                 ),
                                               ),
                                             ),
-                                          AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 200),
-                                            curve: Curves.easeInOutSine,
+                                          Container(
                                             width: size,
                                             height: size,
                                             decoration: BoxDecoration(
@@ -888,54 +907,90 @@ class _OptimizedMeditationSessionScreenState
                                                   color:
                                                       _getBreathingStateColor()
                                                           .withOpacity(0.4),
-                                                  blurRadius: 30,
+                                                  blurRadius: glowBlur,
                                                   spreadRadius: 10,
                                                 ),
                                               ],
                                             ),
                                           ),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ValueListenableBuilder<int>(
-                                                valueListenable:
-                                                    _secondsNotifier,
-                                                builder:
-                                                    (context, seconds, child) {
-                                                  return Text(
-                                                    _formatTime(seconds ~/ 10),
-                                                    style: TextStyle(
-                                                      fontSize: 28,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      color: isLightTheme
-                                                          ? Colors.black87
-                                                          : Colors.white,
-                                                      letterSpacing: 2.0,
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              const SizedBox(height: 6),
-                                              ValueListenableBuilder<int>(
-                                                valueListenable: _cycleNotifier,
-                                                builder:
-                                                    (context, cycle, child) {
-                                                  return Text(
-                                                    'Cycle $cycle',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: isLightTheme
-                                                          ? Colors.black54
-                                                          : Colors.white
-                                                              .withOpacity(0.8),
-                                                      letterSpacing: 1.0,
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ],
+                                          Transform.scale(
+                                            scale: size / 160,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      _stageRemainingTimeNotifier,
+                                                  builder: (context,
+                                                      remainingTime, child) {
+                                                    return ValueListenableBuilder<
+                                                        BreathingState>(
+                                                      valueListenable:
+                                                          _breathStateNotifier,
+                                                      builder: (context,
+                                                          breathState, child) {
+                                                        return Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              _getStageIcon(
+                                                                  breathState),
+                                                              color: isLightTheme
+                                                                  ? Colors
+                                                                      .black87
+                                                                  : Colors
+                                                                      .white,
+                                                              size: 24,
+                                                            ),
+                                                            const SizedBox(
+                                                                height: 8),
+                                                            Text(
+                                                              '${remainingTime}s',
+                                                              style: TextStyle(
+                                                                color: isLightTheme
+                                                                    ? Colors
+                                                                        .black87
+                                                                    : Colors
+                                                                        .white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                letterSpacing:
+                                                                    0.5,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                                const SizedBox(height: 6),
+                                                ValueListenableBuilder<int>(
+                                                  valueListenable:
+                                                      _cycleNotifier,
+                                                  builder:
+                                                      (context, cycle, child) {
+                                                    return Text(
+                                                      'Cycle $cycle',
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: isLightTheme
+                                                            ? Colors.black54
+                                                            : Colors.white
+                                                                .withOpacity(
+                                                                    0.8),
+                                                        letterSpacing: 1.0,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       );
