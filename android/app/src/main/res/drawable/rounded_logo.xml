@@ -9,9 +9,9 @@
     </item>
     <!-- Logo image with padding to create rounded effect -->
     <item android:drawable="@drawable/splash_logo"
-        android:top="8dp"
-        android:bottom="8dp"
-        android:left="8dp"
-        android:right="8dp">
+        android:top="4dp"
+        android:bottom="4dp"
+        android:left="4dp"
+        android:right="4dp">
     </item>
 </layer-list>

@@ -365,320 +365,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildGuidedMeditationPage() {
-    // Define the 6 main meditation categories
-    final meditationCategories = [
-      {
-        'id': 'breathing_practices',
-        'title': 'Breathing Practices',
-        'icon': Icons.air,
-        'color': const Color(0xFF7B65E4),
-        'description':
-            'Cultivate present moment awareness through mindful breathing exercises that help center your mind and body',
-      },
-      {
-        'id': 'brief_mindfulness',
-        'title': 'Brief Mindfulness',
-        'icon': Icons.self_improvement,
-        'color': const Color(0xFFF6815B),
-        'description':
-            'Short powerful sessions for quick resets during your day, providing instant grounding and mental clarity',
-      },
-      {
-        'id': 'body_scan',
-        'title': 'Body Scan',
-        'icon': Icons.accessibility_new,
-        'color': const Color(0xFFFA6E5A),
-        'description':
-            'Systematic journey through your body to develop embodied awareness and release physical tension',
-      },
-      {
-        'id': 'sitting_meditations',
-        'title': 'Sitting Meditations',
-        'icon': Icons.event_seat,
-        'color': const Color(0xFFFFCF86),
-        'description':
-            'Traditional seated practices combining breath, sound, and thought awareness for deep inner stillness',
-      },
-      {
-        'id': 'guided_imagery',
-        'title': 'Guided Imagery',
-        'icon': Icons.landscape,
-        'color': const Color(0xFF4CAF50),
-        'description':
-            'Visualization techniques using imagination to foster calm, resilience, and emotional balance',
-      },
-      {
-        'id': 'self_guided',
-        'title': 'Self Guided',
-        'icon': Icons.notifications_none,
-        'color': const Color(0xFF9C27B0),
-        'description':
-            'Silent meditation with mindfulness bells to structure your personal practice and deepen concentration',
-      },
-    ];
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        children: [
-          // Header with description and history button
-          Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(bottom: 12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: Theme.of(context).dividerColor.withOpacity(0.1),
-                width: 1,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.headset,
-                      size: 20,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyLarge
-                          ?.color
-                          ?.withOpacity(0.8),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Guided Meditations',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: -0.2,
-                                ),
-                      ),
-                    ),
-                    // Compact history button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color:
-                              Theme.of(context).dividerColor.withOpacity(0.2),
-                          width: 1,
-                        ),
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const GuidedMeditationHistoryScreen(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.history,
-                          color: Theme.of(context)
-                              .iconTheme
-                              .color
-                              ?.withOpacity(0.7),
-                        ),
-                        iconSize: 18,
-                        padding: const EdgeInsets.all(6),
-                        constraints:
-                            const BoxConstraints(minWidth: 30, minHeight: 30),
-                        tooltip: 'History',
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Expert-guided meditation experiences with soothing narration and mindful awareness practices.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.grey.withOpacity(0.8),
-                        height: 1.3,
-                        fontSize: 12,
-                      ),
-                ),
-              ],
-            ),
-          ),
-
-          // Optimized grid layout with better space utilization
-          Expanded(
-            child: GridView.builder(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 0.9,
-              ),
-              itemCount: meditationCategories.length,
-              itemBuilder: (context, index) {
-                final category = meditationCategories[index];
-                final color = category['color'] as Color;
-
-                return GestureDetector(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    _navigateToGuidedMeditationCategory(
-                      category['id'] as String,
-                      category['title'] as String,
-                      category['description'] as String,
-                      color,
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
-                          blurRadius: 16,
-                          offset: const Offset(0, 6),
-                          spreadRadius: 0,
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.02),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Stack(
-                        children: [
-                          // Enhanced gradient overlay for better contrast in light mode
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? [
-                                        color.withOpacity(0.18),
-                                        color.withOpacity(0.12),
-                                      ]
-                                    : [
-                                        color.withOpacity(0.08),
-                                        color.withOpacity(0.04),
-                                      ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                            ),
-                          ),
-
-                          // Content
-                          Padding(
-                            padding: const EdgeInsets.all(18),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Icon with enhanced styling for better contrast
-                                Container(
-                                  width: 48,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: Theme.of(context).brightness ==
-                                              Brightness.light
-                                          ? [
-                                              color.withOpacity(0.35),
-                                              color.withOpacity(0.25),
-                                            ]
-                                          : [
-                                              color.withOpacity(0.2),
-                                              color.withOpacity(0.1),
-                                            ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                    borderRadius: BorderRadius.circular(14),
-                                    boxShadow: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? [
-                                            BoxShadow(
-                                              color: color.withOpacity(0.3),
-                                              blurRadius: 8,
-                                              offset: const Offset(0, 2),
-                                            ),
-                                          ]
-                                        : null,
-                                  ),
-                                  child: Icon(
-                                    category['icon'] as IconData,
-                                    size: 24,
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.light
-                                        ? Colors.white
-                                        : color,
-                                  ),
-                                ),
-
-                                const Spacer(),
-
-                                // Text content
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      category['title'] as String,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            letterSpacing: -0.2,
-                                            height: 1.1,
-                                            fontSize: 15,
-                                          ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      category['description'] as String,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: Colors.grey.withOpacity(0.8),
-                                            height: 1.3,
-                                            letterSpacing: 0.0,
-                                            fontSize: 10,
-                                          ),
-                                      maxLines: 3,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _navigateToGuidedMeditationCategory(
       String categoryId, String title, String description, Color color) {
     Navigator.push(
@@ -980,23 +666,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'icon': Icons.air,
         'color': const Color(0xFF7B65E4),
         'description':
-            'Cultivate present moment awareness through mindful breathing exercises that help center your mind and body',
+            'Mindful breathing exercises for present moment awareness',
       },
       {
         'id': 'brief_mindfulness',
         'title': 'Brief Mindfulness',
         'icon': Icons.self_improvement,
         'color': const Color(0xFFF6815B),
-        'description':
-            'Short powerful sessions for quick resets during your day, providing instant grounding and mental clarity',
+        'description': 'Quick sessions for daily resets and mental clarity',
       },
       {
         'id': 'body_scan',
         'title': 'Body Scan',
         'icon': Icons.accessibility_new,
         'color': const Color(0xFFFA6E5A),
-        'description':
-            'Systematic journey through your body to develop embodied awareness and release physical tension',
+        'description': 'Body journey to release tension and build awareness',
       },
       {
         'id': 'sitting_meditations',
@@ -1004,23 +688,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'icon': Icons.event_seat,
         'color': const Color(0xFFFFCF86),
         'description':
-            'Traditional seated practices combining breath, sound, and thought awareness for deep inner stillness',
+            'Seated practices for breath, sound, and thought awareness',
       },
       {
         'id': 'guided_imagery',
         'title': 'Guided Imagery',
         'icon': Icons.landscape,
         'color': const Color(0xFF4CAF50),
-        'description':
-            'Visualization techniques using imagination to foster calm, resilience, and emotional balance',
+        'description': 'Visualization for calm, resilience, and balance',
       },
       {
         'id': 'self_guided',
         'title': 'Self Guided',
         'icon': Icons.notifications_none,
         'color': const Color(0xFF9C27B0),
-        'description':
-            'Silent meditation with mindfulness bells to structure your personal practice and deepen concentration',
+        'description': 'Silent practice with bells for deeper concentration',
       },
     ];
 
@@ -1175,6 +857,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
+                            ),
+                          ),
+                        ),
+
+                        // Arrow icon to indicate navigation
+                        Positioned(
+                          top: 16,
+                          right: 16,
+                          child: Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? color.withOpacity(0.3)
+                                  : color.withOpacity(0.4),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              size: 10,
+                              color: Colors.white.withOpacity(0.9),
                             ),
                           ),
                         ),

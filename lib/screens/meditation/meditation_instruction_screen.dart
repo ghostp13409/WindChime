@@ -277,7 +277,10 @@ class _MeditationInstructionScreenState
                             Text(
                               widget.meditation.title,
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white.withOpacity(0.9),
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -414,7 +417,11 @@ class _MeditationInstructionScreenState
                                             _useVoiceCues
                                                 ? Icons.record_voice_over
                                                 : Icons.volume_up,
-                                            color: Colors.white,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.light
+                                                    ? Colors.black
+                                                    : Colors.white,
                                             size: 16,
                                           ),
                                           const SizedBox(width: 6),
@@ -423,7 +430,11 @@ class _MeditationInstructionScreenState
                                                 ? 'Speech'
                                                 : 'Audio Cues',
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? Colors.black
+                                                  : Colors.white,
                                               fontSize: 13,
                                               fontWeight: FontWeight.w500,
                                             ),

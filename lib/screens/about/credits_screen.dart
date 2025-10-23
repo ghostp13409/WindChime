@@ -168,6 +168,14 @@ class CreditsScreen extends StatelessWidget {
             'Created the app logo and brand identity',
             'https://www.linkedin.com/in/paulpham368/',
           ),
+          const SizedBox(height: 12),
+          _buildTeamMember(
+            context,
+            'Sarah Kemptonvo',
+            'Voice Talent',
+            'Provided voiceovers for the breathwork meditation',
+            'https://www.fiverr.com/sarahkemptonvo/record-a-professional-british-english-female-voiceover#',
+          ),
         ],
       ),
     );

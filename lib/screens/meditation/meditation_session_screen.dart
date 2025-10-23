@@ -71,7 +71,7 @@ class _OptimizedMeditationSessionScreenState
   final ValueNotifier<int> _stageRemainingTimeNotifier = ValueNotifier(0);
 
   int _seconds = 0;
-  late Timer _timer;
+  Timer? _timer;
   late AudioPlayer _audioPlayer;
   late AudioPlayer _stateChangeAudioPlayer;
   BreathingState _currentBreathState = BreathingState.breatheIn;
@@ -82,7 +82,7 @@ class _OptimizedMeditationSessionScreenState
 
   bool _isPreparing = true;
   int _countdown = 3;
-  late Timer _preparationTimer;
+  Timer? _preparationTimer;
 
   late ParticleSystem _particleSystem;
   late Ticker _particleTicker;
@@ -265,7 +265,7 @@ class _OptimizedMeditationSessionScreenState
       if (_stateChangeAudioPlayer.playing) {
         await _stateChangeAudioPlayer.stop();
       }
-      await _stateChangeAudioPlayer.setVolume(widget.useVoiceCues ? 0.2 : 1.0);
+      await _stateChangeAudioPlayer.setVolume(widget.useVoiceCues ? 0.5 : 1.0);
       await _stateChangeAudioPlayer.setAsset(soundPath);
       await _stateChangeAudioPlayer.seek(Duration.zero);
       _stateChangeAudioPlayer.play().catchError((error) {
@@ -276,26 +276,27 @@ class _OptimizedMeditationSessionScreenState
     }
   }
 
-  void _startPreparation() async {
-    // Play get ready sound
-    try {
-      await _stateChangeAudioPlayer.setVolume(0.5);
-      await _stateChangeAudioPlayer
-          .setAsset('assets/sounds/meditation/statechange/get_ready.wav');
-      await _stateChangeAudioPlayer.seek(Duration.zero);
-      _stateChangeAudioPlayer.play().catchError((error) {
-        debugPrint('Error during get ready audio playback: $error');
-      });
-    } catch (e) {
-      debugPrint('Error playing get ready sound: $e');
-    }
+  void _startPreparation() {
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      try {
+        await _stateChangeAudioPlayer.setVolume(0.5);
+        await _stateChangeAudioPlayer
+            .setAsset('assets/sounds/meditation/statechange/get_ready.wav');
+        await _stateChangeAudioPlayer.seek(Duration.zero);
+        _stateChangeAudioPlayer.play().catchError((error) {
+          debugPrint('Error during get ready audio playback: $error');
+        });
+      } catch (e) {
+        debugPrint('Error playing get ready sound: $e');
+      }
+    });
 
     _preparationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _countdown--;
       });
       if (_countdown <= 0) {
-        _preparationTimer.cancel();
+        _preparationTimer?.cancel();
         setState(() {
           _isPreparing = false;
         });
@@ -305,7 +306,7 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _skipPreparation() {
-    _preparationTimer.cancel();
+    _preparationTimer?.cancel();
     setState(() {
       _isPreparing = false;
     });
@@ -439,7 +440,7 @@ class _OptimizedMeditationSessionScreenState
   }
 
   Future<void> _completeMeditation() async {
-    _timer.cancel();
+    _timer?.cancel();
     _particleTicker.stop();
     try {
       await _audioPlayer.stop();
@@ -542,7 +543,7 @@ class _OptimizedMeditationSessionScreenState
   }
 
   Future<void> _saveSessionAndExit() async {
-    _timer.cancel();
+    _timer?.cancel();
     _particleTicker.stop();
     try {
       await _audioPlayer.stop();
@@ -849,10 +850,8 @@ class _OptimizedMeditationSessionScreenState
 
   @override
   void dispose() {
-    _timer.cancel();
-    if (_isPreparing) {
-      _preparationTimer.cancel();
-    }
+    _timer?.cancel();
+    _preparationTimer?.cancel();
     _particleTicker.stop();
     _breathingController.dispose();
     _particleController.dispose();
