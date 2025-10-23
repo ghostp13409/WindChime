@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       breatheOutDuration: 6,
       holdOutDuration: 0,
       description: '4-6 breathing activates parasympathetic nervous system',
-      primaryColor: Color(0xFF7B65E4),
+      primaryColor: Color(0xFF6B46C1),
       audioPath: 'sounds/meditation/Sleep.mp3',
     ),
     'focus': BreathingPattern(
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       breatheOutDuration: 4,
       holdOutDuration: 4,
       description: 'Navy SEAL technique for cognitive performance',
-      primaryColor: Color(0xFFF6815B),
+      primaryColor: Color(0xFFEA580C),
       audioPath: 'sounds/meditation/Focus.mp3',
     ),
     'anxiety': BreathingPattern(
@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Stanford-researched 2:1 exhale-to-inhale ratio',
-      primaryColor: Color(0xFF4CAF50),
+      primaryColor: Color(0xFF059669),
       audioPath: 'sounds/meditation/Anxiety.mp3',
     ),
     'happiness': BreathingPattern(
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       breatheOutDuration: 3,
       holdOutDuration: 0,
       description: 'Balanced 1:1 ratio for alertness and positive mood',
-      primaryColor: Color(0xFFFFCF86),
+      primaryColor: Color(0xFFF59E0B),
       audioPath: 'sounds/meditation/happy.mp3',
     ),
   };
@@ -519,8 +519,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               colors: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? [
-                                      pattern.primaryColor.withOpacity(0.18),
-                                      pattern.primaryColor.withOpacity(0.12),
+                                      pattern.primaryColor.withOpacity(0.35),
+                                      pattern.primaryColor.withOpacity(0.25),
                                     ]
                                   : [
                                       pattern.primaryColor.withOpacity(0.08),
@@ -626,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         .textTheme
                                         .bodySmall
                                         ?.copyWith(
-                                          color: Colors.grey.withOpacity(0.8),
+                                          color: Colors.grey.shade700,
                                           height: 1.3,
                                           letterSpacing: 0.0,
                                           fontSize: 10,
@@ -664,7 +664,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'id': 'breathing_practices',
         'title': 'Breathing Practices',
         'icon': Icons.air,
-        'color': const Color(0xFF7B65E4),
+        'color': const Color(0xFF6B46C1),
         'description':
             'Mindful breathing exercises for present moment awareness',
       },
@@ -672,21 +672,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'id': 'brief_mindfulness',
         'title': 'Brief Mindfulness',
         'icon': Icons.self_improvement,
-        'color': const Color(0xFFF6815B),
+        'color': const Color(0xFFEA580C),
         'description': 'Quick sessions for daily resets and mental clarity',
       },
       {
         'id': 'body_scan',
         'title': 'Body Scan',
         'icon': Icons.accessibility_new,
-        'color': const Color(0xFFFA6E5A),
+        'color': const Color(0xFFDC2626),
         'description': 'Body journey to release tension and build awareness',
       },
       {
         'id': 'sitting_meditations',
         'title': 'Sitting Meditations',
         'icon': Icons.event_seat,
-        'color': const Color(0xFFFFCF86),
+        'color': const Color(0xFFF59E0B),
         'description':
             'Seated practices for breath, sound, and thought awareness',
       },
@@ -694,14 +694,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         'id': 'guided_imagery',
         'title': 'Guided Imagery',
         'icon': Icons.landscape,
-        'color': const Color(0xFF4CAF50),
+        'color': const Color(0xFF7C3AED),
         'description': 'Visualization for calm, resilience, and balance',
       },
       {
         'id': 'self_guided',
         'title': 'Self Guided',
         'icon': Icons.notifications_none,
-        'color': const Color(0xFF9C27B0),
+        'color': const Color(0xFF059669),
         'description': 'Silent practice with bells for deeper concentration',
       },
     ];
@@ -848,8 +848,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               colors: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? [
-                                      color.withOpacity(0.18),
-                                      color.withOpacity(0.12),
+                                      color.withOpacity(0.35),
+                                      color.withOpacity(0.25),
                                     ]
                                   : [
                                       color.withOpacity(0.08),
@@ -964,7 +964,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         .textTheme
                                         .bodySmall
                                         ?.copyWith(
-                                          color: Colors.grey.withOpacity(0.8),
+                                          color: Colors.grey.shade700,
                                           height: 1.3,
                                           letterSpacing: 0.0,
                                           fontSize: 10,

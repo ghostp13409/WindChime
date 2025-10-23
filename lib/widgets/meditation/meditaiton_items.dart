@@ -46,7 +46,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 2,
       holdOutDuration: 1,
       description: 'Quick 10-second demo session',
-      primaryColor: Color(0xFF00C896),
+      primaryColor: Color(0xFF059669),
       audioPath: 'sounds/meditation/Focus.mp3',
     ),
     'default': BreathingPattern(
@@ -56,7 +56,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Dr. Weil\'s proven technique for stress relief',
-      primaryColor: Color(0xFF8E97FD),
+      primaryColor: Color(0xFF6B46C1),
       audioPath: 'sounds/meditation/Sleep.mp3',
     ),
     'sleep': BreathingPattern(
@@ -66,7 +66,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 6,
       holdOutDuration: 0,
       description: '4-6 breathing activates parasympathetic nervous system',
-      primaryColor: Color(0xFF7B65E4),
+      primaryColor: Color(0xFF6B46C1),
       audioPath: 'sounds/meditation/Sleep.mp3',
     ),
     'focus': BreathingPattern(
@@ -76,7 +76,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 4,
       holdOutDuration: 4,
       description: 'Navy SEAL technique for cognitive performance',
-      primaryColor: Color(0xFFF6815B),
+      primaryColor: Color(0xFFEA580C),
       audioPath: 'sounds/meditation/Focus.mp3',
     ),
     'anxiety': BreathingPattern(
@@ -86,7 +86,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 8,
       holdOutDuration: 0,
       description: 'Stanford-researched 2:1 exhale-to-inhale ratio',
-      primaryColor: Color(0xFF4CAF50),
+      primaryColor: Color(0xFF059669),
       audioPath: 'sounds/meditation/Anxiety.mp3',
     ),
     'happiness': BreathingPattern(
@@ -96,7 +96,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       breatheOutDuration: 3,
       holdOutDuration: 0,
       description: 'Balanced 1:1 ratio for alertness and positive mood',
-      primaryColor: Color(0xFFFFCF86),
+      primaryColor: Color(0xFFF59E0B),
       audioPath: 'sounds/meditation/happy.mp3',
     ),
   };
@@ -106,7 +106,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       MeditationCategory(
         name: 'Sleep',
         icon: Icons.nightlight_round,
-        color: const Color(0xFF8E97FD),
+        color: const Color(0xFF6B46C1),
         meditations: [
           Meditation(
             title: 'Sleep Mode',
@@ -119,7 +119,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       MeditationCategory(
         name: 'Focus',
         icon: Icons.psychology,
-        color: const Color(0xFFF6815B),
+        color: const Color(0xFFEA580C),
         meditations: [
           Meditation(
             title: 'Focus Mode',
@@ -132,7 +132,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       MeditationCategory(
         name: 'Anxiety',
         icon: Icons.healing,
-        color: const Color(0xFF4CAF50),
+        color: const Color(0xFF059669),
         meditations: [
           Meditation(
             title: 'Anxiety Mode',
@@ -145,7 +145,7 @@ class _MeditationItemsState extends State<MeditationItems> {
       MeditationCategory(
         name: 'Happiness',
         icon: Icons.self_improvement,
-        color: const Color(0xFFFFCF86),
+        color: const Color(0xFFF59E0B),
         meditations: [
           Meditation(
             title: 'Happiness Mode',
@@ -162,7 +162,7 @@ class _MeditationItemsState extends State<MeditationItems> {
         MeditationCategory(
           name: 'Demo',
           icon: Icons.play_circle_outline,
-          color: const Color(0xFF00C896),
+          color: const Color(0xFF059669),
           meditations: [
             Meditation(
               title: 'Quick Demo',

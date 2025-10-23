@@ -46,7 +46,7 @@ class GuidedMeditationCategory {
       description:
           'Short mindfulness exercises focusing on breath awareness to bring you into the present moment and develop mindfulness.',
       icon: Icons.air,
-      primaryColor: Color(0xFF7B65E4),
+      primaryColor: Color(0xFF6B46C1),
       folderPath: 'assets/sounds/meditation/guided/breathing_practices/',
       estimatedDuration: 7, // 3-10 min average
       benefits: [
@@ -61,7 +61,7 @@ class GuidedMeditationCategory {
       description:
           'Shorter mindfulness sessions ideal for brief resets during your day through breath, sound, and bodily awareness.',
       icon: Icons.psychology,
-      primaryColor: Color(0xFFF6815B),
+      primaryColor: Color(0xFFEA580C),
       folderPath:
           'assets/sounds/meditation/guided/brief_mindfulness_practices/',
       estimatedDuration: 4, // 3-5 min average
@@ -73,7 +73,7 @@ class GuidedMeditationCategory {
       description:
           'Move your attention through different parts of the body, observing sensations and cultivating present-moment awareness.',
       icon: Icons.self_improvement,
-      primaryColor: Color(0xFFFA6E5A),
+      primaryColor: Color(0xFFDC2626),
       folderPath: 'assets/sounds/meditation/guided/body_scan/',
       estimatedDuration: 20, // 4-47 min average
       benefits: [
@@ -88,7 +88,7 @@ class GuidedMeditationCategory {
       description:
           'Comprehensive meditation practices centered on breath while inviting awareness of sounds, sensations, thoughts, and emotions.',
       icon: Icons.chair,
-      primaryColor: Color(0xFFFFCF86),
+      primaryColor: Color(0xFFF59E0B),
       folderPath: 'assets/sounds/meditation/guided/sitting_meditations/',
       estimatedDuration: 15, // 10-21 min average
       benefits: [
@@ -103,7 +103,7 @@ class GuidedMeditationCategory {
       description:
           'Use visualization and imagination to foster calm, resilience, and emotional balance through guided imagery practices.',
       icon: Icons.landscape,
-      primaryColor: Color(0xFF9C27B0),
+      primaryColor: Color(0xFF7C3AED),
       folderPath: 'assets/sounds/meditation/guided/guided_imagery/',
       estimatedDuration: 8, // 7-8 min average
       benefits: [
@@ -118,7 +118,7 @@ class GuidedMeditationCategory {
       description:
           'Silent meditation sessions with beginning and ending bells, some include interval bells to structure your practice.',
       icon: Icons.notifications_none,
-      primaryColor: Color(0xFF00C896),
+      primaryColor: Color(0xFF059669),
       folderPath:
           'assets/sounds/meditation/guided/self_guided_mindfulness_exercises/',
       estimatedDuration: 20, // 5-45 min average

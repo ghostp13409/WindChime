@@ -757,11 +757,10 @@ class _OptimizedMeditationSessionScreenState
             const SizedBox(height: 32),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildExitDialogButton(
                     'Continue', true, () => Navigator.of(context).pop()),
-                const SizedBox(width: 20),
                 _buildExitDialogButton('Exit', false, () async {
                   Navigator.of(context).pop();
                   await _saveSessionAndExit();
