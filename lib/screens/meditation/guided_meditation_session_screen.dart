@@ -513,7 +513,7 @@ class _GuidedMeditationSessionScreenState
                 _buildExitDialogButton(
                     'Continue', true, () => Navigator.of(context).pop()),
                 _buildExitDialogButton(
-                    'End Session', false, () => _endSessionSafely()),
+                    'Exit', false, () => _endSessionSafely()),
               ],
             ),
           ],

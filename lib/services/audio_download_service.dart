@@ -66,21 +66,57 @@ class AudioDownloadService {
         return true;
       }
 
-      // Download file
-      final response = await http.get(
-        Uri.parse(downloadUrl),
-        headers: {'User-Agent': 'WindChime/1.0'},
-      );
+      // Create HTTP client for streaming download
+      final client = http.Client();
+      final request = http.Request('GET', Uri.parse(downloadUrl));
+      request.headers['User-Agent'] = 'WindChime/1.0';
+
+      // Send request and get streamed response
+      final response = await client.send(request);
 
       if (response.statusCode != 200) {
         final error = 'Download failed: ${response.statusCode}';
         onError?.call(error);
+        client.close();
         return false;
       }
 
-      // Save file
+      // Get content length for progress calculation
+      final contentLength = response.contentLength ?? 0;
+      int bytesReceived = 0;
+
+      // Create file for writing
       final file = File(path.join(_cacheDir!.path, fileName));
-      await file.writeAsBytes(response.bodyBytes);
+      final sink = file.openWrite();
+
+      // Listen to response stream
+      await response.stream.listen(
+        (chunk) {
+          sink.add(chunk);
+          bytesReceived += chunk.length;
+
+          // Report progress if content length is known
+          if (contentLength > 0 && onProgress != null) {
+            final progress = bytesReceived / contentLength;
+            onProgress(progress.clamp(0.0, 1.0));
+          }
+        },
+        onDone: () async {
+          await sink.close();
+          client.close();
+
+          // Report 100% completion if we have progress callback
+          if (onProgress != null) {
+            onProgress(1.0);
+          }
+        },
+        onError: (error) {
+          sink.close();
+          client.close();
+          onError?.call('Stream error: $error');
+        },
+        cancelOnError: true,
+      ).asFuture();
 
       return true;
     } catch (e) {

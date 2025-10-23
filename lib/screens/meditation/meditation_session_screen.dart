@@ -542,6 +542,39 @@ class _OptimizedMeditationSessionScreenState
     );
   }
 
+  Widget _buildExitDialogButton(
+      String label, bool isPrimary, VoidCallback onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        width: 100,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isPrimary
+                ? Colors.orange.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.3),
+            width: 1,
+          ),
+          color: isPrimary
+              ? Colors.orange.withOpacity(0.1)
+              : Colors.grey.withOpacity(0.05),
+        ),
+        child: Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color:
+                    isPrimary ? Colors.orange.shade600 : Colors.grey.shade600,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Future<void> _saveSessionAndExit() async {
     _timer?.cancel();
     _particleTicker.stop();
@@ -669,49 +702,77 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _showExitDialog() {
-    final isLightTheme = Theme.of(context).brightness == Brightness.light;
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
-        backgroundColor: isLightTheme
-            ? Theme.of(context).cardColor
-            : const Color(0xFF1C2031).withOpacity(0.95),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(
-          'End Session?',
-          style: TextStyle(color: isLightTheme ? Colors.black87 : Colors.white),
-          textAlign: TextAlign.center,
-        ),
-        content: Text(
-          'Your progress will be saved',
-          style:
-              TextStyle(color: isLightTheme ? Colors.black54 : Colors.white70),
-          textAlign: TextAlign.center,
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('Continue',
-                    style: TextStyle(
-                        color: isLightTheme ? Colors.black54 : Colors.white70)),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+        contentPadding: const EdgeInsets.all(32),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Pause icon
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.orange.withOpacity(0.2),
+                    Colors.orange.withOpacity(0.1),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(20),
               ),
-              TextButton(
-                onPressed: () async {
+              child: Icon(
+                Icons.pause_circle_outline,
+                size: 40,
+                color: Colors.orange.shade600,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            Text(
+              'Exit Session?',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.5,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              'Your meditation progress will be automatically saved.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.grey.withOpacity(0.8),
+                    fontWeight: FontWeight.w400,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: 32),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildExitDialogButton(
+                    'Continue', true, () => Navigator.of(context).pop()),
+                const SizedBox(width: 20),
+                _buildExitDialogButton('Exit', false, () async {
                   Navigator.of(context).pop();
                   await _saveSessionAndExit();
                   if (mounted) {
                     widget.onClose();
                   }
-                },
-                child: const Text('End Session',
-                    style: TextStyle(color: Colors.redAccent)),
-              ),
-            ],
-          ),
-        ],
+                }),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -898,10 +959,7 @@ class _OptimizedMeditationSessionScreenState
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
-          await _saveSessionAndExit();
-          if (mounted) {
-            widget.onClose();
-          }
+          _showExitDialog();
         }
       },
       child: Scaffold(
