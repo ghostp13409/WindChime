@@ -24,6 +24,7 @@ import 'package:windchime/data/repositories/meditation_repository.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/models/meditation/session_history.dart';
+import 'package:windchime/services/wakelock_service.dart';
 
 class OptimizedMeditationSessionScreen extends StatefulWidget {
   final BreathingPattern breathingPattern;
@@ -122,6 +123,7 @@ class _OptimizedMeditationSessionScreenState
   @override
   void initState() {
     super.initState();
+    WakelockService.enable();
     _setupAnimations();
     _setupOptimizedParticleSystem();
     _setupAudio();
@@ -576,6 +578,7 @@ class _OptimizedMeditationSessionScreenState
   }
 
   Future<void> _saveSessionAndExit() async {
+    WakelockService.disable();
     _timer?.cancel();
     _particleTicker.stop();
     try {
@@ -593,6 +596,7 @@ class _OptimizedMeditationSessionScreenState
   }
 
   void _closeSession() {
+    WakelockService.disable(); // Disable wakelock when session ends
     Navigator.of(context).pop();
     widget.onClose();
   }

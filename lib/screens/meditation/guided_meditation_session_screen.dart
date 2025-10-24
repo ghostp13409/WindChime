@@ -23,6 +23,7 @@ import 'package:windchime/data/repositories/meditation_repository.dart';
 import 'package:windchime/models/meditation/session_history.dart';
 import 'package:windchime/services/audio_download_service.dart';
 import 'package:windchime/config/audio_config.dart';
+import 'package:windchime/services/wakelock_service.dart';
 
 class GuidedMeditationSessionScreen extends StatefulWidget {
   final String title;
@@ -86,6 +87,7 @@ class _GuidedMeditationSessionScreenState
   @override
   void initState() {
     super.initState();
+    WakelockService.enable(); // Enable wakelock during meditation session
     _setupAnimations();
     _setupAudioPlayer();
   }
@@ -291,6 +293,7 @@ class _GuidedMeditationSessionScreenState
     try {
       _pulseController.stop();
       _positionTimer?.cancel();
+      WakelockService.disable();
 
       // Save session to history
       final session = SessionHistory(
@@ -436,6 +439,7 @@ class _GuidedMeditationSessionScreenState
   }
 
   void _closeSession() {
+    WakelockService.disable(); // Disable wakelock when session ends
     Navigator.of(context).pop(); // Close dialog
     Navigator.of(context).pop(); // Close session screen
   }
@@ -486,7 +490,7 @@ class _GuidedMeditationSessionScreenState
             const SizedBox(height: 24),
 
             Text(
-              'Pause Your Session?',
+              'Close Your Session?',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.5,
@@ -556,6 +560,9 @@ class _GuidedMeditationSessionScreenState
 
   Future<void> _endSessionSafely() async {
     try {
+      // Wakelock
+      WakelockService.disable();
+
       // Close the dialog first
       Navigator.of(context).pop();
 
