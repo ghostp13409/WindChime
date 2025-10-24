@@ -16,21 +16,41 @@
  */
 
 class InAppPurchaseConfig {
-  // Product IDs for Google Play Store
-  static const String smallDonationId = 'windchime_small_donation';
-  static const String mediumDonationId = 'windchime_medium_donation';
-  static const String largeDonationId = 'windchime_large_donation';
+  // Product IDs for Google Play Store - Consumables (One-time donations)
+  static const String smallDonationId = 'small_tip';
+  static const String mediumDonationId = 'medium_tip';
+  static const String largeDonationId = 'large_tip';
 
-  // Product IDs for Apple App Store (if needed)
+  // Product IDs for Google Play Store - Subscriptions
+  static const String smallPledgeId = 'small_pledge';
+  static const String mediumPledgeId = 'medium_pledge';
+
+  // Product IDs for Apple App Store (if needed) - Consumables
   static const String smallDonationIdIOS = 'windchime_small_donation';
   static const String mediumDonationIdIOS = 'windchime_medium_donation';
   static const String largeDonationIdIOS = 'windchime_large_donation';
 
+  // Product IDs for Apple App Store (if needed) - Subscriptions
+  static const String smallPledgeIdIOS = 'windchime_small_pledge';
+  static const String mediumPledgeIdIOS = 'windchime_medium_pledge';
+
   // Get all product IDs
   static List<String> get productIds => [
+        ...consumableProductIds,
+        ...subscriptionProductIds,
+      ];
+
+  // Get consumable product IDs (one-time donations)
+  static List<String> get consumableProductIds => [
         smallDonationId,
         mediumDonationId,
         largeDonationId,
+      ];
+
+  // Get subscription product IDs
+  static List<String> get subscriptionProductIds => [
+        smallPledgeId,
+        mediumPledgeId,
       ];
 
   // Product titles
@@ -42,8 +62,12 @@ class InAppPurchaseConfig {
         return 'Medium Donation';
       case largeDonationId:
         return 'Large Donation';
+      case smallPledgeId:
+        return 'Small Monthly Pledge';
+      case mediumPledgeId:
+        return 'Medium Monthly Pledge';
       default:
-        return 'Donation';
+        return 'Support';
     }
   }
 
@@ -56,6 +80,10 @@ class InAppPurchaseConfig {
         return 'Support WindChime with a medium donation';
       case largeDonationId:
         return 'Support WindChime with a large donation';
+      case smallPledgeId:
+        return 'Monthly support to help maintain cloud features like backup/restore';
+      case mediumPledgeId:
+        return 'Monthly support to help maintain advanced features like leaderboards';
       default:
         return 'Support WindChime development';
     }
@@ -70,6 +98,10 @@ class InAppPurchaseConfig {
         return 0xFFFF9800; // Orange
       case largeDonationId:
         return 0xFFE91E63; // Pink
+      case smallPledgeId:
+        return 0xFF2196F3; // Blue
+      case mediumPledgeId:
+        return 0xFF9C27B0; // Purple
       default:
         return 0xFF2196F3; // Blue
     }
@@ -84,8 +116,17 @@ class InAppPurchaseConfig {
         return 'favorite';
       case largeDonationId:
         return 'favorite';
+      case smallPledgeId:
+        return 'repeat';
+      case mediumPledgeId:
+        return 'repeat';
       default:
         return 'card_giftcard';
     }
+  }
+
+  // Check if product is a subscription
+  static bool isSubscription(String productId) {
+    return subscriptionProductIds.contains(productId);
   }
 }

@@ -150,12 +150,13 @@ class _DonationScreenState extends State<DonationScreen>
                               description:
                                   'In-app purchases are not available on this device.',
                             )
-                          : _products.isEmpty
+                          : (_consumableProducts.isEmpty &&
+                                  _subscriptionProducts.isEmpty)
                               ? _buildEmptyState(
                                   icon: Icons.hourglass_empty,
                                   title: 'No Options Available',
                                   description:
-                                      'Donation products are not available at the moment.',
+                                      'Support products are not available at the moment.',
                                 )
                               : SingleChildScrollView(
                                   padding: const EdgeInsets.all(24),
@@ -224,19 +225,66 @@ class _DonationScreenState extends State<DonationScreen>
                                         ),
                                       ),
                                       const SizedBox(height: 32),
-                                      Text(
-                                        'Choose Your Support Level',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              letterSpacing: -0.3,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      ..._products.map((product) =>
-                                          _buildDonationOption(product)),
+                                      // One-time Donations Section
+                                      if (_consumableProducts.isNotEmpty) ...[
+                                        Text(
+                                          'One-Time Support',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: -0.3,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        ..._consumableProducts.map((product) =>
+                                            _buildDonationOption(product)),
+                                        const SizedBox(height: 40),
+                                      ],
+                                      // Subscriptions Section
+                                      if (_subscriptionProducts.isNotEmpty) ...[
+                                        Text(
+                                          'Monthly Support',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                letterSpacing: -0.3,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Help maintain cloud features like backup/restore, leaderboards, and personalized insights',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium
+                                              ?.copyWith(
+                                                color: Colors.grey
+                                                    .withOpacity(0.7),
+                                                height: 1.4,
+                                              ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        ..._subscriptionProducts.map(
+                                            (product) =>
+                                                _buildDonationOption(product)),
+                                        const SizedBox(height: 16),
+                                        Text(
+                                          'Subscriptions automatically renew monthly. You can cancel anytime through your app store account settings.',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: Colors.grey
+                                                    .withOpacity(0.6),
+                                                height: 1.4,
+                                                fontSize: 12,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
                                     ],
                                   ),
                                 ),
@@ -251,7 +299,8 @@ class _DonationScreenState extends State<DonationScreen>
 
   bool _isLoading = true;
   bool _purchaseInProgress = false;
-  List<ProductDetails> _products = [];
+  List<ProductDetails> _consumableProducts = [];
+  List<ProductDetails> _subscriptionProducts = [];
   String? _selectedProductId;
   late AnimationController _fadeController;
   late AnimationController _slideController;
@@ -298,7 +347,8 @@ class _DonationScreenState extends State<DonationScreen>
   Future<void> _initializeInAppPurchases() async {
     InAppPurchaseService.onProductsLoaded = () {
       setState(() {
-        _products = InAppPurchaseService.getProducts();
+        _consumableProducts = InAppPurchaseService.getConsumableProducts();
+        _subscriptionProducts = InAppPurchaseService.getSubscriptionProducts();
         _isLoading = false;
       });
     };
@@ -323,7 +373,8 @@ class _DonationScreenState extends State<DonationScreen>
 
     if (InAppPurchaseService.getProducts().isNotEmpty) {
       setState(() {
-        _products = InAppPurchaseService.getProducts();
+        _consumableProducts = InAppPurchaseService.getConsumableProducts();
+        _subscriptionProducts = InAppPurchaseService.getSubscriptionProducts();
         _isLoading = false;
       });
     }
@@ -649,6 +700,8 @@ class _DonationScreenState extends State<DonationScreen>
         return Icons.favorite_border;
       case 'favorite':
         return Icons.favorite;
+      case 'repeat':
+        return Icons.repeat;
       default:
         return Icons.card_giftcard;
     }

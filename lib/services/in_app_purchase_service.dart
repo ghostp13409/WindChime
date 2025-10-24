@@ -92,19 +92,25 @@ class InAppPurchaseService {
   }
 
   static void _handleSuccessfulPurchase(PurchaseDetails purchaseDetails) {
-    String donationType = '';
+    String purchaseType = '';
     switch (purchaseDetails.productID) {
       case InAppPurchaseConfig.smallDonationId:
-        donationType = 'Small Donation';
+        purchaseType = 'Small Donation';
         break;
       case InAppPurchaseConfig.mediumDonationId:
-        donationType = 'Medium Donation';
+        purchaseType = 'Medium Donation';
         break;
       case InAppPurchaseConfig.largeDonationId:
-        donationType = 'Large Donation';
+        purchaseType = 'Large Donation';
+        break;
+      case InAppPurchaseConfig.smallPledgeId:
+        purchaseType = 'Small Monthly Pledge';
+        break;
+      case InAppPurchaseConfig.mediumPledgeId:
+        purchaseType = 'Medium Monthly Pledge';
         break;
     }
-    onPurchaseSuccess?.call(donationType);
+    onPurchaseSuccess?.call(purchaseType);
   }
 
   static Future<bool> purchaseProduct(String productId) async {
@@ -121,9 +127,9 @@ class InAppPurchaseService {
     final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
 
     try {
-      if (product.id == InAppPurchaseConfig.smallDonationId ||
-          product.id == InAppPurchaseConfig.mediumDonationId ||
-          product.id == InAppPurchaseConfig.largeDonationId) {
+      if (InAppPurchaseConfig.isSubscription(product.id)) {
+        await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+      } else {
         await _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
       }
       return true;
@@ -131,11 +137,22 @@ class InAppPurchaseService {
       onPurchaseError?.call('Purchase failed: $e');
       return false;
     }
-    return false;
   }
 
   static List<ProductDetails> getProducts() {
     return _products;
+  }
+
+  static List<ProductDetails> getConsumableProducts() {
+    return _products
+        .where((product) => !InAppPurchaseConfig.isSubscription(product.id))
+        .toList();
+  }
+
+  static List<ProductDetails> getSubscriptionProducts() {
+    return _products
+        .where((product) => InAppPurchaseConfig.isSubscription(product.id))
+        .toList();
   }
 
   static bool get isAvailable => _isAvailable;
