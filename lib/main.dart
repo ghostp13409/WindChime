@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:windchime/models/meditation/breathing_pattern.dart';
 import 'package:windchime/models/meditation/meditation.dart';
 import 'package:windchime/screens/home/home_screen.dart';
+import 'package:windchime/screens/home/redesigned_home_screen.dart';
 import 'package:windchime/screens/meditation/home_screen.dart';
 import 'package:windchime/screens/meditation/meditation_instruction_screen.dart';
 import 'package:windchime/screens/meditation/meditation_session_screen.dart';
@@ -175,7 +176,7 @@ class _MainAppState extends State<MainApp> {
             theme: themeData,
             home: _isFirstTime
                 ? WelcomeTour(onComplete: _onWelcomeComplete)
-                : const HomeScreen(),
+                : const RedesignedHomeScreen(),
             routes: routes,
           );
         },
