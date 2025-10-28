@@ -22,6 +22,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -47,13 +48,12 @@ class _FeedbackScreenState extends State<FeedbackScreen>
   bool _isSubmitting = false;
   bool _includeDeviceInfo = true;
 
-  // Replace with your Formspree form ID
-  static const String _formspreeEndpoint =
-      String.fromEnvironment('FORMSPREE_ENDPOINT');
+  late String _formspreeEndpoint;
 
   @override
   void initState() {
     super.initState();
+    _loadEnv();
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
@@ -66,6 +66,17 @@ class _FeedbackScreenState extends State<FeedbackScreen>
       curve: Curves.easeInOut,
     ));
     _animationController.forward();
+  }
+
+  Future<void> _loadEnv() async {
+    await dotenv.load();
+    final endpoint = dotenv.env['FORMSPREE_ENDPOINT'] ?? '';
+    // Extract the form ID from the URL if it's a full URL
+    if (endpoint.startsWith('https://formspree.io/f/')) {
+      _formspreeEndpoint = endpoint.split('/').last;
+    } else {
+      _formspreeEndpoint = endpoint;
+    }
   }
 
   @override
@@ -163,7 +174,7 @@ class _FeedbackScreenState extends State<FeedbackScreen>
       return;
     }
 
-    if (_formspreeEndpoint == 'YOUR_FORMSPREE_FORM_ID') {
+    if (_formspreeEndpoint.isEmpty) {
       _showSnackBar('Please configure Formspree endpoint first', Colors.orange);
       return;
     }

@@ -37,6 +37,7 @@ dependencies:
   in_app_purchase: ^3.1.13
   font_awesome_flutter: ^10.7.1
   wakelock_plus: ^1.3.3
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - .env
     # App images
     - assets/images/logo.png
     - assets/images/logo_small.png
