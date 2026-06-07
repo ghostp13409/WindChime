@@ -17,6 +17,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum ThemeModeOption {
   light,
@@ -25,12 +26,14 @@ enum ThemeModeOption {
 }
 
 class ThemeProvider with ChangeNotifier {
+  static const String _themeKey = 'theme_mode';
   ThemeModeOption _themeMode = ThemeModeOption.dark;
   bool _systemIsDark = false;
 
   ThemeProvider() {
     // Initialize system theme detection
     _updateSystemTheme();
+    _loadTheme();
   }
 
   ThemeModeOption get themeMode => _themeMode;
@@ -46,8 +49,34 @@ class ThemeProvider with ChangeNotifier {
     }
   }
 
+  Future<void> _loadTheme() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedMode = prefs.getString(_themeKey);
+      if (savedMode != null) {
+        _themeMode = ThemeModeOption.values.firstWhere(
+          (e) => e.toString() == savedMode,
+          orElse: () => ThemeModeOption.dark,
+        );
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading theme: $e');
+    }
+  }
+
+  Future<void> _saveTheme() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_themeKey, _themeMode.toString());
+    } catch (e) {
+      debugPrint('Error saving theme: $e');
+    }
+  }
+
   void setThemeMode(ThemeModeOption mode) {
     _themeMode = mode;
+    _saveTheme();
     notifyListeners();
   }
 
@@ -64,6 +93,7 @@ class ThemeProvider with ChangeNotifier {
         _themeMode = ThemeModeOption.light;
         break;
     }
+    _saveTheme();
     notifyListeners();
   }
 
@@ -75,9 +105,11 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void updateSystemTheme(bool isDark) {
-    _systemIsDark = isDark;
-    if (_themeMode == ThemeModeOption.system) {
-      notifyListeners();
+    if (_systemIsDark != isDark) {
+      _systemIsDark = isDark;
+      if (_themeMode == ThemeModeOption.system) {
+        notifyListeners();
+      }
     }
   }
 

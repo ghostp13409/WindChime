@@ -922,7 +922,7 @@ class RoadmapMilestone {
 }
 
 class SocialLink {
-  final IconData? icon;
+  final dynamic icon;
   final String label;
   final String url;
   final Color color;

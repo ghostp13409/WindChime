@@ -32,6 +32,7 @@ import 'package:windchime/services/in_app_purchase_service.dart';
 import 'package:windchime/services/audio_download_service.dart';
 import 'package:provider/provider.dart';
 import 'package:windchime/providers/theme_provider.dart';
+import 'package:windchime/providers/guided_meditation_provider.dart';
 import 'package:windchime/themes/dark_theme_data.dart';
 import 'package:windchime/themes/light_theme_data.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -62,8 +63,13 @@ Future<void> main() async {
   await AudioDownloadService().initialize();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(
+          create: (_) => GuidedMeditationProvider()..initialize(),
+        ),
+      ],
       child: const MainApp(),
     ),
   );
@@ -131,55 +137,52 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: darkThemeData,
-        home: const Scaffold(
-          backgroundColor: Color(0xFF121212),
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
-
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
-          // Update system theme detection in provider
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final brightness = MediaQuery.of(context).platformBrightness;
-            themeProvider.updateSystemTheme(brightness == Brightness.dark);
-          });
-
-          // Determine the theme based on the selected mode
-          ThemeData themeData;
-          switch (themeProvider.themeMode) {
-            case ThemeModeOption.light:
-              themeData = lightThemeData;
-              break;
-            case ThemeModeOption.dark:
-              themeData = darkThemeData;
-              break;
-            case ThemeModeOption.system:
-              // For system mode, use the provider's system theme detection
-              themeData =
-                  themeProvider.isDarkTheme ? darkThemeData : lightThemeData;
-              break;
-          }
-
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        if (_isLoading) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: themeData,
-            home: _isFirstTime
-                ? WelcomeTour(onComplete: _onWelcomeComplete)
-                : const HomeScreen(),
-            routes: routes,
+            theme: darkThemeData,
+            home: const Scaffold(
+              backgroundColor: Color(0xFF121212),
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
-        },
-      ),
+        }
+
+        // Update system theme detection in provider
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final brightness = MediaQuery.of(context).platformBrightness;
+          themeProvider.updateSystemTheme(brightness == Brightness.dark);
+        });
+
+        // Determine the theme based on the selected mode
+        ThemeData themeData;
+        switch (themeProvider.themeMode) {
+          case ThemeModeOption.light:
+            themeData = lightThemeData;
+            break;
+          case ThemeModeOption.dark:
+            themeData = darkThemeData;
+            break;
+          case ThemeModeOption.system:
+            // For system mode, use the provider's system theme detection
+            themeData =
+                themeProvider.isDarkTheme ? darkThemeData : lightThemeData;
+            break;
+        }
+
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: themeData,
+          home: _isFirstTime
+              ? WelcomeTour(onComplete: _onWelcomeComplete)
+              : const HomeScreen(),
+          routes: routes,
+        );
+      },
     );
   }
 }
